@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\UtilisateurRepository;
+use App\Repository\UtilisateursRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
+#[ORM\Entity(repositoryClass: UtilisateursRepository::class)]
 class Utilisateurs
 {
     #[ORM\Id]
@@ -28,17 +28,17 @@ class Utilisateurs
     private ?string $role;
 
     #[ORM\Column(type: 'string', length: 200, nullable: true)]
-    private string $heuredebut = 'NULL';
+    private ?string $heuredebut ;
 
     #[ORM\Column(type: 'string', length: 200, nullable: true)]
-    private string $heurefin = 'NULL';
+    private ?string $heurefin ;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private string $image = 'NULL';
+    private ?string $image ;
 
     #[ORM\ManyToOne(targetEntity: Citoyen::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Citoyen $idCitoyen;
+    #[ORM\JoinColumn(name: 'idCitoyen', referencedColumnName: 'id')]
+    private ?Citoyen $citoyen;
 
     #[ORM\ManyToMany(targetEntity: Projet::class, mappedBy: 'user')]
     private $projet = array();
@@ -48,7 +48,7 @@ class Utilisateurs
      */
     public function __construct()
     {
-        $this->projet = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->projet = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -140,18 +140,6 @@ class Utilisateurs
         return $this;
     }
 
-    public function getIdcitoyen(): ?Citoyen
-    {
-        return $this->idcitoyen;
-    }
-
-    public function setIdcitoyen(?Citoyen $idCitoyen): static
-    {
-        $this->idcitoyen = $idCitoyen;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Projet>
      */
@@ -175,6 +163,18 @@ class Utilisateurs
         if ($this->projet->removeElement($projet)) {
             $projet->removeUser($this);
         }
+
+        return $this;
+    }
+
+    public function getCitoyen(): ?Citoyen
+    {
+        return $this->citoyen;
+    }
+
+    public function setCitoyen(?Citoyen $citoyen): static
+    {
+        $this->citoyen = $citoyen;
 
         return $this;
     }

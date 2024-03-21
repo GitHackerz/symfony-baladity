@@ -14,7 +14,7 @@ class Projet
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private ?int $id;
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $titre;
@@ -34,16 +34,16 @@ class Projet
     #[ORM\Column(type: 'float')]
     private ?float $budget;
 
-    #[ORM\ManyToMany(targetEntity: Utilisateurs::class, inversedBy: 'projets')]
-    #[ORM\JoinTable(name: 'projet_utilisateurs')]
-    private $user = array();
+    #[ORM\ManyToMany(targetEntity: Utilisateurs::class, inversedBy: 'projet')]
+    #[ORM\JoinTable(name: 'utilisateurs_projet')]
+    private $users = array();
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->user = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -126,23 +126,23 @@ class Projet
     /**
      * @return Collection<int, Utilisateurs>
      */
-    public function getUser(): Collection
+    public function getUsers(): Collection
     {
-        return $this->user;
+        return $this->users;
     }
 
-    public function addUser(Utilisateurs $user): static
+    public function addUser(Utilisateurs $users): static
     {
-        if (!$this->user->contains($user)) {
-            $this->user->add($user);
+        if (!$this->users->contains($users)) {
+            $this->users->add($users);
         }
 
         return $this;
     }
 
-    public function removeUser(Utilisateurs $user): static
+    public function removeUser(Utilisateurs $users): static
     {
-        $this->user->removeElement($user);
+        $this->users->removeElement($users);
 
         return $this;
     }
