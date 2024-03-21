@@ -248,6 +248,7 @@ CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `citoyen_id` int(11) DEFAULT NULL,
   `email` varchar(180) NOT NULL,
+  `role` varchar(255) NOT NULL
   `roles` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '(DC2Type:json)' CHECK (json_valid(`roles`)),
   `password` varchar(255) NOT NULL,
   `num_tel` int(11) NOT NULL,
