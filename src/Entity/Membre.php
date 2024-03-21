@@ -2,28 +2,28 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use App\Repository\MembreRepository;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MembreRepository::class)]
 class Membre
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id;
+    #[ORM\Column]
+    private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 100)]
-    private ?string $nom;
+    #[ORM\Column(length: 255)]
+    private ?string $nom = null;
 
-    #[ORM\Column(type: 'string', length: 100)]
-    private ?string $prenom;
+    #[ORM\Column(length: 255)]
+    private ?string $prenom = null;
 
-    #[ORM\Column(type: 'integer')]
-    private ?int $age;
+    #[ORM\Column]
+    private ?int $age = null;
 
-    #[ORM\ManyToOne(targetEntity: Evenement::class)]
-    private ?Evenement $event;
+    #[ORM\ManyToOne(inversedBy: 'membres')]
+    private ?Evenement $event = null;
 
     public function getId(): ?int
     {
@@ -77,6 +77,4 @@ class Membre
 
         return $this;
     }
-
-
 }

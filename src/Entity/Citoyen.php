@@ -2,35 +2,45 @@
 
 namespace App\Entity;
 
+use App\Repository\CitoyenRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\CitoyenRepository;
 
 #[ORM\Entity(repositoryClass: CitoyenRepository::class)]
 class Citoyen
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id;
+    #[ORM\Column]
+    private ?int $id = null;
 
-    #[ORM\Column(type: 'integer')]
-    private ?int $cin;
+    #[ORM\Column]
+    private ?int $cin = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private ?string $nom;
+    #[ORM\Column(length: 255)]
+    private ?string $nom = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private ?string $prenom;
+    #[ORM\Column(length: 255)]
+    private ?string $prenom = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private string $adresse;
+    #[ORM\Column(length: 255)]
+    private ?string $adresse = null;
 
-    #[ORM\Column(type: 'date')]
-    private ?\DateTimeInterface $datenaissance;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $dateNaissance = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private ?string $genre;
+    #[ORM\Column(length: 255)]
+    private ?string $genre = null;
+
+    #[ORM\OneToMany(mappedBy: 'citoyen', targetEntity: User::class)]
+    private Collection $users;
+
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -85,14 +95,14 @@ class Citoyen
         return $this;
     }
 
-    public function getDatenaissance(): ?\DateTimeInterface
+    public function getDateNaissance(): ?\DateTimeInterface
     {
-        return $this->datenaissance;
+        return $this->dateNaissance;
     }
 
-    public function setDatenaissance(\DateTimeInterface $datenaissance): static
+    public function setDateNaissance(\DateTimeInterface $dateNaissance): static
     {
-        $this->datenaissance = $datenaissance;
+        $this->dateNaissance = $dateNaissance;
 
         return $this;
     }
@@ -105,6 +115,36 @@ class Citoyen
     public function setGenre(string $genre): static
     {
         $this->genre = $genre;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): static
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->setCitoyen($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): static
+    {
+        if ($this->users->removeElement($user)) {
+            // set the owning side to null (unless already changed)
+            if ($user->getCitoyen() === $this) {
+                $user->setCitoyen(null);
+            }
+        }
 
         return $this;
     }

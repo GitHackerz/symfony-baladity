@@ -13,37 +13,33 @@ class Projet
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id;
+    #[ORM\Column]
+    private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private ?string $titre;
+    #[ORM\Column(length: 255)]
+    private ?string $titre = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private ?string $description;
+    #[ORM\Column(length: 255)]
+    private ?string $description = null;
 
-    #[ORM\Column(type: 'date')]
-    private ?\DateTimeInterface $dateDebut;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $dateDebut = null;
 
-    #[ORM\Column(type: 'date')]
-    private ?\DateTimeInterface $dateFin;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $dateFin = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private ?string $statut;
+    #[ORM\Column(length: 255)]
+    private ?string $statut = null;
 
-    #[ORM\Column(type: 'float')]
-    private ?float $budget;
+    #[ORM\Column]
+    private ?float $budget = null;
 
-    #[ORM\ManyToMany(targetEntity: Utilisateurs::class, inversedBy: 'projet')]
-    #[ORM\JoinTable(name: 'utilisateurs_projet')]
-    private $users = array();
+    #[ORM\OneToMany(mappedBy: 'projet', targetEntity: TacheProjet::class)]
+    private Collection $tacheProjets;
 
-    /**
-     * Constructor
-     */
     public function __construct()
     {
-        $this->users = new ArrayCollection();
+        $this->tacheProjets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -124,27 +120,32 @@ class Projet
     }
 
     /**
-     * @return Collection<int, Utilisateurs>
+     * @return Collection<int, TacheProjet>
      */
-    public function getUsers(): Collection
+    public function getTacheProjets(): Collection
     {
-        return $this->users;
+        return $this->tacheProjets;
     }
 
-    public function addUser(Utilisateurs $users): static
+    public function addTacheProjet(TacheProjet $tacheProjet): static
     {
-        if (!$this->users->contains($users)) {
-            $this->users->add($users);
+        if (!$this->tacheProjets->contains($tacheProjet)) {
+            $this->tacheProjets->add($tacheProjet);
+            $tacheProjet->setProjet($this);
         }
 
         return $this;
     }
 
-    public function removeUser(Utilisateurs $users): static
+    public function removeTacheProjet(TacheProjet $tacheProjet): static
     {
-        $this->users->removeElement($users);
+        if ($this->tacheProjets->removeElement($tacheProjet)) {
+            // set the owning side to null (unless already changed)
+            if ($tacheProjet->getProjet() === $this) {
+                $tacheProjet->setProjet(null);
+            }
+        }
 
         return $this;
     }
-
 }

@@ -2,81 +2,119 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ReclamationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ReclamationRepository::class)]
 class Reclamation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $idreclamation;
+    #[ORM\Column]
+    private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 50)]
-    private $typereclamation;
+    #[ORM\Column(length: 255)]
+    private ?string $type = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $descriptionreclamation;
+    #[ORM\Column(length: 255)]
+    private ?string $description = null;
 
-    #[ORM\Column(type: 'string', length: 50)]
-    private $statutreclamation;
+    #[ORM\Column(length: 255)]
+    private ?string $statut = null;
 
-    #[ORM\Column(type: 'string', length: 50)]
-    private $datereclamation;
+    #[ORM\Column(length: 255)]
+    private ?string $date = null;
 
-    public function getIdreclamation(): ?int
+    #[ORM\OneToMany(mappedBy: 'reclamation', targetEntity: ReponseReclamation::class)]
+    private Collection $reponseReclamations;
+
+    public function __construct()
     {
-        return $this->idreclamation;
+        $this->reponseReclamations = new ArrayCollection();
     }
 
-    public function getTypereclamation(): ?string
+    public function getId(): ?int
     {
-        return $this->typereclamation;
+        return $this->id;
     }
 
-    public function setTypereclamation(string $typereclamation): static
+    public function getType(): ?string
     {
-        $this->typereclamation = $typereclamation;
+        return $this->type;
+    }
+
+    public function setType(string $type): static
+    {
+        $this->type = $type;
 
         return $this;
     }
 
-    public function getDescriptionreclamation(): ?string
+    public function getDescription(): ?string
     {
-        return $this->descriptionreclamation;
+        return $this->description;
     }
 
-    public function setDescriptionreclamation(string $descriptionreclamation): static
+    public function setDescription(string $description): static
     {
-        $this->descriptionreclamation = $descriptionreclamation;
+        $this->description = $description;
 
         return $this;
     }
 
-    public function getStatutreclamation(): ?string
+    public function getStatut(): ?string
     {
-        return $this->statutreclamation;
+        return $this->statut;
     }
 
-    public function setStatutreclamation(string $statutreclamation): static
+    public function setStatut(string $statut): static
     {
-        $this->statutreclamation = $statutreclamation;
+        $this->statut = $statut;
 
         return $this;
     }
 
-    public function getDatereclamation(): ?string
+    public function getDate(): ?string
     {
-        return $this->datereclamation;
+        return $this->date;
     }
 
-    public function setDatereclamation(string $datereclamation): static
+    public function setDate(string $date): static
     {
-        $this->datereclamation = $datereclamation;
+        $this->date = $date;
 
         return $this;
     }
 
+    /**
+     * @return Collection<int, ReponseReclamation>
+     */
+    public function getReponseReclamations(): Collection
+    {
+        return $this->reponseReclamations;
+    }
 
+    public function addReponseReclamation(ReponseReclamation $reponseReclamation): static
+    {
+        if (!$this->reponseReclamations->contains($reponseReclamation)) {
+            $this->reponseReclamations->add($reponseReclamation);
+            $reponseReclamation->setReclamation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReponseReclamation(ReponseReclamation $reponseReclamation): static
+    {
+        if ($this->reponseReclamations->removeElement($reponseReclamation)) {
+            // set the owning side to null (unless already changed)
+            if ($reponseReclamation->getReclamation() === $this) {
+                $reponseReclamation->setReclamation(null);
+            }
+        }
+
+        return $this;
+    }
 }

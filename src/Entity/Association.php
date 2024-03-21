@@ -2,31 +2,41 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use App\Repository\AssociationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AssociationRepository::class)]
 class Association
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id;
+    #[ORM\Column]
+    private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private ?string $nom;
+    #[ORM\Column(length: 255)]
+    private ?string $nom = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private ?string $adresse;
+    #[ORM\Column(length: 255)]
+    private ?string $adresse = null;
 
-    #[ORM\Column(type: 'float')]
-    private ?float $caisse;
+    #[ORM\Column]
+    private ?float $caisse = null;
 
-    #[ORM\Column(type: 'string', length: 100)]
-    private ?string $type;
+    #[ORM\Column(length: 255)]
+    private ?string $type = null;
 
-    #[ORM\Column(type: 'string', length: 100)]
-    private ?string $statut;
+    #[ORM\Column(length: 255)]
+    private ?string $statut = null;
+
+    #[ORM\OneToMany(mappedBy: 'association', targetEntity: HistoriqueModification::class)]
+    private Collection $historiqueModifications;
+
+    public function __construct()
+    {
+        $this->historiqueModifications = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -93,5 +103,33 @@ class Association
         return $this;
     }
 
+    /**
+     * @return Collection<int, HistoriqueModification>
+     */
+    public function getHistoriqueModifications(): Collection
+    {
+        return $this->historiqueModifications;
+    }
 
+    public function addHistoriqueModification(HistoriqueModification $historiqueModification): static
+    {
+        if (!$this->historiqueModifications->contains($historiqueModification)) {
+            $this->historiqueModifications->add($historiqueModification);
+            $historiqueModification->setAssociation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHistoriqueModification(HistoriqueModification $historiqueModification): static
+    {
+        if ($this->historiqueModifications->removeElement($historiqueModification)) {
+            // set the owning side to null (unless already changed)
+            if ($historiqueModification->getAssociation() === $this) {
+                $historiqueModification->setAssociation(null);
+            }
+        }
+
+        return $this;
+    }
 }

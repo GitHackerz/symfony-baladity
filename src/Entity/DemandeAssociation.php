@@ -6,29 +6,27 @@ use App\Repository\DemandeAssociationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DemandeAssociationRepository::class)]
-
 class DemandeAssociation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id;
+    #[ORM\Column]
+    private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private ?string $nom;
+    #[ORM\Column(length: 255)]
+    private ?string $nom = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private ?string $adresse;
+    #[ORM\Column(length: 255)]
+    private ?string $adresse = null;
 
-    #[ORM\Column(type: 'float')]
-    private ?float $caisse;
+    #[ORM\Column]
+    private ?float $caisse = null;
 
-    #[ORM\Column(type: 'string', length: 100)]
-    private ?string $type;
+    #[ORM\Column(length: 255)]
+    private ?string $type = null;
 
-    #[ORM\ManyToOne(targetEntity: Utilisateurs::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Utilisateurs $idUser;
+    #[ORM\ManyToOne(inversedBy: 'demandeAssociations')]
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -83,17 +81,15 @@ class DemandeAssociation
         return $this;
     }
 
-    public function getIdUser(): ?Utilisateurs
+    public function getUser(): ?User
     {
-        return $this->idUser;
+        return $this->user;
     }
 
-    public function setIdUser(?Utilisateurs $idUser): static
+    public function setUser(?User $user): static
     {
-        $this->idUser = $idUser;
+        $this->user = $user;
 
         return $this;
     }
-
-
 }

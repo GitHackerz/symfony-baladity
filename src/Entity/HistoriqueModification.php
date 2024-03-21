@@ -2,25 +2,25 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use App\Repository\HistoriqueModificationRepository;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: HistoriqueModificationRepository::class)]
 class HistoriqueModification
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id;
+    #[ORM\Column]
+    private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 100)]
-    private ?string $title;
+    #[ORM\Column(length: 255)]
+    private ?string $title = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private ?string $description;
+    #[ORM\Column(length: 255)]
+    private ?string $description = null;
 
-    #[ORM\Column(type: 'integer')]
-    private ?int $idAssociation;
+    #[ORM\ManyToOne(inversedBy: 'historiqueModifications')]
+    private ?Association $association = null;
 
     public function getId(): ?int
     {
@@ -51,17 +51,15 @@ class HistoriqueModification
         return $this;
     }
 
-    public function getIdAssociation(): ?int
+    public function getAssociation(): ?Association
     {
-        return $this->idAssociation;
+        return $this->association;
     }
 
-    public function setIdAssociation(int $idAssociation): static
+    public function setAssociation(?Association $association): static
     {
-        $this->idAssociation = $idAssociation;
+        $this->association = $association;
 
         return $this;
     }
-
-
 }

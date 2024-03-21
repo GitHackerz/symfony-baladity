@@ -2,128 +2,124 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use App\Repository\DemandeDocumentRepository;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DemandeDocumentRepository::class)]
 class DemandeDocument
 {
-    #[ORM\Column(type: 'integer', nullable: true)]
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    private ?int $idDdoc;
+    #[ORM\Column]
+    private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private ?string $typeDdoc;
+    #[ORM\Column(length: 255)]
+    private ?string $type = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private ?string $descriptionDdoc;
+    #[ORM\Column(length: 255)]
+    private ?string $description = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private ?string $statutDdoc;
+    #[ORM\Column(length: 255)]
+    private ?string $statut = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private ?string $dateDdoc;
+    #[ORM\Column(length: 255)]
+    private ?string $date = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private string $dateTraitementDdoc = '\'N/A\'';
+    #[ORM\Column(length: 255)]
+    private ?string $dateTraitement = null;
 
-    #[ORM\ManyToOne(targetEntity: Utilisateurs::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Utilisateurs $idClient;
+    #[ORM\ManyToOne(inversedBy: 'demandeDocuments')]
+    private ?User $user = null;
 
-    #[ORM\ManyToOne(targetEntity: Documents::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Documents $idDocument;
+    #[ORM\ManyToOne(inversedBy: 'demandeDocuments')]
+    private ?Document $document = null;
 
-    public function getIdDdoc(): ?int
+    public function getId(): ?int
     {
-        return $this->idDdoc;
+        return $this->id;
     }
 
-    public function getTypeDdoc(): ?string
+    public function getType(): ?string
     {
-        return $this->typeDdoc;
+        return $this->type;
     }
 
-    public function setTypeDdoc(string $typeDdoc): static
+    public function setType(string $type): static
     {
-        $this->typeDdoc = $typeDdoc;
+        $this->type = $type;
 
         return $this;
     }
 
-    public function getDescriptionDdoc(): ?string
+    public function getDescription(): ?string
     {
-        return $this->descriptionDdoc;
+        return $this->description;
     }
 
-    public function setDescriptionDdoc(string $descriptionDdoc): static
+    public function setDescription(string $description): static
     {
-        $this->descriptionDdoc = $descriptionDdoc;
+        $this->description = $description;
 
         return $this;
     }
 
-    public function getStatutDdoc(): ?string
+    public function getStatut(): ?string
     {
-        return $this->statutDdoc;
+        return $this->statut;
     }
 
-    public function setStatutDdoc(string $statutDdoc): static
+    public function setStatut(string $statut): static
     {
-        $this->statutDdoc = $statutDdoc;
+        $this->statut = $statut;
 
         return $this;
     }
 
-    public function getDateDdoc(): ?string
+    public function getDate(): ?string
     {
-        return $this->dateDdoc;
+        return $this->date;
     }
 
-    public function setDateDdoc(string $dateDdoc): static
+    public function setDate(string $date): static
     {
-        $this->dateDdoc = $dateDdoc;
+        $this->date = $date;
 
         return $this;
     }
 
-    public function getDateTraitementDdoc(): ?string
+    public function getDateTraitement(): ?string
     {
-        return $this->dateTraitementDdoc;
+        return $this->dateTraitement;
     }
 
-    public function setDateTraitementDdoc(string $dateTraitementDdoc): static
+    public function setDateTraitement(string $dateTraitement): static
     {
-        $this->dateTraitementDdoc = $dateTraitementDdoc;
+        $this->dateTraitement = $dateTraitement;
 
         return $this;
     }
 
-    public function getIdClient(): ?Utilisateurs
+    public function getUser(): ?User
     {
-        return $this->idClient;
+        return $this->user;
     }
 
-    public function setIdClient(?Utilisateurs $idClient): static
+    public function setUser(?User $user): static
     {
-        $this->idClient = $idClient;
+        $this->user = $user;
 
         return $this;
     }
 
-    public function getIdDocument(): ?Documents
+    public function getDocument(): ?Document
     {
-        return $this->idDocument;
+        return $this->document;
     }
 
-    public function setIdDocument(?Documents $idDocument): static
+    public function setDocument(?Document $document): static
     {
-        $this->idDocument = $idDocument;
+        $this->document = $document;
 
         return $this;
     }
-
-
 }
