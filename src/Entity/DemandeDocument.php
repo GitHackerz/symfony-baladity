@@ -3,78 +3,127 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\DemandeDocumentRepository;
 
-/**
- * DemandeDocument
- *
- * @ORM\Table(name="demande_document", indexes={@ORM\Index(name="fk_id_client", columns={"id_client"}), @ORM\Index(name="fk_id_document", columns={"id_document"})})
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: DemandeDocumentRepository::class)]
 class DemandeDocument
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_ddoc", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idDdoc;
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    private ?int $idDdoc;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="type_ddoc", type="string", length=255, nullable=false)
-     */
-    private $typeDdoc;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $typeDdoc;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description_ddoc", type="string", length=255, nullable=false)
-     */
-    private $descriptionDdoc;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $descriptionDdoc;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="statut_ddoc", type="string", length=255, nullable=false)
-     */
-    private $statutDdoc;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $statutDdoc;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="date_ddoc", type="string", length=255, nullable=false)
-     */
-    private $dateDdoc;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $dateDdoc;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="date_traitement_ddoc", type="string", length=255, nullable=false, options={"default"="'N/A'"})
-     */
-    private $dateTraitementDdoc = '\'N/A\'';
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $dateTraitementDdoc = '\'N/A\'';
 
-    /**
-     * @var \Utilisateurs
-     *
-     * @ORM\ManyToOne(targetEntity="Utilisateurs")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_client", referencedColumnName="id")
-     * })
-     */
-    private $idClient;
+    #[ORM\ManyToOne(targetEntity: Utilisateurs::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Utilisateurs $idClient;
 
-    /**
-     * @var \Documents
-     *
-     * @ORM\ManyToOne(targetEntity="Documents")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_document", referencedColumnName="id_doc")
-     * })
-     */
-    private $idDocument;
+    #[ORM\ManyToOne(targetEntity: Documents::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Documents $idDocument;
+
+    public function getIdDdoc(): ?int
+    {
+        return $this->idDdoc;
+    }
+
+    public function getTypeDdoc(): ?string
+    {
+        return $this->typeDdoc;
+    }
+
+    public function setTypeDdoc(string $typeDdoc): static
+    {
+        $this->typeDdoc = $typeDdoc;
+
+        return $this;
+    }
+
+    public function getDescriptionDdoc(): ?string
+    {
+        return $this->descriptionDdoc;
+    }
+
+    public function setDescriptionDdoc(string $descriptionDdoc): static
+    {
+        $this->descriptionDdoc = $descriptionDdoc;
+
+        return $this;
+    }
+
+    public function getStatutDdoc(): ?string
+    {
+        return $this->statutDdoc;
+    }
+
+    public function setStatutDdoc(string $statutDdoc): static
+    {
+        $this->statutDdoc = $statutDdoc;
+
+        return $this;
+    }
+
+    public function getDateDdoc(): ?string
+    {
+        return $this->dateDdoc;
+    }
+
+    public function setDateDdoc(string $dateDdoc): static
+    {
+        $this->dateDdoc = $dateDdoc;
+
+        return $this;
+    }
+
+    public function getDateTraitementDdoc(): ?string
+    {
+        return $this->dateTraitementDdoc;
+    }
+
+    public function setDateTraitementDdoc(string $dateTraitementDdoc): static
+    {
+        $this->dateTraitementDdoc = $dateTraitementDdoc;
+
+        return $this;
+    }
+
+    public function getIdClient(): ?Utilisateurs
+    {
+        return $this->idClient;
+    }
+
+    public function setIdClient(?Utilisateurs $idClient): static
+    {
+        $this->idClient = $idClient;
+
+        return $this;
+    }
+
+    public function getIdDocument(): ?Documents
+    {
+        return $this->idDocument;
+    }
+
+    public function setIdDocument(?Documents $idDocument): static
+    {
+        $this->idDocument = $idDocument;
+
+        return $this;
+    }
 
 
 }

@@ -3,58 +3,95 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\AssociationRepository;
 
-/**
- * Association
- *
- * @ORM\Table(name="association")
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: AssociationRepository::class)]
 class Association
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nom", type="string", length=255, nullable=false)
-     */
-    private $nom;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $nom;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="adresse", type="string", length=255, nullable=false)
-     */
-    private $adresse;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $adresse;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="caisse", type="float", precision=10, scale=0, nullable=false)
-     */
-    private $caisse;
+    #[ORM\Column(type: 'float')]
+    private ?float $caisse;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="type", type="string", length=100, nullable=false)
-     */
-    private $type;
+    #[ORM\Column(type: 'string', length: 100)]
+    private ?string $type;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="statut", type="string", length=100, nullable=false)
-     */
-    private $statut;
+    #[ORM\Column(type: 'string', length: 100)]
+    private ?string $statut;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): static
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(string $adresse): static
+    {
+        $this->adresse = $adresse;
+
+        return $this;
+    }
+
+    public function getCaisse(): ?float
+    {
+        return $this->caisse;
+    }
+
+    public function setCaisse(float $caisse): static
+    {
+        $this->caisse = $caisse;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): static
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getStatut(): ?string
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(string $statut): static
+    {
+        $this->statut = $statut;
+
+        return $this;
+    }
 
 
 }

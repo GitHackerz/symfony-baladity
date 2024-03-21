@@ -2,62 +2,98 @@
 
 namespace App\Entity;
 
+use App\Repository\DemandeAssociationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * DemandeAssociation
- *
- * @ORM\Table(name="demande_association", indexes={@ORM\Index(name="id_user", columns={"id_user"})})
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: DemandeAssociationRepository::class)]
+
 class DemandeAssociation
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nom", type="string", length=255, nullable=false)
-     */
-    private $nom;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $nom;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="adresse", type="string", length=255, nullable=false)
-     */
-    private $adresse;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $adresse;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="caisse", type="float", precision=10, scale=0, nullable=false)
-     */
-    private $caisse;
+    #[ORM\Column(type: 'float')]
+    private ?float $caisse;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="type", type="string", length=100, nullable=false)
-     */
-    private $type;
+    #[ORM\Column(type: 'string', length: 100)]
+    private ?string $type;
 
-    /**
-     * @var \Utilisateurs
-     *
-     * @ORM\ManyToOne(targetEntity="Utilisateurs")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_user", referencedColumnName="id")
-     * })
-     */
-    private $idUser;
+    #[ORM\ManyToOne(targetEntity: Utilisateurs::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Utilisateurs $idUser;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): static
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(string $adresse): static
+    {
+        $this->adresse = $adresse;
+
+        return $this;
+    }
+
+    public function getCaisse(): ?float
+    {
+        return $this->caisse;
+    }
+
+    public function setCaisse(float $caisse): static
+    {
+        $this->caisse = $caisse;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): static
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getIdUser(): ?Utilisateurs
+    {
+        return $this->idUser;
+    }
+
+    public function setIdUser(?Utilisateurs $idUser): static
+    {
+        $this->idUser = $idUser;
+
+        return $this;
+    }
 
 
 }

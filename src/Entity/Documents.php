@@ -2,66 +2,111 @@
 
 namespace App\Entity;
 
+use App\Repository\DocumentsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Documents
- *
- * @ORM\Table(name="documents")
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: DocumentsRepository::class)]
 class Documents
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_doc", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idDoc;
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
+    private ?int $idDoc;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="type_doc", type="string", length=255, nullable=false)
-     */
-    private $typeDoc;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $typeDoc;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="statut_doc", type="string", length=255, nullable=false)
-     */
-    private $statutDoc;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $statutDoc;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="date_emission_doc", type="string", length=255, nullable=false)
-     */
-    private $dateEmissionDoc;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $dateEmissionDoc;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="date_expiration_doc", type="string", length=255, nullable=false)
-     */
-    private $dateExpirationDoc;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $dateExpirationDoc;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="estarchive", type="boolean", nullable=false)
-     */
-    private $estarchive;
+    #[ORM\Column(type: 'boolean')]
+    private ?bool $estarchive;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="nb_req", type="integer", nullable=false)
-     */
-    private $nbReq = '0';
+    #[ORM\Column(type: 'integer')]
+    private ?int $nbReq = 0;
+
+    public function getIdDoc(): ?int
+    {
+        return $this->idDoc;
+    }
+
+    public function getTypeDoc(): ?string
+    {
+        return $this->typeDoc;
+    }
+
+    public function setTypeDoc(string $typeDoc): static
+    {
+        $this->typeDoc = $typeDoc;
+
+        return $this;
+    }
+
+    public function getStatutDoc(): ?string
+    {
+        return $this->statutDoc;
+    }
+
+    public function setStatutDoc(string $statutDoc): static
+    {
+        $this->statutDoc = $statutDoc;
+
+        return $this;
+    }
+
+    public function getDateEmissionDoc(): ?string
+    {
+        return $this->dateEmissionDoc;
+    }
+
+    public function setDateEmissionDoc(string $dateEmissionDoc): static
+    {
+        $this->dateEmissionDoc = $dateEmissionDoc;
+
+        return $this;
+    }
+
+    public function getDateExpirationDoc(): ?string
+    {
+        return $this->dateExpirationDoc;
+    }
+
+    public function setDateExpirationDoc(string $dateExpirationDoc): static
+    {
+        $this->dateExpirationDoc = $dateExpirationDoc;
+
+        return $this;
+    }
+
+    public function isEstarchive(): ?bool
+    {
+        return $this->estarchive;
+    }
+
+    public function setEstarchive(bool $estarchive): static
+    {
+        $this->estarchive = $estarchive;
+
+        return $this;
+    }
+
+    public function getNbReq(): ?int
+    {
+        return $this->nbReq;
+    }
+
+    public function setNbReq(int $nbReq): static
+    {
+        $this->nbReq = $nbReq;
+
+        return $this;
+    }
 
 
 }

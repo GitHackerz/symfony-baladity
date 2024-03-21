@@ -2,80 +2,40 @@
 
 namespace App\Entity;
 
+use App\Repository\ProjetRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Projet
- *
- * @ORM\Table(name="projet")
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: ProjetRepository::class)]
 class Projet
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="titre", type="string", length=255, nullable=false)
-     */
-    private $titre;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $titre;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="string", length=255, nullable=false)
-     */
-    private $description;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $description;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="date_debut", type="date", nullable=false)
-     */
-    private $dateDebut;
+    #[ORM\Column(type: 'date')]
+    private ?\DateTimeInterface $dateDebut;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="date_fin", type="date", nullable=false)
-     */
-    private $dateFin;
+    #[ORM\Column(type: 'date')]
+    private ?\DateTimeInterface $dateFin;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="statut", type="string", length=255, nullable=false)
-     */
-    private $statut;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $statut;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="budget", type="float", precision=10, scale=0, nullable=false)
-     */
-    private $budget;
+    #[ORM\Column(type: 'float')]
+    private ?float $budget;
 
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="Utilisateurs", inversedBy="projet")
-     * @ORM\JoinTable(name="projet_user",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="projet_id", referencedColumnName="id")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     *   }
-     * )
-     */
+    #[ORM\ManyToMany(targetEntity: Utilisateurs::class, inversedBy: 'projets')]
+    #[ORM\JoinTable(name: 'projet_utilisateurs')]
     private $user = array();
 
     /**
@@ -84,6 +44,107 @@ class Projet
     public function __construct()
     {
         $this->user = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getTitre(): ?string
+    {
+        return $this->titre;
+    }
+
+    public function setTitre(string $titre): static
+    {
+        $this->titre = $titre;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getDateDebut(): ?\DateTimeInterface
+    {
+        return $this->dateDebut;
+    }
+
+    public function setDateDebut(\DateTimeInterface $dateDebut): static
+    {
+        $this->dateDebut = $dateDebut;
+
+        return $this;
+    }
+
+    public function getDateFin(): ?\DateTimeInterface
+    {
+        return $this->dateFin;
+    }
+
+    public function setDateFin(\DateTimeInterface $dateFin): static
+    {
+        $this->dateFin = $dateFin;
+
+        return $this;
+    }
+
+    public function getStatut(): ?string
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(string $statut): static
+    {
+        $this->statut = $statut;
+
+        return $this;
+    }
+
+    public function getBudget(): ?float
+    {
+        return $this->budget;
+    }
+
+    public function setBudget(float $budget): static
+    {
+        $this->budget = $budget;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Utilisateurs>
+     */
+    public function getUser(): Collection
+    {
+        return $this->user;
+    }
+
+    public function addUser(Utilisateurs $user): static
+    {
+        if (!$this->user->contains($user)) {
+            $this->user->add($user);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(Utilisateurs $user): static
+    {
+        $this->user->removeElement($user);
+
+        return $this;
     }
 
 }

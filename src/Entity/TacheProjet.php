@@ -3,71 +3,111 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\TacheProjetRepository;
 
-/**
- * TacheProjet
- *
- * @ORM\Table(name="tache_projet", indexes={@ORM\Index(name="IDX_BCE9A358C18272", columns={"projet_id"}), @ORM\Index(name="user_id", columns={"user_id"})})
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: TacheProjetRepository::class)]
 class TacheProjet
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="titre", type="string", length=255, nullable=false)
-     */
-    private $titre;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $titre;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="string", length=255, nullable=false)
-     */
-    private $description;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $description;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="date", type="string", length=255, nullable=false)
-     */
-    private $date;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $date;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="statut", type="string", length=255, nullable=false)
-     */
-    private $statut;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $statut;
 
-    /**
-     * @var \Projet
-     *
-     * @ORM\ManyToOne(targetEntity="Projet")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="projet_id", referencedColumnName="id")
-     * })
-     */
-    private $projet;
+    #[ORM\ManyToOne(targetEntity: Projet::class)]
+    private ?Projet $projet;
 
-    /**
-     * @var \Utilisateurs
-     *
-     * @ORM\ManyToOne(targetEntity="Utilisateurs")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     * })
-     */
-    private $user;
+    #[ORM\ManyToOne(targetEntity: Utilisateurs::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Utilisateurs $user;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getTitre(): ?string
+    {
+        return $this->titre;
+    }
+
+    public function setTitre(string $titre): static
+    {
+        $this->titre = $titre;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getDate(): ?string
+    {
+        return $this->date;
+    }
+
+    public function setDate(string $date): static
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    public function getStatut(): ?string
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(string $statut): static
+    {
+        $this->statut = $statut;
+
+        return $this;
+    }
+
+    public function getProjet(): ?Projet
+    {
+        return $this->projet;
+    }
+
+    public function setProjet(?Projet $projet): static
+    {
+        $this->projet = $projet;
+
+        return $this;
+    }
+
+    public function getUser(): ?Utilisateurs
+    {
+        return $this->user;
+    }
+
+    public function setUser(?Utilisateurs $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
 
 
 }

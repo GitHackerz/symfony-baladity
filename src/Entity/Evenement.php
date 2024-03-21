@@ -3,72 +3,125 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\EvenementRepository;
 
-/**
- * Evenement
- *
- * @ORM\Table(name="evenement")
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: EvenementRepository::class)]
 class Evenement
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+   #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="titre", type="string", length=255, nullable=false)
-     */
-    private $titre;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $titre;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="string", length=255, nullable=false)
-     */
-    private $description;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $description;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="date", type="string", length=255, nullable=false)
-     */
-    private $date;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $date;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="lieu", type="string", length=255, nullable=false)
-     */
-    private $lieu;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $lieu;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nom_contact", type="string", length=255, nullable=false)
-     */
-    private $nomContact;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $nomContact;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="email_contact", type="string", length=255, nullable=false)
-     */
-    private $emailContact;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $emailContact;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="statut", type="boolean", nullable=false)
-     */
-    private $statut;
+    #[ORM\Column(type: 'boolean')]
+    private ?bool $statut;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getTitre(): ?string
+    {
+        return $this->titre;
+    }
+
+    public function setTitre(string $titre): static
+    {
+        $this->titre = $titre;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getDate(): ?string
+    {
+        return $this->date;
+    }
+
+    public function setDate(string $date): static
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    public function getLieu(): ?string
+    {
+        return $this->lieu;
+    }
+
+    public function setLieu(string $lieu): static
+    {
+        $this->lieu = $lieu;
+
+        return $this;
+    }
+
+    public function getNomContact(): ?string
+    {
+        return $this->nomContact;
+    }
+
+    public function setNomContact(string $nomContact): static
+    {
+        $this->nomContact = $nomContact;
+
+        return $this;
+    }
+
+    public function getEmailContact(): ?string
+    {
+        return $this->emailContact;
+    }
+
+    public function setEmailContact(string $emailContact): static
+    {
+        $this->emailContact = $emailContact;
+
+        return $this;
+    }
+
+    public function isStatut(): ?bool
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(bool $statut): static
+    {
+        $this->statut = $statut;
+
+        return $this;
+    }
 
 
 }

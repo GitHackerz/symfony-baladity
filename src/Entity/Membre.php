@@ -3,54 +3,80 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\MembreRepository;
 
-/**
- * Membre
- *
- * @ORM\Table(name="membre", indexes={@ORM\Index(name="event_id", columns={"event_id"}), @ORM\Index(name="evenement_id", columns={"event_id"})})
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: MembreRepository::class)]
 class Membre
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nom", type="string", length=100, nullable=false)
-     */
-    private $nom;
+    #[ORM\Column(type: 'string', length: 100)]
+    private ?string $nom;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="prenom", type="string", length=100, nullable=false)
-     */
-    private $prenom;
+    #[ORM\Column(type: 'string', length: 100)]
+    private ?string $prenom;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="age", type="integer", nullable=false)
-     */
-    private $age;
+    #[ORM\Column(type: 'integer')]
+    private ?int $age;
 
-    /**
-     * @var \Evenement
-     *
-     * @ORM\ManyToOne(targetEntity="Evenement")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="event_id", referencedColumnName="id")
-     * })
-     */
-    private $event;
+    #[ORM\ManyToOne(targetEntity: Evenement::class)]
+    private ?Evenement $event;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): static
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getPrenom(): ?string
+    {
+        return $this->prenom;
+    }
+
+    public function setPrenom(string $prenom): static
+    {
+        $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    public function getAge(): ?int
+    {
+        return $this->age;
+    }
+
+    public function setAge(int $age): static
+    {
+        $this->age = $age;
+
+        return $this;
+    }
+
+    public function getEvent(): ?Evenement
+    {
+        return $this->event;
+    }
+
+    public function setEvent(?Evenement $event): static
+    {
+        $this->event = $event;
+
+        return $this;
+    }
 
 
 }

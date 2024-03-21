@@ -3,33 +3,36 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ReponserecRepository;
 
-/**
- * Reponserec
- *
- * @ORM\Table(name="reponserec", indexes={@ORM\Index(name="cle", columns={"idRec"})})
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: ReponserecRepository::class)]
 class Reponserec
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="idRep", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idrep;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $idrep;
 
-    /**
-     * @var \Reclamation
-     *
-     * @ORM\ManyToOne(targetEntity="Reclamation")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idRec", referencedColumnName="idReclamation")
-     * })
-     */
-    private $idrec;
+    #[ORM\ManyToOne(targetEntity: Reclamation::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Reclamation $idrec;
+
+    public function getIdrep(): ?int
+    {
+        return $this->idrep;
+    }
+
+    public function getIdrec(): ?Reclamation
+    {
+        return $this->idrec;
+    }
+
+    public function setIdrec(?Reclamation $idrec): static
+    {
+        $this->idrec = $idrec;
+
+        return $this;
+    }
 
 
 }

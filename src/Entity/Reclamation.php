@@ -3,51 +3,80 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ReclamationRepository;
 
-/**
- * Reclamation
- *
- * @ORM\Table(name="reclamation")
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: ReclamationRepository::class)]
 class Reclamation
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="idReclamation", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idreclamation;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $idreclamation;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="typeReclamation", type="string", length=50, nullable=false)
-     */
+    #[ORM\Column(type: 'string', length: 50)]
     private $typereclamation;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="descriptionReclamation", type="string", length=50, nullable=false)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $descriptionreclamation;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="statutReclamation", type="string", length=50, nullable=false)
-     */
+    #[ORM\Column(type: 'string', length: 50)]
     private $statutreclamation;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="dateReclamation", type="string", length=20, nullable=false)
-     */
+    #[ORM\Column(type: 'string', length: 50)]
     private $datereclamation;
+
+    public function getIdreclamation(): ?int
+    {
+        return $this->idreclamation;
+    }
+
+    public function getTypereclamation(): ?string
+    {
+        return $this->typereclamation;
+    }
+
+    public function setTypereclamation(string $typereclamation): static
+    {
+        $this->typereclamation = $typereclamation;
+
+        return $this;
+    }
+
+    public function getDescriptionreclamation(): ?string
+    {
+        return $this->descriptionreclamation;
+    }
+
+    public function setDescriptionreclamation(string $descriptionreclamation): static
+    {
+        $this->descriptionreclamation = $descriptionreclamation;
+
+        return $this;
+    }
+
+    public function getStatutreclamation(): ?string
+    {
+        return $this->statutreclamation;
+    }
+
+    public function setStatutreclamation(string $statutreclamation): static
+    {
+        $this->statutreclamation = $statutreclamation;
+
+        return $this;
+    }
+
+    public function getDatereclamation(): ?string
+    {
+        return $this->datereclamation;
+    }
+
+    public function setDatereclamation(string $datereclamation): static
+    {
+        $this->datereclamation = $datereclamation;
+
+        return $this;
+    }
 
 
 }
