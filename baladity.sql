@@ -184,7 +184,7 @@ CREATE TABLE `messenger_messages` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `projet`
+-- Table structure for table `project`
 --
 
 CREATE TABLE `projet` (
@@ -330,7 +330,7 @@ ALTER TABLE `messenger_messages`
   ADD KEY `IDX_75EA56E016BA31DB` (`delivered_at`);
 
 --
--- Indexes for table `projet`
+-- Indexes for table `project`
 --
 ALTER TABLE `projet`
   ADD PRIMARY KEY (`id`);
@@ -423,7 +423,7 @@ ALTER TABLE `messenger_messages`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `projet`
+-- AUTO_INCREMENT for table `project`
 --
 ALTER TABLE `projet`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
