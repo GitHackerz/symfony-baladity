@@ -1,0 +1,37 @@
+{% extends "front/base.html.twig" %}
+
+{% block body %}
+    {% include "front/Header.html.twig" %}
+
+    <div class="container-fluid py-5 wow fadeInUp" data-wow-delay="0.1s">
+        <div class="container py-5">
+            <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
+                <h5 class="fw-bold text-primary text-uppercase">Projets</h5>
+                <h1 class="mb-0">Liste des derniers projets</h1>
+            </div>
+            <div class="row g-5">
+                {% for projet in projets %}
+                    <div class="col-lg-4 wow slideInUp" data-wow-delay="0.3s">
+                        <div class="blog-item bg-light rounded overflow-hidden">
+                            <div class="blog-img position-relative overflow-hidden">
+                                <img class="img-fluid" src="{{ asset('front/img/blog-1.jpg') }}" alt="">
+                                <a class="position-absolute top-0 start-0 {{ projet.statut == "ACTIVE" ? 'bg-info' : 'bg-danger'}} text-white rounded-end mt-5 py-2 px-4" href="">{{ projet.statut }}</a>
+                            </div>
+                            <div class="p-4">
+                                <div class="d-flex mb-3">
+                                    <small class="me-3"><i class="far fa-calendar-alt text-info me-2"></i>Debut : {{ projet.dateDebut.format("d M Y") }}</small>
+                                    <small><i class="far fa-calendar-alt text-danger me-2"></i>Fin : {{ projet.dateFin.format("d M Y") }}</small>
+                                </div>
+                                <h4 class="mb-3">{{ projet.titre }}</h4>
+                                <p>{{ projet.description }}</p>
+                                <a class="text-uppercase" href="/projet/participer/{{ projet.id }}/1">Participer <i class="bi bi-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
