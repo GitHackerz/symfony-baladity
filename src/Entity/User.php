@@ -56,11 +56,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: TacheProjet::class)]
     private Collection $tacheProjets;
 
+    #[ORM\ManyToMany(targetEntity: Projet::class, mappedBy: 'user')]
+    private Collection $projets;
+
     public function __construct()
     {
         $this->demandeAssociations = new ArrayCollection();
         $this->demandeDocuments = new ArrayCollection();
         $this->tacheProjets = new ArrayCollection();
+        $this->projets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -311,6 +315,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             if ($tacheProjet->getUser() === $this) {
                 $tacheProjet->setUser(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Projet>
+     */
+    public function getProjets(): Collection
+    {
+        return $this->projets;
+    }
+
+    public function addProjet(Projet $projet): static
+    {
+        if (!$this->projets->contains($projet)) {
+            $this->projets->add($projet);
+            $projet->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProjet(Projet $projet): static
+    {
+        if ($this->projets->removeElement($projet)) {
+            $projet->removeUser($this);
         }
 
         return $this;
