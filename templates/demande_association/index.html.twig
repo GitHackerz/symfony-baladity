@@ -1,0 +1,40 @@
+{% extends "front/base.html.twig" %}
+
+
+{% block body %}
+    <h1>DemandeAssociation index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Adresse</th>
+                <th>Caisse</th>
+                <th>Type</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for demande_association in demande_associations %}
+            <tr>
+                <td>{{ demande_association.id }}</td>
+                <td>{{ demande_association.nom }}</td>
+                <td>{{ demande_association.adresse }}</td>
+                <td>{{ demande_association.caisse }}</td>
+                <td>{{ demande_association.type }}</td>
+                <td>
+                    <a href="{{ path('app_demande_association_show', {'id': demande_association.id}) }}">show</a>
+                    <a href="{{ path('app_demande_association_edit', {'id': demande_association.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_demande_association_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "front/base.html.twig" %}
+
+{% block body %}
+    <h1>Create new DemandeAssociation</h1>
+
+    {{ include('demande_association/_form.html.twig') }}
+
+    <a href="{{ path('app_demande_association_index') }}">back to list</a>
+{% endblock %}
