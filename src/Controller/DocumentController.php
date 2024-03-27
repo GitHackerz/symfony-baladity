@@ -11,13 +11,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/document')]
+#[Route('/dashboard/document')]
 class DocumentController extends AbstractController
 {
     #[Route('/', name: 'app_document_index', methods: ['GET'])]
     public function index(DocumentRepository $documentRepository): Response
     {
-        return $this->render('document/index.html.twig', [
+        return $this->render('back/document/index.html.twig', [
             'documents' => $documentRepository->findAll(),
         ]);
     }
@@ -36,7 +36,7 @@ class DocumentController extends AbstractController
             return $this->redirectToRoute('app_document_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('document/new.html.twig', [
+        return $this->renderForm('back/document/new.html.twig', [
             'document' => $document,
             'form' => $form,
         ]);
@@ -45,12 +45,12 @@ class DocumentController extends AbstractController
     #[Route('/{id}', name: 'app_document_show', methods: ['GET'])]
     public function show(Document $document): Response
     {
-        return $this->render('document/show.html.twig', [
+        return $this->render('back/document/show.html.twig', [
             'document' => $document,
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_document_edit', methods: ['GET', 'POST'])]
+    #[Route('/edit/{id}', name: 'app_document_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Document $document, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(DocumentType::class, $document);
@@ -62,20 +62,21 @@ class DocumentController extends AbstractController
             return $this->redirectToRoute('app_document_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('document/edit.html.twig', [
+        return $this->renderForm('back/document/edit.html.twig', [
             'document' => $document,
             'form' => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'app_document_delete', methods: ['POST'])]
-    public function delete(Request $request, Document $document, EntityManagerInterface $entityManager): Response
+    #[Route('/{id}', name: 'app_document_delete', methods: ['DELETE'])]
+    public function delete(Document $document, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$document->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($document);
-            $entityManager->flush();
-        }
+        $entityManager->remove($document);
+        $entityManager->flush();
+
 
         return $this->redirectToRoute('app_document_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
 }

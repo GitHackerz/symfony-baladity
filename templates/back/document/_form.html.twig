@@ -1,0 +1,90 @@
+{{ form_start(form) }}
+{{ form_widget(form._token) }}
+
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h3 class="fw-bold"> Ajouter Document</h3>
+    </div>
+    <div class="card-body">
+        <form>
+
+        <div class="mb-3">
+                <label class="form-label" for="basic-icon-default-fullname">Type Document</label>
+                <div class="input-group input-group-merge">
+                            <span id="basic-icon-default-fullname2" class="input-group-text"
+                            ><i class="bx bx-user"></i
+                                ></span>
+                    <input
+                            type="text"
+                            class="form-control"
+                            id="basic-icon-default-fullname"
+                            name="{{ field_name(form.type) }}"
+                            value="{{ field_value(form.type) }}"
+                            placeholder="{{ field_label(form.type) }}"
+                            aria-label="John Doe"
+                            aria-describedby="basic-icon-default-fullname2"
+                    />
+                </div>
+        </div>
+
+        <div class="mb-3">
+                <label for="defaultSelect" class="form-label">Statut</label>
+            <select id="defaultSelect" class="form-select" name="{{ field_name(form.statut) }}" value="{{ field_value(form.statut) }}" placeholder="{{ field_label(form.statut) }}" >
+                <option >Publique</option>
+                <option >Privé</option>
+            </select>
+        </div>
+        
+
+
+        <div class="mb-3">
+
+    <div class="mb-3">
+                <label class="form-label" for="html5-date-input">Date Emission</label>
+                <div class="input-group input-group-merge">
+                    <span class="input-group-text"><i class="bx bx-calendar"></i></span>
+                    <input class="form-control" type="date"
+                           name="{{ field_name(form.dateEmission) }}"
+                           value="{{ field_value(form.dateEmission) }}"
+                           placeholder="{{ field_label(form.dateEmission) }}"
+                           id="html5-date-input"
+                    />
+                </div>
+            </div>
+
+
+            <div class="mb-3">
+                <label class="form-label" for="html5-date-input">Date Expiration</label>
+                <div class="input-group input-group-merge">
+                    <span class="input-group-text"><i class="bx bx-calendar"></i></span>
+                    <input class="form-control" type="date"
+                           name="{{ field_name(form.dateExpiration) }}"
+                           value="{{ field_value(form.dateExpiration) }}"
+                           placeholder="{{ field_label(form.dateExpiration) }} "
+                           id="html5-date-input"
+                    />
+                </div>
+            </div>
+
+            <div class="form-check form-check-success">
+                <input class="form-check-input" type="checkbox" value="" id="customCheckSuccess" name="{{ field_name(form.estArchive) }}" value="{{ field_value(form.estArchive) }}"  />
+                <label class="form-check-label" for="customCheckSuccess">Archiver aux citoyens</label>
+            </div>
+
+
+
+  </div>
+
+
+
+
+
+
+            
+            <button type="submit" class="btn btn-primary">{{ button_label|default('Ajouter') }}</button>
+        </form>
+    </div>
+</div>
+{# {{ form_widget(form) }} #}
+{# <button class="btn">{{ button_label|default('Save') }}</button> #}
+{{ form_end(form) }}

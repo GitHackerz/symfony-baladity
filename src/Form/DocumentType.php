@@ -6,6 +6,12 @@ use App\Entity\Document;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\RadioType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class DocumentType extends AbstractType
 {
@@ -17,7 +23,7 @@ class DocumentType extends AbstractType
             ->add('dateEmission')
             ->add('dateExpiration')
             ->add('estArchive')
-            ->add('nbReq')
+            //->add('nbReq')
         ;
     }
 
