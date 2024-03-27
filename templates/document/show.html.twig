@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<title>Document</title>
+
+{% block body %}
+    <h1>Document</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ document.id }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ document.type }}</td>
+            </tr>
+            <tr>
+                <th>Statut</th>
+                <td>{{ document.statut }}</td>
+            </tr>
+            <tr>
+                <th>DateEmission</th>
+                <td>{{ document.dateEmission }}</td>
+            </tr>
+            <tr>
+                <th>DateExpiration</th>
+                <td>{{ document.dateExpiration }}</td>
+            </tr>
+            <tr>
+                <th>EstArchive</th>
+                <td>{{ document.estArchive ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>NbReq</th>
+                <td>{{ document.nbReq }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_document_index') }}">back to list</a>
+
+    <a href="{{ path('app_document_edit', {'id': document.id}) }}">edit</a>
+
+    {{ include('document/_delete_form.html.twig') }}
+{% endblock %}
