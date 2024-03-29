@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[Route('/dashboard/project')]
 class ProjectBackController extends AbstractController
@@ -24,14 +25,13 @@ class ProjectBackController extends AbstractController
     }
 
     #[Route('/new', name: 'project_back_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, ValidatorInterface $validator): Response
     {
         $projet = new Projet();
         $form = $this->createForm(ProjetType::class, $projet);
         $form->handleRequest($request);
-        echo "test";
+
         if ($form->isSubmitted() && $form->isValid()) {
-            var_dump($projet);
             $entityManager->persist($projet);
             $entityManager->flush();
 
