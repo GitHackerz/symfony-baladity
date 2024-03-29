@@ -7,6 +7,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+
 class EvenementType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -18,7 +20,14 @@ class EvenementType extends AbstractType
             ->add('lieu')
             ->add('nomContact')
             ->add('emailContact')
-            ->add('statut')
+            ->add('statut', ChoiceType::class, [
+                'choices' => [
+                    'fini'=>true,
+                    'pas fini' =>false,
+                ],
+                'expanded' => false,
+                'multiple' => false,
+            ])
         ;
     }
 

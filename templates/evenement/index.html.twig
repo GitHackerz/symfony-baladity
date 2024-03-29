@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,7 +55,7 @@
                         <td>{{ evenement.lieu }}</td>
                         <td>{{ evenement.nomContact }}</td>
                         <td>{{ evenement.emailContact }}</td>
-                        <td>{{ evenement.statut ? 'Yes' : 'No' }}</td>
+                        <td>{{ evenement.statut ? 'fini' : 'pas fini' }}</td>
                         <td>
                             <a href="{{ path('app_evenement_show', {'id': evenement.id}) }}" class="btn btn-primary btn-sm">Show</a>
                             <a href="{{ path('app_evenement_edit', {'id': evenement.id}) }}" class="btn btn-secondary btn-sm">Edit</a>

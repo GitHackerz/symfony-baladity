@@ -6,6 +6,7 @@ use App\Repository\EvenementRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EvenementRepository::class)]
 class Evenement
@@ -16,24 +17,40 @@ class Evenement
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"Le titre ne peut pas être vide")]
     private ?string $titre = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"La description ne peut pas être vide")]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"La date ne peut pas être vide")]
     private ?string $date = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Regex(
+        pattern:"/^[a-zA-Z\s]*$/",
+        message:"Le lieu ne peut contenir que des lettres et des espaces"
+    )]
+    #[Assert\NotBlank(message:"Le lieu ne peut pas être vide")]
     private ?string $lieu = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Regex(
+        pattern:"/^[a-zA-Z\s]*$/",
+        message:"Le nom du contact ne peut contenir que des lettres et des espaces"
+    )]
+    #[Assert\NotBlank(message:"Le nom du contact ne peut pas être vide")]
     private ?string $nomContact = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"L'email du contact ne peut pas être vide")]
+    #[Assert\Email(message:"L'email doit être valide")]
     private ?string $emailContact = null;
 
     #[ORM\Column]
+    #[Assert\NotNull(message:"Le statut ne peut pas être vide")]
     private ?bool $statut = null;
 
     #[ORM\OneToMany(mappedBy: 'event', targetEntity: Membre::class)]

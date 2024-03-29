@@ -1,0 +1,75 @@
+{% extends "front/base.html.twig" %}
+
+{% block body %}
+    {% include "front/Header.html.twig" %}
+
+    <div class="container-fluid wow fadeInUp" data-wow-delay="0.1s">
+        <div class="container">
+            <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
+                <h5 class="fw-bold text-primary text-uppercase">Projets</h5>
+                <h1 class="mb-0">Liste des derniers projets</h1>
+            </div>
+            <div class="row g-5">
+                {% for project in projects %}
+                    <div class="col-lg-4 wow slideInUp" data-wow-delay="0.3s">
+                        <div class="blog-item bg-light rounded overflow-hidden">
+                            <div class="blog-img position-relative overflow-hidden">
+                                <img class="img-fluid" src="{{ asset('front/img/blog-1.jpg') }}" alt="">
+                                <span class="position-absolute top-0 start-0 {{ project.statut == "ACTIVE" ? 'bg-info' : 'bg-danger'}} text-white rounded-end mt-5 py-2 px-4" href="">{{ project.statut }}</span>
+                            </div>
+                            <div class="p-4">
+                                <div class="d-flex mb-3">
+                                    <small class="me-3"><i class="far fa-calendar-alt text-info me-2"></i>Debut : {{ project.dateDebut.format("d M Y") }}</small>
+                                    <small><i class="far fa-calendar-alt text-danger me-2"></i>Fin : {{ project.dateFin.format("d M Y") }}</small>
+                                </div>
+                                <h4 class="mb-3">{{ project.titre }}</h4>
+                                <p>{{ project.description }}</p>
+                                {% if project.id in participatedProjects %}
+                                    <a class="text-uppercase text-warning participation-link" data-project-id="{{ project.id }}" data-participated="true" href="#">Annuler la participation <i class="bi bi-arrow-right"></i></a>
+                                {% else %}
+                                    <a class="text-uppercase text-primary participation-link" data-project-id="{{ project.id }}" data-participated="false" href="#">Participer <i class="bi bi-arrow-right"></i></a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to handle participation AJAX requests
+        document.addEventListener("DOMContentLoaded", function() {
+            const participationLinks = document.querySelectorAll('.participation-link');
+            participationLinks.forEach(link => {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const projectId = this.getAttribute('data-project-id');
+                    const participated = this.getAttribute('data-participated') === 'true';
+                    const url = participated ? `/project/quitter/${projectId}/1` : `/project/participer/${projectId}/1`;
+                    fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+
+                        },
+                        body: JSON.stringify({
+                        }),
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                this.textContent = participated ? 'Participer' : 'Annuler la participation';
+                                this.setAttribute('data-participated', !participated);
+                                this.classList.toggle('text-primary');
+                                this.classList.toggle('text-warning');
+                            }
+                        })
+                        .catch(error => {
+                            // Handle errors
+                            console.error('Error:', error);
+                        });
+                });
+            });
+        });
+    </script>
+{% endblock %}
