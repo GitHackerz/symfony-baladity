@@ -1,0 +1,45 @@
+{{ form_start(form, {'attr': {'class': 'text-center'}}) }}
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h3 class="fw-bold">Ajouter Evenement</h3>
+    </div>
+    <div class="card-body">
+
+        <div class="form-group">
+            {{ form_label(form.titre, null, {'attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.titre, {'attr': {'class': 'form-control', 'style': 'height: 100px;' }}) }}
+            <!-- Ajustez la hauteur selon vos besoins -->
+        </div>
+        <div class="form-group">
+            {{ form_label(form.description, null, {'attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.description, {'attr': {'class': 'form-control', 'style': 'height: 150px;' }}) }}
+            <!-- Ajustez la hauteur selon vos besoins -->
+        </div>
+        <div class="form-group">
+            {{ form_label(form.date, null, {'attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.date, {'attr': {'class': 'form-control datepicker', 'placeholder': 'Select date'}}) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.lieu, null, {'attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.lieu, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.nomContact, null, {'attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.nomContact, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.emailContact, null, {'attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.emailContact, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.statut, null, {'attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.statut, {'attr': {'class': 'form-select form-control-sm'}}) }}
+            <!-- Réduire la taille du sélecteur de statut -->
+        </div>
+        <div class="form-group" style="margin-top: 20px;"> <!-- Déplacer légèrement le bouton Save vers le bas -->
+            <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+        </div>
+        {{ form_end(form) }}
+
+    </div>
+</div>

@@ -25,7 +25,7 @@ final class Version20240321044815 extends AbstractMigration
         $this->addSql('CREATE TABLE demande_association (id INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, nom VARCHAR(255) NOT NULL, adresse VARCHAR(255) NOT NULL, caisse DOUBLE PRECISION NOT NULL, type VARCHAR(255) NOT NULL, INDEX IDX_5CA27EB8A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE demande_document (id INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, document_id INT DEFAULT NULL, type VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL, statut VARCHAR(255) NOT NULL, date VARCHAR(255) NOT NULL, date_traitement VARCHAR(255) NOT NULL, INDEX IDX_9E30C3B4A76ED395 (user_id), INDEX IDX_9E30C3B4C33F7837 (document_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE document (id INT AUTO_INCREMENT NOT NULL, type VARCHAR(255) NOT NULL, statut VARCHAR(255) NOT NULL, date_emission VARCHAR(255) NOT NULL, date_expiration VARCHAR(255) NOT NULL, est_archive TINYINT(1) NOT NULL, nb_req INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE evenement (id INT AUTO_INCREMENT NOT NULL, titre VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL, date VARCHAR(255) NOT NULL, lieu VARCHAR(255) NOT NULL, nom_contact VARCHAR(255) NOT NULL, email_contact VARCHAR(255) NOT NULL, statut TINYINT(1) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE event (id INT AUTO_INCREMENT NOT NULL, titre VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL, date VARCHAR(255) NOT NULL, lieu VARCHAR(255) NOT NULL, nom_contact VARCHAR(255) NOT NULL, email_contact VARCHAR(255) NOT NULL, statut TINYINT(1) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE historique_modification (id INT AUTO_INCREMENT NOT NULL, association_id INT DEFAULT NULL, title VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL, INDEX IDX_4B6C4FB1EFB9C8A5 (association_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE membre (id INT AUTO_INCREMENT NOT NULL, event_id INT DEFAULT NULL, nom VARCHAR(255) NOT NULL, prenom VARCHAR(255) NOT NULL, age INT NOT NULL, INDEX IDX_F6B4FB2971F7E88B (event_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE project (id INT AUTO_INCREMENT NOT NULL, titre VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL, date_debut DATETIME NOT NULL, date_fin DATETIME NOT NULL, statut VARCHAR(255) NOT NULL, budget DOUBLE PRECISION NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -38,7 +38,7 @@ final class Version20240321044815 extends AbstractMigration
         $this->addSql('ALTER TABLE demande_document ADD CONSTRAINT FK_9E30C3B4A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE demande_document ADD CONSTRAINT FK_9E30C3B4C33F7837 FOREIGN KEY (document_id) REFERENCES document (id)');
         $this->addSql('ALTER TABLE historique_modification ADD CONSTRAINT FK_4B6C4FB1EFB9C8A5 FOREIGN KEY (association_id) REFERENCES association (id)');
-        $this->addSql('ALTER TABLE membre ADD CONSTRAINT FK_F6B4FB2971F7E88B FOREIGN KEY (event_id) REFERENCES evenement (id)');
+        $this->addSql('ALTER TABLE membre ADD CONSTRAINT FK_F6B4FB2971F7E88B FOREIGN KEY (event_id) REFERENCES event (id)');
         $this->addSql('ALTER TABLE reponse_reclamation ADD CONSTRAINT FK_C7CB51012D6BA2D9 FOREIGN KEY (reclamation_id) REFERENCES reclamation (id)');
         $this->addSql('ALTER TABLE tache_projet ADD CONSTRAINT FK_BCE9A358C18272 FOREIGN KEY (projet_id) REFERENCES project (id)');
         $this->addSql('ALTER TABLE tache_projet ADD CONSTRAINT FK_BCE9A358A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
@@ -62,7 +62,7 @@ final class Version20240321044815 extends AbstractMigration
         $this->addSql('DROP TABLE demande_association');
         $this->addSql('DROP TABLE demande_document');
         $this->addSql('DROP TABLE document');
-        $this->addSql('DROP TABLE evenement');
+        $this->addSql('DROP TABLE event');
         $this->addSql('DROP TABLE historique_modification');
         $this->addSql('DROP TABLE membre');
         $this->addSql('DROP TABLE project');
