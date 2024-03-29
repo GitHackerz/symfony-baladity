@@ -1,4 +1,4 @@
-# Project Baladity (Symfony)
+# Baladity (Symfony Project)
 
 ---
 
