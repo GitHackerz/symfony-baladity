@@ -3,16 +3,16 @@
 
 <div class="card mb-4">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <h3 class="fw-bold">{{ button_label}} Projet</h3>
+        <h3 class="fw-bold">{{ button_label }} Projet</h3>
     </div>
     <div class="card-body">
         <form>
-            <div class="mb-3">
+            <div class="mb-3 d-flex flex-column">
                 <label class="form-label" for="basic-icon-default-fullname">Titre Projet</label>
                 <div class="input-group input-group-merge">
-                            <span id="basic-icon-default-fullname2" class="input-group-text"
-                            ><i class="bx bx-user"></i
-                                ></span>
+                    <span id="basic-icon-default-fullname2" class="input-group-text">
+                        <i class="bx bx-user"></i>
+                    </span>
                     <input
                             type="text"
                             class="form-control"
@@ -24,6 +24,7 @@
                             aria-describedby="basic-icon-default-fullname2"
                     />
                 </div>
+                <div class="text-danger mt-2" >{{ form_errors(form.titre) }}</div>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="basic-icon-default-company">Description Projet</label>
@@ -42,6 +43,7 @@
                             aria-describedby="basic-icon-default-company2"
                     >{{ field_value(form.description) }}</textarea>
                 </div>
+                <div class="text-danger mt-2" >{{ form_errors(form.description) }}</div>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="html5-date-input">Date Debut</label>
@@ -54,6 +56,7 @@
                            id="html5-date-input"
                     />
                 </div>
+                <div class="text-danger mt-2" >{{ form_errors(form.dateDebut) }} </div>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="html5-date-input">Date Fin</label>
@@ -67,6 +70,7 @@
                            placeholder="{{ field_label(form.dateFin) }} Projet"
                     />
                 </div>
+                <div class="text-danger mt-2" >{{ form_errors(form.dateFin) }} </div>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="basic-icon-default-phone">Budget</label>
@@ -85,36 +89,41 @@
                             aria-describedby="basic-icon-default-phone2"
                     />
                 </div>
+                <div class="text-danger mt-2" >{{ form_errors(form.budget) }}</div>
             </div>
 
             <div class="mb-3">
                 <div class="form-check mt-3">
                     <input
-                            name="{{ field_name(form.statut) }}"  {# Ensure each radio button group has the same name #}
+                            name="{{ field_name(form.statut) }}" {# Ensure each radio button group has the same name #}
                             class="form-check-input"
                             type="radio"
                             value="ACTIVE"
                             id="defaultRadio1"
-                            {{ field_value(form.statut) == 'ACTIVE' ? 'checked' : ''}}
+                            {{ field_value(form.statut) == 'ACTIVE' ? 'checked' : '' }}
                     />
                     <label class="form-check-label" for="defaultRadio1"> Active </label>
                 </div>
                 <div class="form-check">
                     <input
-                            name="{{ field_name(form.statut) }}"  {# Ensure each radio button group has the same name #}
+                            name="{{ field_name(form.statut) }}" {# Ensure each radio button group has the same name #}
                             class="form-check-input"
                             type="radio"
                             value="INACTIVE"
-                            id="defaultRadio2"  {# Use unique ids for each radio button #}
-                            {{ field_value(form.statut) == 'INACTIVE' ? 'checked' : ''}}
+                            id="defaultRadio2" {# Use unique ids for each radio button #}
+                            {{ field_value(form.statut) == 'INACTIVE' ? 'checked' : '' }}
                     />
                     <label class="form-check-label" for="defaultRadio2"> Inactive </label>
                 </div>
+                <div class="text-danger mt-2" >{{ form_errors(form.statut) }} </div>
             </div>
             <button type="submit" class="btn btn-primary">{{ button_label|default('Send') }}</button>
         </form>
     </div>
 </div>
+
+
+{# <div class="mb-3">
 {# {{ form_widget(form) }} #}
 {# <button class="btn">{{ button_label|default('Save') }}</button> #}
 {{ form_end(form) }}

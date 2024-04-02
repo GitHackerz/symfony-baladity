@@ -7,8 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: EvenementRepository::class)]
+#[UniqueEntity(fields: ['titre','lieu','date','nomContact','emailContact'],message:'Cet evenement existe deja ')]
 class Evenement
 {
     #[ORM\Id]
@@ -27,7 +29,7 @@ class Evenement
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message:"La date ne peut pas être vide")]
     private ?string $date = null;
-
+ 
     #[ORM\Column(length: 255)]
     #[Assert\Regex(
         pattern:"/^[a-zA-Z\s]*$/",
