@@ -1,5 +1,6 @@
 {% set path = app.request.getPathInfo %}
 {% set cleanPath = path|trim('/')|capitalize %}
+{% set cleanPath = cleanPath|replace({'-': ' '}) %}
 
 <!-- Navbar Start -->
 <div class="container-fluid position-relative p-0">

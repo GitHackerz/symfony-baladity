@@ -11,18 +11,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/association')]
-class AssociationController extends AbstractController
+#[Route('/dashboard/association')]
+class AssociationBackController extends AbstractController
 {
-    #[Route('/', name: 'app_association_index', methods: ['GET'])]
+    #[Route('/', name: 'association_back_index', methods: ['GET'])]
     public function index(AssociationRepository $associationRepository): Response
     {
-        return $this->render('association/index.html.twig', [
+        return $this->render('back/association/index.html.twig', [
             'associations' => $associationRepository->findAll(),
         ]);
     }
 
-    #[Route('/new', name: 'app_association_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'association_back_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $association = new Association();
@@ -33,24 +33,24 @@ class AssociationController extends AbstractController
             $entityManager->persist($association);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_association_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('association_back_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('association/new.html.twig', [
+        return $this->renderForm('back/association/new.html.twig', [
             'association' => $association,
             'form' => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'app_association_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'association_back_show', methods: ['GET'])]
     public function show(Association $association): Response
     {
-        return $this->render('association/show.html.twig', [
+        return $this->render('back/association/show.html.twig', [
             'association' => $association,
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_association_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'association_back_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Association $association, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(AssociationType::class, $association);
@@ -59,16 +59,16 @@ class AssociationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_association_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('association_back_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('association/edit.html.twig', [
+        return $this->renderForm('back/association/edit.html.twig', [
             'association' => $association,
             'form' => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'app_association_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'association_back_delete', methods: ['POST'])]
     public function delete(Request $request, Association $association, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$association->getId(), $request->request->get('_token'))) {
@@ -76,6 +76,6 @@ class AssociationController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_association_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('association_back_index', [], Response::HTTP_SEE_OTHER);
     }
 }

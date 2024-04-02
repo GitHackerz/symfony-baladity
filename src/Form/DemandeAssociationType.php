@@ -16,7 +16,9 @@ class DemandeAssociationType extends AbstractType
             ->add('adresse')
             ->add('caisse')
             ->add('type')
-            ->add('user')
+            ->add('user', null, [
+                'choice_label' => 'email',
+            ])
         ;
     }
 

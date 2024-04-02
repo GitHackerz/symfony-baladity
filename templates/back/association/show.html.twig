@@ -1,0 +1,51 @@
+{% extends 'back/base.html.twig' %}
+{% block body %}
+<div class="content-wrapper">
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="card">
+            <div class="card-header d-flex flex-row justify-content-between align-items-center">
+                <h5>Liste des Association</h5>
+                <a href="{{ path('association_back_new') }}" class="btn btn-success ">Create new</a>
+            </div>
+
+            <div class="table-responsive text-nowrap">
+                <table class="table table-striped">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ association.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ association.nom }}</td>
+            </tr>
+            <tr>
+                <th>Adresse</th>
+                <td>{{ association.adresse }}</td>
+            </tr>
+            <tr>
+                <th>Caisse</th>
+                <td>{{ association.caisse }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ association.type }}</td>
+            </tr>
+            <tr>
+                <th>Statut</th>
+                <td>{{ association.statut }}</td>
+            </tr>
+        </tbody>
+                </table>
+
+                <div class="btn-container">
+                    <a href="{{ path('association_back_index') }}" class="btn btn-secondary">Back to list</a>
+                    <a href="{{ path('association_back_edit', {'id': association.id}) }}" class="btn btn-warning">Edit</a>
+                    {{ include('back/association/_delete_form.html.twig', {'id': association.id}) }}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

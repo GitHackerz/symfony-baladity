@@ -10,6 +10,7 @@
             <a href="/" class="nav-item nav-link {% if app.request.getPathInfo == '/' %}active{% endif %}">Home</a>
             <a href="/about" class="nav-item nav-link {% if app.request.getPathInfo == '/about' %}active{% endif %}">About</a>
             <a href="/projet" class="nav-item nav-link {% if app.request.getPathInfo == '/projet' %}active{% endif %}">Projet</a>
+            <a href="/demande-association" class="nav-item nav-link {% if app.request.getPathInfo == '/demande-association' %}active{% endif %}">Association</a>
             <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle {% if app.request.getPathInfo starts with '/blog' %}active{% endif %}" data-bs-toggle="dropdown">Blog</a>
                 <div class="dropdown-menu m-0">
@@ -29,7 +30,6 @@
             </div>
             <a href="/contact" class="nav-item nav-link {% if app.request.getPathInfo == '/contact' %}active{% endif %}">Contact</a>
         </div>
-        <butaton type="button" class="btn text-primary ms-3" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fa fa-search"></i></butaton>
-        <a href="https://htmlcodex.com/startup-company-website-template" class="btn btn-primary py-2 px-4 ms-3">Download Pro Version</a>
+        <button type="button" class="btn text-primary ms-3" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fa fa-search"></i></button>
     </div>
 </nav>
