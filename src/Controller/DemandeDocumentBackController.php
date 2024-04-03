@@ -12,13 +12,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/demande/document')]
-class DemandeDocumentController extends AbstractController
+#[Route('/dashboard/demande_document')]
+class DemandeDocumentBackController extends AbstractController
 {
-    #[Route('/', name: 'app_demande_document_index', methods: ['GET'])]
+    #[Route('/demandes', name: 'app_demande_document_front_index', methods: ['GET'])]
     public function index(DemandeDocumentRepository $demandeDocumentRepository): Response
     {
-        return $this->render('front/document/demande_document/index.html.twig', [
+        return $this->render('back/demande_document/index.html.twig', [
             'demande_documents' => $demandeDocumentRepository->findAll(),
         ]);
     }

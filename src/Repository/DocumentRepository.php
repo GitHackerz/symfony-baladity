@@ -45,4 +45,18 @@ class DocumentRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+
+    /**
+     * @return Document[] Returns an array of Document objects
+     */
+    public function findByEstArchive($value): array
+    {
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.estArchive = :val')
+            ->setParameter('val', $value)
+            ->orderBy('d.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

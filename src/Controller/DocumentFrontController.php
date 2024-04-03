@@ -15,14 +15,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/document')]
-class DemandeDocFrontController extends AbstractController
+class DocumentFrontController extends AbstractController
 {
     #[Route('/', name: 'app_demande_doc')]
     public function index(DocumentRepository $documentRepository): Response
     {
-        $documents = $documentRepository->findAll();
+        $documents = $documentRepository->findByEstArchive(false);
         return $this->render('front/document/index.html.twig', [
-            'controller_name' => 'DemandeDocFrontController',
+            'controller_name' => 'DocumentFrontController',
             'documents' => $documents
         ]);
     }
@@ -30,7 +30,7 @@ class DemandeDocFrontController extends AbstractController
 
 
 
-    #[Route('/demande_doc/new', name: 'app_demande_document_new', methods: ['GET', 'POST'])]
+   /* #[Route('/demande_doc/new', name: 'app_demande_document_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $demanadeDoc = new DemandeDocument();
@@ -47,6 +47,6 @@ class DemandeDocFrontController extends AbstractController
             'demande_doc' => $demanadeDoc,
             'form' => $form,
         ]);
-    }
+    }*/
 
 }

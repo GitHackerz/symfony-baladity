@@ -23,7 +23,12 @@
                         </div>
                         <div class="text-center py-4">
                             <h4 class="text-primary">{{ document.type }}</h4>
-                            <p class="text-uppercase m-0">Secteur {{ document.statut }}</p>
+                            <p class="text-uppercase m-0">
+                                Secteur
+                                <strong style="color: {{ document.statut|lower == 'publique' ? 'blue' : 'red' }}; margin-right: 1em;">
+                                    {{ document.statut }}
+                                </strong>
+                            </p>
                         </div>
                     </div>
                 </div>
