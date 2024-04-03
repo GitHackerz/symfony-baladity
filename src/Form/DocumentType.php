@@ -22,7 +22,13 @@ class DocumentType extends AbstractType
             ->add('statut')
             ->add('dateEmission')
             ->add('dateExpiration')
-            ->add('estArchive')
+            ->add('estArchive', ChoiceType::class, [
+                'label' => 'doc archive',
+                'choices' => [
+                    '0' => '0',
+                    '1' => '1',
+                ],
+            ]);
             //->add('nbReq')
         ;
     }

@@ -6,6 +6,8 @@ use App\Repository\DocumentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Mime\Message;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: DocumentRepository::class)]
 class Document
@@ -16,15 +18,20 @@ class Document
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(min:3,minMessage: "Taille minimale est de 3 caractéres")]
+    #[Assert\NotBlank(message:"Ce champ est obligatoire")]
+
     private ?string $type = null;
 
     #[ORM\Column(length: 255)]
     private ?string $statut = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"Une date est obligatoire")]
     private ?string $dateEmission = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"Une date est obligatoire")]
     private ?string $dateExpiration = null;
 
     #[ORM\Column(length: 255)]
