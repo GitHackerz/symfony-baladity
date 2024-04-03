@@ -1,0 +1,40 @@
+
+
+{% block body %}
+    <h1>DemandeDocument</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ demande_document.id }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ demande_document.type }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ demande_document.description }}</td>
+            </tr>
+            <tr>
+                <th>Statut</th>
+                <td>{{ demande_document.statut }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ demande_document.date }}</td>
+            </tr>
+            <tr>
+                <th>DateTraitement</th>
+                <td>{{ demande_document.dateTraitement }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_demande_document_index') }}">back to list</a>
+
+    <a href="{{ path('app_demande_document_edit', {'id': demande_document.id}) }}">edit</a>
+
+    {{ include('demande_document/_delete_form.html.twig') }}
+{% endblock %}
