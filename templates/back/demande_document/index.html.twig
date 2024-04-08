@@ -69,27 +69,27 @@
                             <th>Type</th>
                             <th >Description</th>
                             <th>Statut</th>
-                            <th>Date</th>
+                            <th>Date Traitement</th>
                         </tr>
                         </thead>
                         <tbody class="table-border-bottom-0">
                         {% for demande_document in demande_documents %}
                             <tr>
-                                <td><strong class="badge bg-primary">{{ demande_document.type }}</strong></td>
+                                <td><strong>{{ demande_document.type }}</strong></td>
                                 <td class="max-width-column">
                                     <div class="badge-wrapper">
                                         <span >{{ demande_document.description }}</span>
                                     </div>
                                 </td>
-                                <td>{{ demande_document.statut }}</td>
-                                <td>{{ demande_document.date }}</td>
+                                <td><strong class="badge bg-primary">{{ demande_document.statut }}</strong></td>
+                                <td>{{ demande_document.dateTraitement }}</td>
 
                                 <td class="text-center">
                                     {% if demande_document.statut == 'en attente' %}
-                                        <button type="button" class="btn btn-success">Accepter</button>
-                                        <button type="button" class="btn btn-danger">Rejeter</button>
+                                        <a type="button" class="btn btn-success" href="/dashboard/demande_document/demandes/Accept/{{ demande_document.id }}">Accepter</a>
+                                        <a type="button" class="btn btn-danger" href="/dashboard/demande_document/demandes/Reject/{{ demande_document.id }}">Rejeter</a>
                                     {% else %}
-                                        <button type="button" class="btn btn-warning" >Refactoriser</button>
+                                        <a type="button" class="btn btn-warning" href="/dashboard/demande_document/demandes/Refactor/{{ demande_document.id }}">Refactoriser</a>
                                     {% endif %}
                                 </td>
 

@@ -15,13 +15,15 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/document/demandes')]
 class DemandeDocumentFrontController extends AbstractController
 {
+
     #[Route('/', name: 'app_demande_document_index', methods: ['GET'])]
     public function index(DemandeDocumentRepository $demandeDocumentRepository): Response
     {
         return $this->render('front/document/demande_document/index.html.twig', [
-            'demande_documents' => $demandeDocumentRepository->findAll(),
+            'demande_documents' => $demandeDocumentRepository->find_Aceepted_Rejected(),
         ]);
     }
+
 
     #[Route('/new/{id}', name: 'app_demande_document_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager , DocumentRepository $doc_rep): Response

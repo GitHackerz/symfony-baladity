@@ -6,6 +6,7 @@ use App\Entity\DemandeDocument;
 use App\Form\DemandeDocumentType;
 use App\Repository\DemandeDocumentRepository;
 use App\Repository\DocumentRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -82,4 +83,52 @@ class DemandeDocumentBackController extends AbstractController
 
         return $this->redirectToRoute('app_demande_document_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
+    #[Route('/demandes/Accept/{id}', name: 'app_demande_document_accept', methods: ['GET', 'POST'])]
+    public function Accepter_DemandeDoc(Request $request, DemandeDocument $d_document, DemandeDocumentRepository $demandeDocumentRepository ): Response
+    {
+
+        $id = $request->attributes->get('id');
+        $d_documentdocument = $demandeDocumentRepository->find($id);
+        $d_documentdocument->setStatut("acceptée");
+        $currentDate = new DateTime();
+        $d_documentdocument->setDateTraitement($currentDate->format('Y-m-d'));
+        $demandeDocumentRepository->Gerer_demande($d_documentdocument);
+
+        return $this->redirectToRoute('app_demande_document_front_index', [], Response::HTTP_SEE_OTHER);
+
+    }
+
+
+    #[Route('/demandes/Reject/{id}', name: 'app_demande_document_reject', methods: ['GET', 'POST'])]
+    public function Rejeter_DemandeDoc(Request $request, DemandeDocument $d_document, DemandeDocumentRepository $demandeDocumentRepository ): Response
+    {
+        $id = $request->attributes->get('id');
+        $d_documentdocument = $demandeDocumentRepository->find($id);
+        $d_documentdocument->setStatut("rejetée");
+        $currentDate = new DateTime();
+        $d_documentdocument->setDateTraitement($currentDate->format('Y-m-d'));
+        $demandeDocumentRepository->Gerer_demande($d_documentdocument);
+
+        return $this->redirectToRoute('app_demande_document_front_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+
+
+
+    #[Route('/demandes/Refactor/{id}', name: 'app_demande_document_refactor', methods: ['GET', 'POST'])]
+    public function Refactoriser_demandeDoc(Request $request, DemandeDocument $d_document, DemandeDocumentRepository $demandeDocumentRepository ): Response
+    {
+
+        $id = $request->attributes->get('id');
+        $d_documentdocument = $demandeDocumentRepository->find($id);
+        $d_documentdocument->setStatut("en attente");
+        $d_documentdocument->setDateTraitement("NA");
+        $demandeDocumentRepository->Gerer_demande($d_documentdocument);
+
+        return $this->redirectToRoute('app_demande_document_front_index', [], Response::HTTP_SEE_OTHER);
+
+    }
+
 }
