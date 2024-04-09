@@ -21,7 +21,7 @@ def generate_frames():
                 myData = barcode.data.decode('utf-8')
                 print(myData)
 
-                if myData in ["valid", "Valid", "VALID"]:
+                if myData in ["acceptee", "Acceptee", "ACCEPTEE"]:
                     myOutput = 'Valid'
                     myColor = (0,255,0)
                 else:

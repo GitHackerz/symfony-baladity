@@ -86,6 +86,18 @@ class DemandeDocumentFrontController extends AbstractController
     }
 
 
+    #[Route('/mondocument/{id}', name: 'app_monDocument_Espace', methods: ['GET'])]
+    public function monDocumentEspace(Request $request, EntityManagerInterface $entityManager , DemandeDocumentRepository $ddoc_rep): Response
+    {
+
+        $id = $request->attributes->get('id');
+
+        return $this->render('front/document/mon_Document.html.twig', [
+            'demande' => $ddoc_rep->find($id),
+        ]);
+    }
+
+
 
 
 }

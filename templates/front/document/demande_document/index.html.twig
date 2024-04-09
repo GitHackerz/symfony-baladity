@@ -64,11 +64,11 @@
 
                         {% if (demande_document.statut | lower) == "acceptée" %}
                             <p class="m-0">Ce document est traité le {{ demande_document.dateTraitement }}</p>
-                            <a class="btn btn-lg btn-primary rounded" href="">
+                            <a class="btn btn-lg btn-primary rounded" href="{{ path('app_monDocument_Espace' , {'id': demande_document.id}) }}">
                                 <i class="bi bi-arrow-right"></i>
                             </a>
                         {% else %}
-                            <p class="m-0">Ce Document est refusé par l'un de nos agents</p>
+                            <p class="m-0">Ce Document est refusé le {{ demande_document.dateTraitement }} par l'un de nos agents</p>
                         {% endif %}
                     </div>
                 </div>
