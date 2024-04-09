@@ -8,7 +8,9 @@ use App\Repository\DemandeDocumentRepository;
 use App\Repository\DocumentRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\Types\This;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -93,7 +95,7 @@ class DemandeDocumentBackController extends AbstractController
         $d_documentdocument = $demandeDocumentRepository->find($id);
         $d_documentdocument->setStatut("acceptée");
         $currentDate = new DateTime();
-        $d_documentdocument->setDateTraitement($currentDate->format('Y-m-d'));
+        $d_documentdocument->setDateTraitement($currentDate->format('Y-m-d H:i'));
         $demandeDocumentRepository->Gerer_demande($d_documentdocument);
 
         return $this->redirectToRoute('app_demande_document_front_index', [], Response::HTTP_SEE_OTHER);
@@ -108,7 +110,7 @@ class DemandeDocumentBackController extends AbstractController
         $d_documentdocument = $demandeDocumentRepository->find($id);
         $d_documentdocument->setStatut("rejetée");
         $currentDate = new DateTime();
-        $d_documentdocument->setDateTraitement($currentDate->format('Y-m-d'));
+        $d_documentdocument->setDateTraitement($currentDate->format('Y-m-d H:i'));
         $demandeDocumentRepository->Gerer_demande($d_documentdocument);
 
         return $this->redirectToRoute('app_demande_document_front_index', [], Response::HTTP_SEE_OTHER);
@@ -130,5 +132,8 @@ class DemandeDocumentBackController extends AbstractController
         return $this->redirectToRoute('app_demande_document_front_index', [], Response::HTTP_SEE_OTHER);
 
     }
+
+
+
 
 }

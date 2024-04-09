@@ -1,0 +1,54 @@
+<!--
+<html>
+<img src="{{ url_for('video_feed') }}">
+<form action="{{ url_for('stop_feed') }}" method="GET" >
+    <button type="submit">Stop Video Feed</button>
+</form>
+
+</html>
+-->
+
+
+
+
+<!-- Make sure to run the python command to open the server -->
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barcode Scanner</title>
+</head>
+<body>
+<img src="{{ url_for('video_feed') }}">
+<form id="stopForm" action="{{ url_for('stop_feed') }}" method="GET">
+    <button type="submit">Stop Video Feed</button>
+</form>
+
+<script>
+    document.getElementById("stopForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent form submission
+        // Make a GET request
+        fetch("{{ url_for('stop_feed') }}")
+            .then(response => response.text())
+            .then(data => {
+                if (data.trim() === '1') {
+                    window.close(); // Close the window if response is '1'
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    });
+</script>
+</body>
+</html>
+
+
+
+
+
+
