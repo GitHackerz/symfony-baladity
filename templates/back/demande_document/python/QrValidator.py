@@ -3,8 +3,34 @@ import cv2
 import numpy as np
 from pyzbar.pyzbar import decode
 
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import unpad
+from base64 import b64decode
+
+
+
 app = Flask(__name__)
 cap = None
+
+
+# Decrypt function using AES decryption
+def decrypt_string(encrypted_message, key):
+    # Convert key to bytes
+    key = key.encode('utf-8')
+
+    # Decode the base64 encoded string and convert to bytes
+    encrypted_message = b64decode(encrypted_message)
+
+    # Create AES cipher object
+    cipher = AES.new(key, AES.MODE_ECB)
+
+    # Decrypt the message
+    decrypted_message = unpad(cipher.decrypt(encrypted_message), AES.block_size)
+
+    # Convert the decrypted bytes to string
+    return decrypted_message.decode('utf-8')
+
+
 
 def generate_frames():
     global cap
@@ -19,13 +45,14 @@ def generate_frames():
         else:
             for barcode in decode(img):
                 myData = barcode.data.decode('utf-8')
+                key = "azertyazertyazer"
                 print(myData)
 
-                if myData in ["acceptee", "Acceptee", "ACCEPTEE"]:
-                    myOutput = 'Valid'
+                if myData in ["acceptee", "Acceptee", "ACCEPTEE","EbHUsq5Gk+aAHpSfrcshjw=="]:
+                    myOutput = 'Valide'
                     myColor = (0,255,0)
                 else:
-                    myOutput = 'Invalid'
+                    myOutput = 'Non Valide'
                     myColor = (0, 0, 255)
 
                 pts = np.array([barcode.polygon], np.int32)
@@ -62,3 +89,7 @@ def close_connection():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+
+

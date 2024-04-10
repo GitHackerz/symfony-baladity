@@ -61,7 +61,13 @@
     <div class="content-wrapper">
         <div class="container-xxl flex-grow-1 container-p-y">
             <div class="card">
-                <h5 class="card-header">Demandes de documents</h5>
+                <h5 class="card-header">Demandes de documents
+                    <a type="button"   class="btn btn-warning" onclick="openSmallWindow()">Verifier</a>
+
+                </h5>
+
+
+
                 <div class="table-responsive text-nowrap">
                     <table class="table table-striped">
                         <thead>
@@ -76,11 +82,24 @@
                         {% for demande_document in demande_documents %}
                             <tr>
                                 <td><strong>{{ demande_document.type }}</strong></td>
+
+
+                                {#
                                 <td class="max-width-column">
                                     <div class="badge-wrapper">
                                         <span >{{ demande_document.description }}</span>
                                     </div>
                                 </td>
+                                #}
+
+                                <td class="max-width-column">
+                                    <!-- Popover button -->
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="popover" data-bs-offset="0,14" data-bs-placement="right" data-bs-html="true" data-bs-content="{{ demande_document.description }}" title="Description">
+                                         Details
+                                    </button>
+                                </td>
+
+
                                 <td><strong class="badge bg-primary">{{ demande_document.statut }}</strong></td>
                                 <td>{{ demande_document.dateTraitement }}</td>
 
@@ -131,6 +150,50 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+        function openSmallWindow() {
+            // Define the URL and size of the external window
+            var url = 'http://127.0.0.1:5000';
+            var width = 800;
+            var height = 700;
+
+            // Calculate the position of the window to center it on the screen
+            var left = (screen.width - width) / 2;
+            var top = (screen.height - height) / 2;
+
+            // Open the window with specified properties
+            window.open(url, "_blank", "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top);
+        }
+
+    </script>
+
+
+
+    <script>
+        // JavaScript initialization code
+        document.addEventListener('DOMContentLoaded', function() {
+            const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+            const popoverList = popoverTriggerList.map(function(popoverTriggerEl) {
+                return new bootstrap.Popover(popoverTriggerEl, {
+                    html: true,
+                    sanitize: false
+                });
+            });
+        });
+    </script>
 
 
 

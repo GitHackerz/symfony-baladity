@@ -9,6 +9,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@0.4.1/dist/html2canvas.min.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+
 
 </head>
 
@@ -83,7 +85,7 @@
         </div>
             {% endif %}
 
-                    <a onclick="GeneratePDFWithQRCode()" class="btn btn-primary py-3 px-5 mt-3 wow zoomIn" data-wow-delay="0.9s" style="visibility: visible; animation-delay: 0.9s; animation-name: zoomIn;">Version Pdf</a>
+                    <a  href="#" onclick="return openNewWindow();"  class="btn btn-primary py-3 px-5 mt-3 wow zoomIn" data-wow-delay="0.9s" style="visibility: visible; animation-delay: 0.9s; animation-name: zoomIn;">Acheter la version PDF</a> {#  onclick="GeneratePDFWithQRCode()"     href="{{ path('checkout')}}" #}
                     <a href="" class="btn btn-primary py-3 px-5 mt-3 wow zoomIn" data-wow-delay="0.9s" style="visibility: visible; animation-delay: 0.9s; animation-name: zoomIn;">XXXXX</a>
                 </div>
                 <div class="col-lg-5" style="min-height: 500px;">
@@ -103,38 +105,33 @@
 
     </div>
 
-
     <script>
-        function GeneratePDFWithQRCode() {
-            const { jsPDF } = jspdf;
-            const doc = new jsPDF();
+        function openNewWindow() {
 
-            // Generate QR code
-            const qrCodeData = "acceptee"; // Change the URL as needed
-            const qrCode = new QRCode(document.getElementById("qrcode"), {
-                text: qrCodeData,
-                width: 100,
-                height: 100,
-            });
+            var screenWidth = window.screen.width;
+            var screenHeight = window.screen.height;
+            var windowWidth = 600;
+            var windowHeight = 900;
+            var left = (screenWidth - windowWidth) / 2;
+            var top = (screenHeight - windowHeight) / 2;
+            var windowFeatures = 'width=' + windowWidth + ',height=' + windowHeight + ',left=' + left + ',top=' + top + ',resizable=yes,scrollbars=yes';
 
-            // Get QR code as image data
-            const imageData = qrCode._el.firstChild.toDataURL("image/png");
+            var newWindow = window.open('{{ path('checkout')}}', '_blank', windowFeatures);
 
-            // Add header
-            doc.setFontSize(20);
-            doc.text("PDF Header", 10, 20);
+            // Add an event listener to check if the new window is closed
+            var checkClosed = setInterval(function() {
+                if (newWindow.closed) {
+                    clearInterval(checkClosed); // Clear the interval when the window is closed
+                    return true; // Return true when the window is closed
+                }
+            }, 1000); // Check every second
 
-            // Add paragraph
-            doc.setFontSize(12);
-            doc.text("This is a sample paragraph in the PDF document.", 10, 30);
-
-            // Add QR code image to PDF
-            doc.addImage(imageData, "PNG", 10, 50);
-
-            // Save PDF
-            doc.save("Document-PDF.pdf");
+            // Return false to prevent the default link behavior
+            return false;
         }
     </script>
+
+
 
 
 

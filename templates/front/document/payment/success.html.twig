@@ -1,0 +1,83 @@
+
+
+{% block body %}
+
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+        <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/html2canvas@0.4.1/dist/html2canvas.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+
+
+    </head>
+
+    <div id="qrcode" style="display: none"></div>
+
+    <script>
+
+        function GeneratePDFWithQRCode() {
+            const { jsPDF } = jspdf;
+            const doc = new jsPDF();
+
+            // Generate QR code
+            const qrCodeData = "acceptee"; // Change the URL as needed
+
+            const key = "azertyazertyazer"; // 128-bit key (16 bytes)
+            const encryptedMessage = encryptString(qrCodeData, key);
+
+            const qrCode = new QRCode(document.getElementById("qrcode"), {
+                text: encryptedMessage,
+                width: 200,
+                height: 200,
+            });
+
+            // Get QR code as image data
+            const imageData = qrCode._el.firstChild.toDataURL("image/png");
+
+            // Add header
+            doc.setFontSize(20);
+            doc.text("PDF Header", 10, 20);
+
+            // Add paragraph
+            doc.setFontSize(12);
+            doc.text("This is a sample paragraph in the PDF document. \n hhhhhhhhhhhhhhhhhhhhh", 10, 30);
+
+            // Add QR code image to PDF
+            doc.addImage(imageData, "PNG", 100, 100);
+
+            // Save PDF
+            doc.save("Document-PDF.pdf");
+        }
+
+        // Encrypt function using AES encryption
+        function encryptString(message, key) {
+            // Convert key to 128-bit (16 bytes)
+            const keyBytes = CryptoJS.enc.Utf8.parse(key);
+
+            // Encrypt using AES
+            const encrypted = CryptoJS.AES.encrypt(message, keyBytes, {
+                mode: CryptoJS.mode.ECB,
+                padding: CryptoJS.pad.Pkcs7
+            });
+
+            // Return the encrypted string
+            return encrypted.toString();
+        }
+
+
+
+        GeneratePDFWithQRCode();
+
+
+        window.close();
+
+    </script>
+
+
+
+
+
+{% endblock %}

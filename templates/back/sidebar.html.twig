@@ -117,15 +117,10 @@
                 </li>
                 <li class="menu-item">
                     <a href="{{ path('app_demande_document_front_index') }}" class="menu-link">
-                        <div data-i18n="Without navbar">Demandes</div>
+                        <div data-i18n="Without navbar">Les Demandes</div>
                     </a>
                 </li>
 
-                <li class="menu-item">
-                    <a onclick="openSmallWindow()" class="menu-link">
-                        <div data-i18n="Without navbar">Verifier</div>
-                    </a>
-                </li>
             </ul>
         </li>
 
@@ -133,18 +128,3 @@
 
     </ul>
 </aside>
-<script>
-    function openSmallWindow() {
-        // Define the URL and size of the external window
-        var url = 'http://127.0.0.1:5000';
-        var width = 800;
-        var height = 700;
-
-        // Calculate the position of the window to center it on the screen
-        var left = (screen.width - width) / 2;
-        var top = (screen.height - height) / 2;
-
-        // Open the window with specified properties
-        window.open(url, "_blank", "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top);
-    }
-</script>
