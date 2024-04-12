@@ -1,0 +1,46 @@
+{% extends '/back/base.html.twig' %}
+
+{% block title %}Hello citoyen !{% endblock %}
+
+{% block body %}
+    <h1>citoyen details </h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ citoyen.id }}</td>
+            </tr>
+            <tr>
+                <th>Cin</th>
+                <td>{{ citoyen.cin }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ citoyen.nom }}</td>
+            </tr>
+            <tr>
+                <th>Prenom</th>
+                <td>{{ citoyen.prenom }}</td>
+            </tr>
+            <tr>
+                <th>Adresse</th>
+                <td>{{ citoyen.adresse }}</td>
+            </tr>
+            <tr>
+                <th>DateNaissance</th>
+                <td>{{ citoyen.dateNaissance ? citoyen.dateNaissance|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Genre</th>
+                <td>{{ citoyen.genre }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_citoyen_index') }}">back to list</a>
+
+    <a href="{{ path('app_citoyen_edit', {'id': citoyen.id}) }}">edit</a>
+
+    {{ include('back/citoyen/_delete_form.html.twig') }}
+{% endblock %}
