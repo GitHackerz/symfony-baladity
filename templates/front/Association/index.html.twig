@@ -1,0 +1,11 @@
+<h1>Liste des associations</h1>
+
+<ul>
+    {% for association in associations %}
+        <li>
+            <a href="{{ path('association_front_show', {'id': association.id}) }}">{{ association.nom }}</a>
+        </li>
+    {% endfor %}
+</ul>
+
+<a href="{{ path('association_back_new') }}">Créer une nouvelle association</a>
