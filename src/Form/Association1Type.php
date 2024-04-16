@@ -2,18 +2,17 @@
 
 namespace App\Form;
 
-use App\Entity\DemandeAssociation;
+use App\Entity\Association;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-class DemandeAssociationType extends AbstractType
-{
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+class Association1Type extends AbstractType
+{    
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('nom', TextType::class, [
@@ -37,27 +36,33 @@ class DemandeAssociationType extends AbstractType
                     'placeholder' => 'Entrez le montant de la caisse'
                 ],
             ])
-            ->add('type', TextType::class, [
+            ->add('type', ChoiceType::class, [
                 'label' => 'Type',
-                'attr' => [
-                    'class' => 'form-control',
-                    'placeholder' => 'Entrez le type'
+                'placeholder' => 'Choisissez',
+                'choices' => [
+                    'Sportive' => 'Sportive',
+                    'Culturelle' => 'Culturelle',
+                    'Académique' => 'Académique',
+                    'Religieuse' => 'Religieuse',
+                    'Professionnelle' => 'Professionnelle',
                 ],
+                'attr' => ['class' => 'form-select'],
             ])
-            ->add('user', ChoiceType::class, [
-                'label' => 'Utilisateur',
-                'choice_label' => 'email',
-                'attr' => [
-                    'class' => 'form-control',
-                    'placeholder' => 'Choisissez un utilisateur'
+            ->add('statut', ChoiceType::class, [
+                'label' => 'Statut',
+                'placeholder' => 'Choisissez',
+                'choices' => [
+                    'Actif' => 'Actif',
+                    'Inactif' => 'Inactif',
                 ],
+                'attr' => ['class' => 'form-select'],
             ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => DemandeAssociation::class,
+            'data_class' => Association::class,
         ]);
     }
 }
