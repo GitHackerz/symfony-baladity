@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TacheProjetRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -26,11 +28,19 @@ class TacheProjet
     #[ORM\Column(length: 255)]
     private ?string $statut = null;
 
-    #[ORM\ManyToOne(inversedBy: 'tacheProjets')]
+    #[ORM\ManyToOne(cascade: ['remove', 'persist'], inversedBy: 'tacheProjets')]
     private ?Projet $projet = null;
 
-    #[ORM\ManyToOne(inversedBy: 'tacheProjets')]
+    #[ORM\ManyToOne(cascade: ['remove', 'persist'], inversedBy: 'tacheProjets')]
     private ?User $user = null;
+
+    #[ORM\OneToMany(mappedBy: 'tacheProjet', targetEntity: TacheCommentaires::class)]
+    private Collection $tacheCommentaires;
+
+    public function __construct()
+    {
+        $this->tacheCommentaires = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -105,6 +115,36 @@ class TacheProjet
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TacheCommentaires>
+     */
+    public function getTacheCommentaires(): Collection
+    {
+        return $this->tacheCommentaires;
+    }
+
+    public function addTacheCommentaire(TacheCommentaires $tacheCommentaire): static
+    {
+        if (!$this->tacheCommentaires->contains($tacheCommentaire)) {
+            $this->tacheCommentaires->add($tacheCommentaire);
+            $tacheCommentaire->setTacheProjet($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTacheCommentaire(TacheCommentaires $tacheCommentaire): static
+    {
+        if ($this->tacheCommentaires->removeElement($tacheCommentaire)) {
+            // set the owning side to null (unless already changed)
+            if ($tacheCommentaire->getTacheProjet() === $this) {
+                $tacheCommentaire->setTacheProjet(null);
+            }
+        }
 
         return $this;
     }

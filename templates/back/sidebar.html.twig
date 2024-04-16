@@ -78,7 +78,7 @@
             </a>
         </li>
 
-        <li class="menu-item {{ cleanPath == 'project' ? 'active' : '' }}">
+        <li class="menu-item {{ 'project' in cleanPath | lower ? 'active' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
                 <div data-i18n="Layouts">Projet</div>
@@ -96,8 +96,13 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="/dashboard/project/new" class="menu-link">
-                        <div data-i18n="Without navbar">Ajouter Projet</div>
+                    <a href="/dashboard/project-tasks" class="menu-link">
+                        <div data-i18n="Without navbar">Liste des taches</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="/dashboard/project-tasks/new" class="menu-link">
+                        <div data-i18n="Without navbar">Ajouter tache</div>
                     </a>
                 </li>
             </ul>

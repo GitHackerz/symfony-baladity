@@ -1,46 +1,52 @@
-<!DOCTYPE html>
-
-<title>Projet</title>
+{% extends "back/base.html.twig" %}
 
 {% block body %}
-    <h1>Projet</h1>
+    <div class="content-wrapper">
+        <div class="container-xxl flex-grow-1 container-p-y">
+            <div class="card">
+                <h5 class="card-header">Projet </h5>
+                <div class="table-responsive text-nowrap">
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ projet.id }}</td>
-            </tr>
-            <tr>
-                <th>Titre</th>
-                <td>{{ projet.titre }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ projet.description }}</td>
-            </tr>
-            <tr>
-                <th>DateDebut</th>
-                <td>{{ projet.dateDebut ? projet.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>DateFin</th>
-                <td>{{ projet.dateFin ? projet.dateFin|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Statut</th>
-                <td>{{ projet.statut }}</td>
-            </tr>
-            <tr>
-                <th>Budget</th>
-                <td>{{ projet.budget }}</td>
-            </tr>
-        </tbody>
-    </table>
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <th>Id</th>
+                            <td>{{ project.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Titre</th>
+                            <td>{{ project.titre }}</td>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <td class="text-wrap">{{ project.description }}</td>
+                        </tr>
+                        <tr>
+                            <th>Date Debut</th>
+                            <td>{{ project.dateDebut ? project.dateDebut|date('Y-m-d') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Date Fin</th>
+                            <td>{{ project.dateFin ? project.dateFin|date('Y-m-d') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Statut</th>
+                            <td>{{ project.statut }}</td>
+                        </tr>
+                        <tr>
+                            <th>Budget</th>
+                            <td>{{ project.budget|format_currency('USD') }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-    <a href="{{ path('app_projet_index') }}">back to list</a>
+                <div class="card-footer">
+                    <a href="{{ path('project_back_index') }}" class="btn btn-secondary">Retour</a>
+                    <a href="{{ path('project_back_edit', {'id': project.id}) }}" class="btn btn-primary">Modifier</a>
+                </div>
+            </div>
 
-    <a href="{{ path('app_projet_edit', {'id': projet.id}) }}">edit</a>
-
-    {{ include('project/_delete_form.html.twig') }}
+        </div>
+    </div>
 {% endblock %}

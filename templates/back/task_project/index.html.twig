@@ -1,0 +1,127 @@
+{% extends "back/base.html.twig" %}
+{% block stylesheets %}
+    <style>
+        .hoverable-row:hover {
+            cursor: pointer;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <div class="content-wrapper">
+        <div class="container-xxl flex-grow-1 container-p-y">
+            <div class="card">
+                <div class="card-header p-3">
+                    <h5 class="mb-0"><i class="fas fa-tasks me-2"></i>Task List</h5>
+                </div>
+                <div class="card-body" data-mdb-perfect-scrollbar="true">
+
+                    <table class="table mb-0 table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">Task</th>
+                            <th scope="col">Projet</th>
+                            <th scope="col">Member</th>
+                            <th scope="col">Commentaires</th>
+                            <th scope="col">Statut</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for tache_projet in tache_projets %}
+                            <tr class="fw-normal hoverable-row" data-id="{{ tache_projet.id }}">
+
+                                <th class="align-middle">
+                                    <span>{{ tache_projet.titre }}</span>
+                                </th>
+                                <td class="align-middle">
+                                    <span>{{ tache_projet.projet.titre }}</span>
+                                </td>
+                                <td
+                                        data-bs-toggle="tooltip"
+                                        data-popup="tooltip-custom"
+                                        data-bs-placement="top"
+                                        title="{{ tache_projet.user.citoyen.nom }} {{ tache_projet.user.citoyen.prenom }}"
+                                        style="width: auto;"
+
+                                >
+                                    <img src="{{ tache_projet.user.image }}" alt="Avatar" class="rounded-circle"  style="width: 30px; height: auto;"/>
+                                </td>
+                                <td class="align-middle">
+                                    <span>{{ tache_projet.tacheCommentaires.count }}</span>
+                                </td>
+
+                                <td class="align-middle">
+                                    <h6 class="mb-0"><span
+                                                class="badge {{ tache_projet.statut | lower == 'to do' ? 'bg-danger' : tache_projet.statut | lower == 'in progress' ? 'bg-warning' : 'bg-success' }}">{{ tache_projet.statut }}</span>
+                                    </h6>
+                                </td>
+{#                                <td class="align-middle">#}
+{#                                    <a href="#!" data-mdb-tooltip-init title="Done"><i#}
+{#                                                class="fas fa-check text-success me-3"></i></a>#}
+{#                                    <a href="javascript:void(0);" data-task-id="{{ tache_projet.id }}" data-mdb-tooltip-init title="Remove" class="delete-task"><i#}
+{#                                                class="fas fa-trash-alt text-danger"></i></a>#}
+{#                                </td>#}
+                                <td>
+                                    <div class="dropdown">
+                                        <button
+                                                type="button"
+                                                class="btn p-0 dropdown-toggle hide-arrow shadow-none"
+                                                data-bs-toggle="dropdown"
+                                        >
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item text-warning" href="/dashboard/project-tasks/{{ tache_projet.id }}/edit"
+                                            ><i class="bx bx-edit-alt me-1"></i> Edit</a
+                                            >
+                                            <a data-project-id="{{ tache_projet.id }}" class="dropdown-item text-danger delete-project" href="javascript:void(0);">
+                                                <i class="bx bx-trash me-1"></i> Delete
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4">no records found</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% block script %}
+        <script>
+            $(document).ready(function() {
+                $('tr[data-id]').on('click', function() {
+                    const taskId = $(this).data('id');
+                    window.location.href = '/dashboard/project-tasks/' + taskId;
+                });
+                $('.dropdown').click(function(event) {
+                    event.stopPropagation();
+                });
+                $('.delete-task').click(function(e) {
+                    e.preventDefault();
+                    const taskId = $(this).data('task-id');
+                    const deleteLink = $(this); // Store reference to this
+
+                    $.ajax({
+                        url: '/dashboard/project-tasks/' + taskId,
+                        type: 'DELETE',
+                        success: function(response) {
+                            deleteLink.closest('tr').remove(); // Use stored reference
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                });
+            });
+        </script>
+    {% endblock %}
+
+{% endblock %}
