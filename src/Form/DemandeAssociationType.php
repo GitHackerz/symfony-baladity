@@ -37,12 +37,17 @@ class DemandeAssociationType extends AbstractType
                     'placeholder' => 'Entrez le montant de la caisse'
                 ],
             ])
-            ->add('type', TextType::class, [
+            ->add('type', ChoiceType::class, [
                 'label' => 'Type',
-                'attr' => [
-                    'class' => 'form-control',
-                    'placeholder' => 'Entrez le type'
+                'placeholder' => 'Choisissez',
+                'choices' => [
+                    'Sportive' => 'Sportive',
+                    'Culturelle' => 'Culturelle',
+                    'Académique' => 'Académique',
+                    'Religieuse' => 'Religieuse',
+                    'Professionnelle' => 'Professionnelle',
                 ],
+                'attr' => ['class' => 'form-select'],
             ])
             ->add('user', ChoiceType::class, [
                 'label' => 'Utilisateur',

@@ -1,65 +1,50 @@
 {% extends 'front/base.html.twig' %}
 
-{% block title %}Liste des Associations{% endblock %}
+{% block title %}
+  Liste des Associations
+{% endblock %}
 
 {% block body %}
-<div class="content-wrapper">
+  {% include 'front/Header.html.twig' %}
+
+  <div class="content-wrapper">
     <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="card">
-            <div class="card-header">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h5 class="card-title">Liste des Associations</h5>
-                    <a href="{{ path('app_association_new') }}" class="btn btn-success">Créer une nouvelle</a>
-                </div>
+      <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
+        <h5 class="fw-bold text-primary text-uppercase">Associations</h5>
+        <h1 class="mb-0">Liste des Associations</h1>
+      </div>
+      <div class="row g-5 card-container">
+        {% for association in associations %}
+          <div class="col-lg-4">
+            <div class="blog-item bg-light rounded overflow-hidden">
+              <div class="blog-img position-relative overflow-hidden">
+<img class="img-fluid" src="{{ asset('front/img/blog-.jpg') }}";" />
+                <span class="position-absolute top-0 start-0 {{ (association.statut|lower) == 'actif' ? 'bg-info' : 'bg-danger' }} text-white rounded-end mt-5 py-2 px-4" href="">{{ association.statut }}</span>
+              </div>
+              <div class="p-4">
+                {# <div class="d-flex mb-3">
+                      <small class="me-3"><i class="far fa-calendar-alt text-info me-2"></i>Debut : {{ project.dateDebut.format('d M Y') }}</small>
+                      <small><i class="far fa-calendar-alt text-danger me-2"></i>Fin : {{ project.dateFin.format('d M Y') }}</small>
+                    </div> #}
+                <h4 class="mb-3">{{ association.nom }}</h4>
+                <p>{{ association.adresse }}</p>
+
+                {# <div class="progress mb-2" style="border-radius: 10px">
+                      <div class="progress-bar" role="progressbar" style="width: {{ progress == 0 ? 10 : progress }}%" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100">{{ progress }}%</div>
+                    </div> #}
+                {# {% if project.id in participatedProjects %}
+                      <a class="text-uppercase text-warning participation-link" data-project-id="{{ project.id }}" data-participated="true" href="#">Annuler la participation <i class="bi bi-arrow-right"></i></a>
+                    {% else %}
+                      <a class="text-uppercase text-primary participation-link" data-project-id="{{ project.id }}" data-participated="false" href="#">
+                        Participer
+                        <i class="bi bi-arrow-right"></i>
+                      </a>
+                    {% endif %} #}
+              </div>
             </div>
-
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>Nom</th>
-                                <th>Adresse</th>
-                                <th>Caisse</th>
-                                <th>Type</th>
-                                <th>Statut</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for association in associations %}
-                                <tr>
-                                    <td>{{ association.id }}</td>
-                                    <td>{{ association.nom }}</td>
-                                    <td>{{ association.adresse }}</td>
-                                    <td>{{ association.caisse }}</td>
-                                    <td>{{ association.type }}</td>
-                                    <td>{% if association.statut == "Actif" %} <span class="badge bg-label-success">Actif</span>
-                                {% else %}<span class="badge bg-label-danger">Inactif</span>
-                                {% endif %}
-                                </td>
-                                    {#<td>{{ association.statut }}</td>#}
-<td>
-    <a href="{{ path('app_association_show', {'id': association.id}) }}" style="margin-right: 10px;" class="btn btn-primary btn-sm">
-        <span class="bx bx-show"></span> voir
-    </a>
-    <a href="{{ path('app_association_edit', {'id': association.id}) }}" class="btn btn-secondary btn-sm">
-        <span class="bx bx-edit-alt"></span> Modifier
-    </a>
-</td>
-
-
-                            {% else %}
-                                <tr>
-                                    <td colspan="7">Aucun enregistrement trouvé.</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+          </div>
+        {% endfor %}
+      </div>
     </div>
-</div>
+  </div>
 {% endblock %}
