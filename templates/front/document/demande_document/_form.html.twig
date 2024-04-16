@@ -9,6 +9,7 @@
 {{ form_widget(form.statut, {'value' : "en attente"}) }}
 {{ form_widget(form.dateTraitement, {'value' : "NA"}) }} {# needs to be replaced with current date  #}
 {{ form_widget(form.date, {'value' : doc.dateEmission}) }}
+{{ form_widget(form.document, {'value' : id_doc}) }}
 </div>
 
 
@@ -21,7 +22,7 @@
         <div class="col-lg-4">
             <div class="d-flex align-items-center wow fadeIn" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeIn;">
                 <div class="bg-primary d-flex align-items-center justify-content-center rounded" style="width: 60px; height: 60px;">
-                    <i class="fa fa-phone-alt text-white"></i>
+                    <i class="fa fa-heart text-white"></i>
                 </div>
                 <div class="ps-4">
                     <h5 class="mb-2">Type </h5>
@@ -43,7 +44,7 @@
         <div class="col-lg-4">
             <div class="d-flex align-items-center wow fadeIn" data-wow-delay="0.8s" style="visibility: visible; animation-delay: 0.8s; animation-name: fadeIn;">
                 <div class="bg-primary d-flex align-items-center justify-content-center rounded" style="width: 60px; height: 60px;">
-                    <i class="fa fa-map-marker-alt text-white"></i>
+                    <i class="fa fa-check text-white"></i>
                 </div>
                 <div class="ps-4">
                     <h5 class="mb-2">Date de publication</h5>
@@ -78,7 +79,7 @@
 
         </div>
         <div class="col-lg-6 wow slideInUp" data-wow-delay="0.6s" style="visibility: visible; animation-delay: 0.6s; animation-name: slideInUp;">
-            <a >image here</a>
+            <a src="{{ asset('front/img/doc.png') }}"></a>
         </div>
     </div>
     {% if form_errors(form.description) %}
@@ -91,10 +92,6 @@
 
     </div>
 </div>
-
-
-
-
 
 
 

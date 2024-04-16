@@ -62,7 +62,7 @@
         <div class="container-xxl flex-grow-1 container-p-y">
             <div class="card">
                 <h5 class="card-header">Demandes de documents
-                    <a type="button"   class="btn btn-warning" onclick="openSmallWindow()">Verifier</a>
+                    <a type="button"   class="btn btn-outline-warning" onclick="openSmallWindow()"  style="position: absolute;right: 20px;" >Verifier validité</a>
 
                 </h5>
 
@@ -94,21 +94,21 @@
 
                                 <td class="max-width-column">
                                     <!-- Popover button -->
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="popover" data-bs-offset="0,14" data-bs-placement="right" data-bs-html="true" data-bs-content="{{ demande_document.description }}" title="Description">
+                                    <button type="button" class="btn btn-outline-info" data-bs-toggle="popover" data-bs-offset="0,14" data-bs-placement="right" data-bs-html="true" data-bs-content="{{ demande_document.description }}" title="Description">
                                          Details
                                     </button>
                                 </td>
 
+                                <td><strong class="{% if demande_document.statut == 'acceptée' %}badge bg-label-success{% elseif demande_document.statut == 'rejetée' %}badge bg-label-danger{% else %}badge bg-label-warning{% endif %}">{{ demande_document.statut }}</strong></td>
 
-                                <td><strong class="badge bg-primary">{{ demande_document.statut }}</strong></td>
                                 <td>{{ demande_document.dateTraitement }}</td>
 
                                 <td class="text-center">
                                     {% if demande_document.statut == 'en attente' %}
-                                        <a type="button" class="btn btn-success" href="/dashboard/demande_document/demandes/Accept/{{ demande_document.id }}">Accepter</a>
-                                        <a type="button" class="btn btn-danger" href="/dashboard/demande_document/demandes/Reject/{{ demande_document.id }}">Rejeter</a>
+                                        <a type="button" class="btn btn-outline-success" href="/dashboard/demande_document/demandes/Accept/{{ demande_document.id }}">Accepter</a>
+                                        <a type="button" class="btn btn-outline-danger" href="/dashboard/demande_document/demandes/Reject/{{ demande_document.id }}">Rejeter</a>
                                     {% else %}
-                                        <a type="button" class="btn btn-warning" href="/dashboard/demande_document/demandes/Refactor/{{ demande_document.id }}">Refactoriser</a>
+                                        <a type="button" class="btn btn-outline-warning" href="/dashboard/demande_document/demandes/Refactor/{{ demande_document.id }}">Refactoriser</a>
                                     {% endif %}
                                 </td>
 

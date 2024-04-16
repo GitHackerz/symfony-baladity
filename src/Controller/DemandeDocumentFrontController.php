@@ -45,6 +45,7 @@ class DemandeDocumentFrontController extends AbstractController
             'demande_document' => $demandeDocument,
             'form' => $form,
             'doc' => $doc_rep->find($id),
+            'id_doc' => $id,
         ]);
     }
 
