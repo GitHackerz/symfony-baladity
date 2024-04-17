@@ -1,45 +1,178 @@
-{{ form_start(form, {'attr': {'class': 'text-center'}}) }}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Inclure jQuery avant d'initialiser le datepicker -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+
+{{ form_start(form, {'attr': {'novalidate': 'novalidate', 'onsubmit': 'return validateEventForm();'}}) }}
+
 <div class="card mb-4">
     <div class="card-header d-flex justify-content-between align-items-center">
         <h3 class="fw-bold">Ajouter Evenement</h3>
     </div>
     <div class="card-body">
-
-        <div class="form-group">
+        <div class="mb-3">
             {{ form_label(form.titre, null, {'attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.titre, {'attr': {'class': 'form-control', 'style': 'height: 100px;' }}) }}
-            <!-- Ajustez la hauteur selon vos besoins -->
+            <div class="input-group input-group-merge">
+                <span class="input-group-text">
+                    <i class="bx bx-book"></i> <!-- Remplacez bx-book par une icône appropriée -->
+                </span>
+                {{ form_widget(form.titre, {'attr': {'class': 'form-control', 'placeholder': 'Titre Evenement'} }) }}
+            </div>
+            <span id="titreError" class="text-danger"></span> <!-- Ajoutez un élément span pour afficher les erreurs -->
         </div>
-        <div class="form-group">
+        <div class="mb-3">
             {{ form_label(form.description, null, {'attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.description, {'attr': {'class': 'form-control', 'style': 'height: 150px;' }}) }}
-            <!-- Ajustez la hauteur selon vos besoins -->
+            <div class="input-group input-group-merge">
+                <span class="input-group-text">
+                    <i class="bx bx-info-circle"></i> <!-- Remplacez bx-info-circle par une icône appropriée -->
+                </span>
+                {{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Description Evenement'}}) }}
+            </div>
+            <span id="descriptionError" class="text-danger"></span> <!-- Ajoutez un élément span pour afficher les erreurs -->
         </div>
-        <div class="form-group">
+        <div class="mb-3">
             {{ form_label(form.date, null, {'attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.date, {'attr': {'class': 'form-control datepicker', 'placeholder': 'Select date'}}) }}
+            <div class="input-group input-group-merge">
+                <span class="input-group-text">
+                    <i class="bx bx-calendar"></i>
+                </span>
+                {{ form_widget(form.date, {'attr': {'class': 'form-control datepicker', 'placeholder': 'Select date', 'autocomplete': 'off', 'id': 'evenement_date'}}) }}
+            </div>
+            <span id="dateError" class="text-danger"></span> <!-- Ajoutez un élément span pour afficher les erreurs -->
         </div>
-        <div class="form-group">
-            {{ form_label(form.lieu, null, {'attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.lieu, {'attr': {'class': 'form-control'}}) }}
-        </div>
-        <div class="form-group">
-            {{ form_label(form.nomContact, null, {'attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.nomContact, {'attr': {'class': 'form-control'}}) }}
-        </div>
-        <div class="form-group">
-            {{ form_label(form.emailContact, null, {'attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.emailContact, {'attr': {'class': 'form-control'}}) }}
-        </div>
-        <div class="form-group">
-            {{ form_label(form.statut, null, {'attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.statut, {'attr': {'class': 'form-select form-control-sm'}}) }}
-            <!-- Réduire la taille du sélecteur de statut -->
-        </div>
-        <div class="form-group" style="margin-top: 20px;"> <!-- Déplacer légèrement le bouton Save vers le bas -->
-            <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
-        </div>
-        {{ form_end(form) }}
 
+        <div class="mb-3">
+            {{ form_label(form.lieu, null, {'attr': {'class': 'form-label'}}) }}
+            <div class="input-group input-group-merge">
+                <span class="input-group-text">
+                    <i class="bx bx-map"></i> <!-- Remplacez bx-map par une icône appropriée -->
+                </span>
+                {{ form_widget(form.lieu, {'attr': {'class': 'form-control', 'placeholder': 'Lieu Evenement'}}) }}
+            </div>
+            <span id="lieuError" class="text-danger"></span> <!-- Ajoutez un élément span pour afficher les erreurs -->
+        </div>
+        <div class="mb-3">
+            {{ form_label(form.nomContact, null, {'attr': {'class': 'form-label'}}) }}
+            <div class="input-group input-group-merge">
+                <span class="input-group-text">
+                    <i class="bx bx-user"></i>
+                </span>
+                {{ form_widget(form.nomContact, {'attr': {'class': 'form-control', 'placeholder': 'Nom Contact'}}) }}
+            </div>
+            <span id="nomContactError" class="text-danger"></span> <!-- Ajoutez un élément span pour afficher les erreurs -->
+        </div>
+        <div class="mb-3">
+            {{ form_label(form.emailContact, null, {'attr': {'class': 'form-label'}}) }}
+            <div class="input-group input-group-merge">
+                <span class="input-group-text">
+                    <i class="bx bx-mail-send"></i> <!-- Remplacez bx-mail-send par une icône appropriée -->
+                </span>
+                {{ form_widget(form.emailContact, {'attr': {'class': 'form-control', 'placeholder': 'Email Contact'}}) }}
+            </div>
+            <span id="emailContactError" class="text-danger"></span> <!-- Ajoutez un élément span pour afficher les erreurs -->
+        </div>
+        <div class="mb-3">
+            {{ form_label(form.statut, null, {'attr': {'class': 'form-label'}}) }}
+            <div class="input-group input-group-merge">
+                {{ form_widget(form.statut, {'attr': {'class': 'form-select form-control-sm'}}) }}
+            </div>
+            <span id="statutError" class="text-danger"></span> <!-- Ajoutez un élément span pour afficher les erreurs -->
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
     </div>
 </div>
+
+{{ form_end(form) }}
+
+<script>
+    function validateEventForm() {
+        var titre = document.getElementById("evenement_titre").value;
+        var description = document.getElementById("evenement_description").value;
+        var date = document.getElementById("evenement_date").value;
+        var lieu = document.getElementById("evenement_lieu").value;
+        var nomContact = document.getElementById("evenement_nomContact").value;
+        var emailContact = document.getElementById("evenement_emailContact").value;
+        var statut = document.getElementById("evenement_statut").value;
+
+        var titreError = document.getElementById("titreError");
+        var descriptionError = document.getElementById("descriptionError");
+        var dateError = document.getElementById("dateError");
+        var lieuError = document.getElementById("lieuError");
+        var nomContactError = document.getElementById("nomContactError");
+        var emailContactError = document.getElementById("emailContactError");
+        var statutError = document.getElementById("statutError");
+
+        titreError.textContent = ""; // Réinitialiser les messages d'erreur
+        descriptionError.textContent = "";
+        dateError.textContent = "";
+        lieuError.textContent = "";
+        nomContactError.textContent = "";
+        emailContactError.textContent = "";
+        statutError.textContent = "";
+
+        if (titre == "") {
+            titreError.textContent = "Le titre est requis.";
+            return false;
+        }
+
+        if (titre.length < 3) {
+            titreError.textContent = "Le titre doit avoir au moins 3 caractères.";
+            return false;
+        }
+
+        if (description == "") {
+            descriptionError.textContent = "La description est requise.";
+            return false;
+        }
+
+        if (description.length < 3) {
+            descriptionError.textContent = "La description doit avoir au moins 3 caractères.";
+            return false;
+        }
+
+        if (date == "") {
+            dateError.textContent = "La date est requise.";
+            return false;
+        }
+
+        if (lieu == "") {
+            lieuError.textContent = "Le lieu est requis.";
+            return false;
+        }
+
+        if (nomContact == "") {
+            nomContactError.textContent = "Le nom du contact est requis.";
+            return false;
+        }
+
+        if (!/^[a-zA-Z\s]*$/.test(nomContact)) {
+            nomContactError.textContent = "Le nom du contact ne peut contenir que des lettres.";
+            return false;
+        }
+
+        if (emailContact == "") {
+            emailContactError.textContent = "L'email du contact est requis.";
+            return false;
+        }
+
+        if (!/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(emailContact)) {
+            emailContactError.textContent = "L'email doit être valide.";
+            return false;
+        }
+
+      
+
+        return true;
+    }
+
+
+    $(document).ready(function(){
+        $('.datepicker').datepicker({
+            format: 'yyyy-mm-dd',
+            autoclose: true
+        });
+    });
+
+
+</script>
+

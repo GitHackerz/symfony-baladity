@@ -59,12 +59,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Projet::class, mappedBy: 'user')]
     private Collection $projets;
 
+    #[ORM\ManyToMany(targetEntity: Evenement::class, mappedBy: 'user')]
+    private Collection $evenements;
+
     public function __construct()
     {
         $this->demandeAssociations = new ArrayCollection();
         $this->demandeDocuments = new ArrayCollection();
         $this->tacheProjets = new ArrayCollection();
         $this->projets = new ArrayCollection();
+        $this->evenements = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -342,6 +346,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->projets->removeElement($projet)) {
             $projet->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Evenement>
+     */
+    public function getEvenements(): Collection
+    {
+        return $this->evenements;
+    }
+
+    public function addEvenement(Evenement $evenement): static
+    {
+        if (!$this->evenements->contains($evenement)) {
+            $this->evenements->add($evenement);
+            $evenement->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvenement(Evenement $evenement): static
+    {
+        if ($this->evenements->removeElement($evenement)) {
+            $evenement->removeUser($this);
         }
 
         return $this;
