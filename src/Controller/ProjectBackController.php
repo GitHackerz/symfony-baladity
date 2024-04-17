@@ -3,8 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Projet;
-use App\Entity\TacheProjet;
-use App\Entity\User;
 use App\Form\ProjetType;
 use App\Repository\ProjetRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -76,7 +74,6 @@ class ProjectBackController extends AbstractController
     {
         $entityManager->remove($projet);
         $entityManager->flush();
-
 
         return $this->redirectToRoute('project_back_index', [], Response::HTTP_SEE_OTHER);
     }

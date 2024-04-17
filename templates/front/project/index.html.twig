@@ -90,7 +90,7 @@
                     event.preventDefault();
                     const projectId = this.getAttribute('data-project-id');
                     const participated = this.getAttribute('data-participated') === 'true';
-                    const url = participated ? `/project/quitter/${projectId}/1` : `/project/participer/${projectId}/1`;
+                    const url = participated ? `/project/quitter/${projectId}/10` : `/project/participer/${projectId}/10`;
                     fetch(url, {
                         method: 'POST',
                         headers: {

@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TacheProjetRepository::class)]
 class TacheProjet
@@ -17,15 +18,26 @@ class TacheProjet
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Le titre ne doit pas être vide')]
+    #[Assert\Length(min: 3, max: 255, minMessage: 'Le titre doit contenir au moins 3 caractères', maxMessage: 'Le titre doit contenir au maximum 255 caractères')]
+    #[Assert\Type('string', message: 'Le titre doit être une chaîne de caractères')]
     private ?string $titre = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'La description ne doit pas être vide')]
+    #[Assert\Length(min: 3, max: 255, minMessage: 'La description doit contenir au moins 3 caractères', maxMessage: 'La description doit contenir au maximum 255 caractères')]
+    #[Assert\Type('string', message: 'La description doit être une chaîne de caractères')]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\NotBlank(message: 'La date ne doit pas être vide')]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Le statut ne doit pas être vide')]
+    #[Assert\Length(min: 3, max: 255, minMessage: 'Le statut doit contenir au moins 3 caractères', maxMessage: 'Le statut doit contenir au maximum 255 caractères')]
+    #[Assert\Type('string', message: 'Le statut doit être une chaîne de caractères')]
+    #[Assert\Choice(choices: ['To Do', 'In Progress', 'Done'], message: 'Le statut doit être parmi les valeurs suivantes: To Do, In Progress, Done')]
     private ?string $statut = null;
 
     #[ORM\ManyToOne(cascade: ['remove', 'persist'], inversedBy: 'tacheProjets')]

@@ -30,7 +30,10 @@ class TaskProjectBackController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $tacheProjet = new TacheProjet();
-        $tacheProjet->setStatut('En cours');
+        $tacheProjet->setStatut('To Do');
+        $tacheProjet->setDate(new \DateTime(
+            date('Y-m-d H:i', strtotime('tomorrow'))
+        ));
         $form = $this->createForm(TacheProjetType::class, $tacheProjet);
         $form->handleRequest($request);
         $projects = $entityManager->getRepository(Projet::class)->findAll();
@@ -94,7 +97,7 @@ class TaskProjectBackController extends AbstractController
     {
         $comment = new TacheCommentaires();
         $comment->setTacheProjet($tacheProjet);
-        $comment->setUser($entityManager->getRepository(User::class)->find(2));
+        $comment->setUser($entityManager->getRepository(User::class)->find(10));
         $comment->setContent($request->request->get('content'));
         $comment->setDate(new \DateTime());
 
@@ -104,6 +107,7 @@ class TaskProjectBackController extends AbstractController
 
         return new JsonResponse([
             'user' => $comment->getUser()->getCitoyen()->getNom() . ' ' . $comment->getUser()->getCitoyen()->getPrenom(),
+            'image' => $comment->getUser()->getImage(),
             'date' => $comment->getDate()->format('Y-m-d H:i:s'),
             'content' => $comment->getContent()
         ]);

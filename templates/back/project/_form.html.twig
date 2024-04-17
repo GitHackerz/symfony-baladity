@@ -100,22 +100,33 @@
                             name="{{ field_name(form.statut) }}" {# Ensure each radio button group has the same name #}
                             class="form-check-input"
                             type="radio"
-                            value="ACTIVE"
+                            value="Planned"
                             id="defaultRadio1"
-                            {{ field_value(form.statut) == 'ACTIVE' ? 'checked' : '' }}
+                            {{ field_value(form.statut) == 'Planned' ? 'checked' : '' }}
                     />
-                    <label class="form-check-label" for="defaultRadio1"> Active </label>
+                    <label class="form-check-label" for="defaultRadio1"> Planned </label>
                 </div>
                 <div class="form-check">
                     <input
                             name="{{ field_name(form.statut) }}" {# Ensure each radio button group has the same name #}
                             class="form-check-input"
                             type="radio"
-                            value="INACTIVE"
+                            value="In Progress"
                             id="defaultRadio2" {# Use unique ids for each radio button #}
-                            {{ field_value(form.statut) == 'INACTIVE' ? 'checked' : '' }}
+                            {{ field_value(form.statut) == 'In Progress' ? 'checked' : '' }}
                     />
-                    <label class="form-check-label" for="defaultRadio2"> Inactive </label>
+                    <label class="form-check-label" for="defaultRadio2"> In Progress </label>
+                </div>
+                <div class="form-check">
+                    <input
+                            name="{{ field_name(form.statut) }}" {# Ensure each radio button group has the same name #}
+                            class="form-check-input"
+                            type="radio"
+                            value="Completed"
+                            id="defaultRadio2" {# Use unique ids for each radio button #}
+                            {{ field_value(form.statut) == 'Completed' ? 'checked' : '' }}
+                    />
+                    <label class="form-check-label" for="defaultRadio2">Completed</label>
                 </div>
                 <div class="text-danger mt-2">{{ form_errors(form.statut) }} </div>
             </div>
