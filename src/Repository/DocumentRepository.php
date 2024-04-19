@@ -21,7 +21,7 @@ class DocumentRepository extends ServiceEntityRepository
         parent::__construct($registry, Document::class);
     }
 
-//    /**
+    //    /**
 //     * @return Document[] Returns an array of Document objects
 //     */
 //    public function findByExampleField($value): array
@@ -36,7 +36,7 @@ class DocumentRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Document
+    //    public function findOneBySomeField($value): ?Document
 //    {
 //        return $this->createQueryBuilder('d')
 //            ->andWhere('d.exampleField = :val')
@@ -45,4 +45,18 @@ class DocumentRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+
+    /**
+     * @return Document[] Returns an array of Document objects
+     */
+    public function findByEstArchive($value): array
+    {
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.estArchive = :val')
+            ->setParameter('val', $value)
+            ->orderBy('d.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }
