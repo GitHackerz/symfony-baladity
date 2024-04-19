@@ -1,0 +1,136 @@
+{% extends "back/base.html.twig" %}
+
+{% block body %}
+
+    {#  <h1>DemandeDocument index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Statut</th>
+                <th>Date</th>
+                <th>DateTraitement</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for demande_document in demande_documents %}
+            <tr>
+                <td>{{ demande_document.id }}</td>
+                <td>{{ demande_document.type }}</td>
+                <td>{{ demande_document.description }}</td>
+                <td>{{ demande_document.statut }}</td>
+                <td>{{ demande_document.date }}</td>
+                <td>{{ demande_document.dateTraitement }}</td>
+                <td>
+                    <a href="{{ path('app_demande_document_show', {'id': demande_document.id}) }}">show</a>
+                    <a href="{{ path('app_demande_document_edit', {'id': demande_document.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    #}
+
+<style>
+    .max-width-column {
+        max-width: 20px; /* Adjust the value as per your requirement */
+        overflow: hidden;
+    }
+
+    .badge-wrapper {
+        display: inline-block;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+</style>
+
+
+
+    <div class="content-wrapper">
+        <div class="container-xxl flex-grow-1 container-p-y">
+            <div class="card">
+                <h5 class="card-header">Demandes de documents</h5>
+                <div class="table-responsive text-nowrap">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th >Description</th>
+                            <th>Statut</th>
+                            <th>Date</th>
+                        </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0">
+                        {% for demande_document in demande_documents %}
+                            <tr>
+                                <td><strong class="badge bg-primary">{{ demande_document.type }}</strong></td>
+                                <td class="max-width-column">
+                                    <div class="badge-wrapper">
+                                        <span >{{ demande_document.description }}</span>
+                                    </div>
+                                </td>
+                                <td>{{ demande_document.statut }}</td>
+                                <td>{{ demande_document.date }}</td>
+
+                                <td class="text-center">
+                                    {% if demande_document.statut == 'en attente' %}
+                                        <button type="button" class="btn btn-success">Accepter</button>
+                                        <button type="button" class="btn btn-danger">Rejeter</button>
+                                    {% else %}
+                                        <button type="button" class="btn btn-warning" >Refactoriser</button>
+                                    {% endif %}
+                                </td>
+
+
+                                {#  <td>
+                                    <div class="dropdown">
+                                        <button
+                                                type="button"
+                                                class="btn p-0 dropdown-toggle hide-arrow"
+                                                data-bs-toggle="dropdown"
+                                        >
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item text-warning" href="/dashboard/document/edit/{{ document.id }}"
+                                            ><i class="bx bx-edit-alt me-1"></i> Edit</a
+                                            >
+                                            <a data-document-id="{{ document.id }}" class="dropdown-item text-danger delete-document" href="javascript:void(0);" >
+                                                <i class="bx bx-trash me-1"></i> Delete
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+#}
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+{% endblock %}

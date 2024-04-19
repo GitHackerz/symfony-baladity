@@ -20,15 +20,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
-    #[ORM\Column]
-    private array $roles = [];
-
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, options: ['default' => 'USER'])]
     private ?string $role= null;
 
-    /**
-     * @var string The hashed password
-     */
     #[ORM\Column]
     private ?string $password = null;
 
@@ -44,7 +38,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
-    #[ORM\ManyToOne(inversedBy: 'users')]
+    #[ORM\ManyToOne(targetEntity: Citoyen::class, inversedBy: 'users')]
     private ?Citoyen $citoyen = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: DemandeAssociation::class)]
@@ -53,14 +47,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: DemandeDocument::class)]
     private Collection $demandeDocuments;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: TacheProjet::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: TacheProjet::class, cascade: ['remove', 'persist'])]
     private Collection $tacheProjets;
+
+    #[ORM\ManyToMany(targetEntity: Projet::class, mappedBy: 'user', cascade: ['remove', 'persist'])]
+    private Collection $projets;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: TacheCommentaires::class)]
+    private Collection $tacheCommentaires;
+
 
     public function __construct()
     {
         $this->demandeAssociations = new ArrayCollection();
         $this->demandeDocuments = new ArrayCollection();
         $this->tacheProjets = new ArrayCollection();
+        $this->projets = new ArrayCollection();
+        $this->tacheCommentaires = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -96,25 +99,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUsername(): string
     {
         return (string) $this->email;
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function getRoles(): array
-    {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
-    }
-
-    public function setRoles(array $roles): static
-    {
-        $this->roles = $roles;
-
-        return $this;
     }
 
     public function getRole(): ?string
@@ -315,4 +299,67 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Projet>
+     */
+    public function getProjets(): Collection
+    {
+        return $this->projets;
+    }
+
+    public function addProjet(Projet $projet): static
+    {
+        if (!$this->projets->contains($projet)) {
+            $this->projets->add($projet);
+            $projet->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProjet(Projet $projet): static
+    {
+        if ($this->projets->removeElement($projet)) {
+            $projet->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    public function getRoles(): array
+    {
+        return [$this->role];
+    }
+
+    /**
+     * @return Collection<int, TacheCommentaires>
+     */
+    public function getTacheCommentaires(): Collection
+    {
+        return $this->tacheCommentaires;
+    }
+
+    public function addTacheCommentaire(TacheCommentaires $tacheCommentaire): static
+    {
+        if (!$this->tacheCommentaires->contains($tacheCommentaire)) {
+            $this->tacheCommentaires->add($tacheCommentaire);
+            $tacheCommentaire->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTacheCommentaire(TacheCommentaires $tacheCommentaire): static
+    {
+        if ($this->tacheCommentaires->removeElement($tacheCommentaire)) {
+            // set the owning side to null (unless already changed)
+            if ($tacheCommentaire->getUser() === $this) {
+                $tacheCommentaire->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
 }
