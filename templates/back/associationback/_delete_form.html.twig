@@ -1,0 +1,10 @@
+<form method="post" action="{{ path('association_back_delete', {'id': association.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet élément?');">
+    {# Ajout d'un champ caché pour le jeton CSRF #}
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ association.id) }}">
+    
+    {# Utilisation d'un bouton stylisé pour la suppression #}
+    <button type="submit" class="btn btn-danger">
+        {# Ajout d'une icône de corbeille pour indiquer la suppression #}
+        <i class="fas fa-trash-alt"></i> Supprimer
+    </button>
+</form>

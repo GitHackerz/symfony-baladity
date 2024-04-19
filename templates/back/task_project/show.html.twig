@@ -1,0 +1,129 @@
+{% extends "back/base.html.twig" %}
+
+{% block body %}
+    <div class="content-wrapper">
+        <div class="container-xxl flex-grow-1 container-p-y">
+            <div class="card">
+                <h5 class="card-header">Tache Projet </h5>
+                <div class="table-responsive text-nowrap">
+
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <th>Id</th>
+                            <td>{{ tache_projet.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Titre</th>
+                            <td>{{ tache_projet.titre }}</td>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <td>{{ tache_projet.description }}</td>
+                        </tr>
+                        <tr>
+                            <th>Date</th>
+                            <td>{{ tache_projet.date ? tache_projet.date|date('Y-m-d H:i:s') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Statut</th>
+                            <td>{{ tache_projet.statut }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card-footer">
+                    <a href="{{ path('task_project_back_index') }}" class="btn btn-secondary">Retour</a>
+                    <a href="{{ path('task_project_back_edit', {'id': tache_projet.id}) }}" class="btn btn-primary">Modifier</a>
+                </div>
+
+                <div class="container ">
+                    <div class="row mt-5">
+                        <div class="col-md-8">
+                            <h2 class="mb-4">Add Comment</h2>
+                            <form id="comment-form"
+                                  action="{{ path('task_project_back_comment', {'id': tache_projet.id}) }}"
+                                  method="POST">
+                                <div class="form-group">
+                                    <textarea id="comment-content" class="form-control" name="content" rows="3" required
+                                              style="resize: none"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary mt-2">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="row mt-5">
+                        <div class="col-md-8">
+                            <div class="comments">
+                                <h2 class="mb-4">Comments</h2>
+                                <!-- Single comment -->
+                                {% for comment in comments %}
+                                    <div class="card mb-4" id="comments-list">
+                                        <div class="card-body">
+                                            <div class="d-inline-flex align-items-center justify-content-between "
+                                                 style="width: 100%">
+                                                <div class="d-inline-flex justify-content-center align-items-center gap-3" >
+                                                    <img src="{{ comment.user.image }}" alt="User Image"
+                                                         style="width: 30px; height: auto; border-radius: 50%;">
+                                                    <h5 class="card-title">{{ comment.user.citoyen.nom }} {{ comment.user.citoyen.prenom }}</h5>
+                                                </div>
+
+                                                <h6 class="card-subtitle mb-2 text-muted">{{ comment.date | format_datetime('short', 'short') }}</h6>
+                                            </div>
+                                            <p class="card-text">{{ comment.content }}</p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                <!-- Add more comments here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    {% block script %}
+        <script>
+            $(document).ready(function () {
+                $('#comment-form').on('submit', function (e) {
+                    e.preventDefault();
+
+                    var commentContent = $('#comment-content').val();
+
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        type: 'POST',
+                        data: {
+                            content: commentContent
+                        },
+                        success: function (data) {
+                            console.log(data)
+                            // Add the new comment to the comments section
+                            $('#comments-list').prepend(`
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <div class="d-inline-flex align-items-center justify-content-between" style="width: 100%">
+                                            <div class="d-inline-flex justify-content-center align-items-center gap-3">
+                                                <img src=${data.image} alt="User Image" style="width: 30px; height: auto; border-radius: 50%;">
+                                                <h5 class="card-title font-weight-bold">${data.user}</h5>
+                                            </div>
+                                            <h6 class="card-subtitle mb-2 text-muted">${data.date}</h6>
+                                        </div>
+                                        <p class="card-text">${data.content}</p>
+                                    </div>
+                                </div>
+                `);
+
+                            // Clear the textarea
+                            $('#comment-content').val('');
+                        }
+                    });
+                });
+            });
+        </script>
+    {% endblock %}
+{% endblock %}

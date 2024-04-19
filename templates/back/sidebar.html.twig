@@ -1,3 +1,6 @@
+{% set path = app.request.getPathInfo %}
+{% set cleanPath = path|trim('/dashboard') %}
+
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
         <a href="/dashboard" class="app-brand-link">
@@ -68,15 +71,14 @@
 
     <ul class="menu-inner py-1">
         <!-- Dashboard -->
-        <li class="menu-item active">
+        <li class="menu-item">
             <a href="/dashboard" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Dashboard</div>
             </a>
         </li>
 
-        <!-- Layouts -->
-        <li class="menu-item">
+        <li class="menu-item {{ 'project' in cleanPath | lower ? 'active' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
                 <div data-i18n="Layouts">Projet</div>
@@ -84,6 +86,20 @@
 
             <ul class="menu-sub">
                 <li class="menu-item">
+                 <a href="/dashboard/association/" class="menu-link">
+                        <div data-i18n="Without menu">Liste des Associations</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="/dashboard/association/new" class="menu-link">
+                        <div data-i18n="Without navbar">Ajouter Association</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="/dashboard/demande-association/" class="menu-link">
+                        <div data-i18n="Without navbar">Liste des Demandes Association</div>
+                        </a>
+                </li>
                     <a href="/dashboard/project" class="menu-link">
                         <div data-i18n="Without menu">Liste des projets</div>
                     </a>
@@ -93,9 +109,18 @@
                         <div data-i18n="Without navbar">Ajouter Projet</div>
                     </a>
                 </li>
+                <li class="menu-item">
+                    <a href="/dashboard/project-tasks" class="menu-link">
+                        <div data-i18n="Without navbar">Liste des taches</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="/dashboard/project-tasks/new" class="menu-link">
+                        <div data-i18n="Without navbar">Ajouter tache</div>
+                    </a>
+                </li>
             </ul>
         </li>
-
 
 
 <li class="menu-item">
@@ -123,8 +148,5 @@
 
             </ul>
         </li>
-
-
-
     </ul>
 </aside>

@@ -14,15 +14,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProjectFrontController extends AbstractController
 {
     #[Route('/', name: 'project_front_index', methods: ['GET'])]
-    public function index(ProjetRepository $projetRepository): Response
+    public function index(ProjetRepository $projetRepository, ): Response
     {
         $participatedProjects = array_map(fn($project) => $project->getId(), $projetRepository->findProjectsByUser(1));
-        var_dump($participatedProjects);
+
         return $this->render('front/project/index.html.twig', [
             'projects' => $projetRepository->findAll(),
             'participatedProjects' => $participatedProjects
         ]);
     }
+
     #[Route('/participer/{id}/{user_id}', name: 'app_projet_participer', methods: ['POST'])]
     public function participer(Projet $projet, int $user_id, EntityManagerInterface $entityManager): Response
     {
