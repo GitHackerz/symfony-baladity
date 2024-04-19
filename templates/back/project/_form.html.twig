@@ -24,7 +24,7 @@
                             aria-describedby="basic-icon-default-fullname2"
                     />
                 </div>
-                <div class="text-danger mt-2" >{{ form_errors(form.titre) }}</div>
+                <div class="text-danger mt-2">{{ form_errors(form.titre) }}</div>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="basic-icon-default-company">Description Projet</label>
@@ -34,6 +34,7 @@
                             </span>
                     <textarea
                             rows="5"
+                            maxlength="255"
                             style="resize: none"
                             id="basic-icon-default-company"
                             class="form-control"
@@ -43,7 +44,8 @@
                             aria-describedby="basic-icon-default-company2"
                     >{{ field_value(form.description) }}</textarea>
                 </div>
-                <div class="text-danger mt-2" >{{ form_errors(form.description) }}</div>
+                <span id="description-char-count">0/255 caractères</span>
+                <div class="text-danger mt-2">{{ form_errors(form.description) }}</div>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="html5-date-input">Date Debut</label>
@@ -56,7 +58,7 @@
                            id="html5-date-input"
                     />
                 </div>
-                <div class="text-danger mt-2" >{{ form_errors(form.dateDebut) }} </div>
+                <div class="text-danger mt-2">{{ form_errors(form.dateDebut) }} </div>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="html5-date-input">Date Fin</label>
@@ -70,10 +72,10 @@
                            placeholder="{{ field_label(form.dateFin) }} Projet"
                     />
                 </div>
-                <div class="text-danger mt-2" >{{ form_errors(form.dateFin) }} </div>
+                <div class="text-danger mt-2">{{ form_errors(form.dateFin) }} </div>
             </div>
             <div class="mb-3">
-                <label class="form-label" for="basic-icon-default-phone">Budget</label>
+                <label class="form-label" for="basic-icon-default-phone">Budget (TND)</label>
                 <div class="input-group input-group-merge">
                     <span id="basic-icon-default-phone2" class="input-group-text">
                         <i class="bx bx-dollar"></i>
@@ -89,7 +91,7 @@
                             aria-describedby="basic-icon-default-phone2"
                     />
                 </div>
-                <div class="text-danger mt-2" >{{ form_errors(form.budget) }}</div>
+                <div class="text-danger mt-2">{{ form_errors(form.budget) }}</div>
             </div>
 
             <div class="mb-3">
@@ -98,32 +100,57 @@
                             name="{{ field_name(form.statut) }}" {# Ensure each radio button group has the same name #}
                             class="form-check-input"
                             type="radio"
-                            value="ACTIVE"
+                            value="Planned"
                             id="defaultRadio1"
-                            {{ field_value(form.statut) == 'ACTIVE' ? 'checked' : '' }}
+                            {{ field_value(form.statut) == 'Planned' ? 'checked' : '' }}
                     />
-                    <label class="form-check-label" for="defaultRadio1"> Active </label>
+                    <label class="form-check-label" for="defaultRadio1"> Planned </label>
                 </div>
                 <div class="form-check">
                     <input
                             name="{{ field_name(form.statut) }}" {# Ensure each radio button group has the same name #}
                             class="form-check-input"
                             type="radio"
-                            value="INACTIVE"
+                            value="In Progress"
                             id="defaultRadio2" {# Use unique ids for each radio button #}
-                            {{ field_value(form.statut) == 'INACTIVE' ? 'checked' : '' }}
+                            {{ field_value(form.statut) == 'In Progress' ? 'checked' : '' }}
                     />
-                    <label class="form-check-label" for="defaultRadio2"> Inactive </label>
+                    <label class="form-check-label" for="defaultRadio2"> In Progress </label>
                 </div>
-                <div class="text-danger mt-2" >{{ form_errors(form.statut) }} </div>
+                <div class="form-check">
+                    <input
+                            name="{{ field_name(form.statut) }}" {# Ensure each radio button group has the same name #}
+                            class="form-check-input"
+                            type="radio"
+                            value="Completed"
+                            id="defaultRadio2" {# Use unique ids for each radio button #}
+                            {{ field_value(form.statut) == 'Completed' ? 'checked' : '' }}
+                    />
+                    <label class="form-check-label" for="defaultRadio2">Completed</label>
+                </div>
+                <div class="text-danger mt-2">{{ form_errors(form.statut) }} </div>
             </div>
             <button type="submit" class="btn btn-primary">{{ button_label|default('Send') }}</button>
         </form>
     </div>
 </div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-{# <div class="mb-3">
-{# {{ form_widget(form) }} #}
-{# <button class="btn">{{ button_label|default('Save') }}</button> #}
+<script>
+    $(document).ready(function () {
+        const descriptionTextarea = $('#basic-icon-default-company');
+        const charCountSpan = $('#description-char-count');
+
+        descriptionTextarea.on('input', function () {
+            const charCount = $(this).val().length;
+            charCountSpan.text(`${charCount}/255 caractères`);
+        });
+
+        // Trigger the input event on page load to display the initial character count
+        descriptionTextarea.trigger('input');
+    });
+</script>
+
+
 {{ form_end(form) }}

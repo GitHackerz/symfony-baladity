@@ -22,22 +22,19 @@ class Projet
     #[Assert\NotBlank(message: 'Le titre ne doit pas être vide')]
     #[Assert\Length(min: 3, max: 255, minMessage: 'Le titre doit contenir au moins 3 caractères', maxMessage: 'Le titre doit contenir au maximum 255 caractères')]
     #[Assert\Type('string', message: 'Le titre doit être une chaîne de caractères')]
-    #[Assert\Regex(pattern: '/^[a-zA-Z0-9_]+$/', message: 'Le titre ne doit contenir que des lettres, des chiffres et des tirets')]
     private ?string $titre = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'La description ne doit pas être vide')]
     #[Assert\Length(min: 3, max: 255, minMessage: 'La description doit contenir au moins 3 caractères', maxMessage: 'La description doit contenir au maximum 255 caractères')]
     #[Assert\Type('string', message: 'La description doit être une chaîne de caractères')]
-    #[Assert\Regex(pattern: '/^[a-zA-Z0-9_]+$/', message: 'La description ne doit contenir que des lettres, des chiffres et des tirets')]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Le statut ne doit pas être vide')]
     #[Assert\Length(min: 3, max: 255, minMessage: 'Le statut doit contenir au moins 3 caractères', maxMessage: 'Le statut doit contenir au maximum 255 caractères')]
     #[Assert\Type('string', message: 'Le statut doit être une chaîne de caractères')]
-    #[Assert\Regex(pattern: '/^[a-zA-Z0-9_]+$/', message: 'Le statut ne doit contenir que des lettres, des chiffres et des tirets')]
-    #[Assert\Choice(choices: ['ACTIVE', 'INACTIVE'], message: 'Le statut doit être active ou inactive')]
+    #[Assert\Choice(choices: ['Planned', 'In Progress', 'Completed'], message: 'Le statut doit être parmi les valeurs suivantes: Planned, In Progress, Completed')]
     private ?string $statut = null;
 
     #[ORM\Column]
@@ -46,15 +43,14 @@ class Projet
     #[Assert\Positive(message: 'Le budget doit être un nombre positif')]
     private ?float $budget = null;
 
-    #[ORM\OneToMany(mappedBy: 'projet', targetEntity: TacheProjet::class)]
+    #[ORM\OneToMany(mappedBy: 'projet', targetEntity: TacheProjet::class, cascade: ['remove', 'persist'])]
     private Collection $tacheProjets;
 
-    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'projets')]
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'projets', cascade: ['remove', 'persist'])]
     private Collection $user;
 
     #[ORM\Column(type: "date")]
     #[Assert\LessThanOrEqual(propertyPath: 'dateFin', message: 'La date de début doit être inférieure à la date de fin')]
-    #[Assert\GreaterThanOrEqual(value: 'today', message: 'La date de début doit être supérieure ou égale à la date du jour')]
     private ?DateTimeInterface $dateDebut;
 
     #[ORM\Column(type: "date")]
