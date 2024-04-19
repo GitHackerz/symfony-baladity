@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class DemandeDocumentFrontController extends AbstractController
 {
 
-    #[Route('/', name: 'app_demande_document_index', methods: ['GET'])]
+    #[Route('', name: 'app_demande_document_index', methods: ['GET'])]
     public function index(DemandeDocumentRepository $demandeDocumentRepository): Response
     {
         return $this->render('front/document/demande_document/index.html.twig', [

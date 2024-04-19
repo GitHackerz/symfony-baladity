@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/project')]
 class ProjectFrontController extends AbstractController
 {
-    #[Route('/', name: 'project_front_index', methods: ['GET'])]
+    #[Route('', name: 'project_front_index', methods: ['GET'])]
     public function index(ProjetRepository $projetRepository, ): Response
     {
         $participatedProjects = array_map(fn($project) => $project->getId(), $projetRepository->findProjectsByUser(1));
