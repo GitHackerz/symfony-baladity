@@ -59,4 +59,20 @@ class DocumentRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+
+
+    public function search($searchTerm)
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.type LIKE :searchTerm')
+            ->setParameter('searchTerm', '%'.$searchTerm.'%')
+            ->getQuery()
+            ->getResult();
+    }
+
+
+
+
+
 }
