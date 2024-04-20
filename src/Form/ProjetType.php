@@ -41,8 +41,9 @@ class ProjetType extends AbstractType
             ->add('statut', ChoiceType::class, [
                 'label' => 'Statut Projet',
                 'choices' => [
-                    'Active' => 'ACTIVE',
-                    'InActive' => 'INACTIVE',
+                    'Planned' => 'Planned',
+                    'In Progress' => 'In Progress',
+                    'Completed' => 'Completed',
                 ],
             ]);
     }

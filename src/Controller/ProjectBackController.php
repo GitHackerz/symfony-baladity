@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Projet;
-use App\Entity\User;
 use App\Form\ProjetType;
 use App\Repository\ProjetRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -44,14 +43,6 @@ class ProjectBackController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'project_back_show', methods: ['GET'])]
-    public function show(Projet $projet): Response
-    {
-        return $this->render('back/project/show.html.twig', [
-            'project' => $projet,
-        ]);
-    }
-
     #[Route('/edit/{id}', name: 'project_back_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Projet $projet, EntityManagerInterface $entityManager): Response
     {
@@ -70,13 +61,22 @@ class ProjectBackController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}', name: 'project_back_show', methods: ['GET'])]
+    public function show(Projet $projet): Response
+    {
+        return $this->render('back/project/show.html.twig', [
+            'project' => $projet,
+        ]);
+    }
+
     #[Route('/{id}', name: 'project_back_delete', methods: ['DELETE'])]
     public function delete(Projet $projet, EntityManagerInterface $entityManager): Response
     {
         $entityManager->remove($projet);
         $entityManager->flush();
 
-
         return $this->redirectToRoute('project_back_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
 }

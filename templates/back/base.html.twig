@@ -41,13 +41,14 @@
 
     <link rel="stylesheet" href="{{ asset("back/vendor/libs/apex-charts/apex-charts.css") }}"/>
 
-    <!-- Page CSS -->
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+            rel="stylesheet"
+    />
+    <!-- MDB -->
 
-    <!-- Helpers -->
     <script src={{ asset("back/vendor/js/helpers.js") }}></script>
 
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src={{ asset("back/js/config.js") }}></script>
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
@@ -97,4 +98,7 @@
 
 <!-- Place this tag in your head or just before your close body tag. -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+
+{% block script %} {% endblock %}
 </html>
