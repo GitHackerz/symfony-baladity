@@ -54,6 +54,7 @@ fi{% set path = app.request.getPathInfo %}$
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
                 <div data-i18n="Layouts">Projet</div>
+               
             </a>
 
             <ul class="menu-sub">
@@ -70,6 +71,35 @@ fi{% set path = app.request.getPathInfo %}$
                 <li class="menu-item">
                     <a href="/dashboard/project-tasks/new" class="menu-link">
                         <div data-i18n="Without navbar">Ajouter tache</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-layout"></i>
+                <div data-i18n="Layouts">Evenement</div>
+            </a>
+
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="/dashboard/event/" class="menu-link">
+                        <div data-i18n="Without menu">Liste des Evenements</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="/dashboard/event/new" class="menu-link">
+                        <div data-i18n="Without navbar">Ajouter evenement</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="/dashboard/membre/" class="menu-link">
+                        <div data-i18n="Without navbar">Liste des membres</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="/dashboard/membre/new" class="menu-link">
+                        <div data-i18n="Without navbar">Ajouter Membres</div>
                     </a>
                 </li>
             </ul>

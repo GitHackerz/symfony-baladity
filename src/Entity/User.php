@@ -53,9 +53,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Projet::class, mappedBy: 'user', cascade: ['remove', 'persist'])]
     private Collection $projets;
 
+    #[ORM\ManyToMany(targetEntity: Evenement::class, mappedBy: 'user')]
+    private Collection $evenements;
+  
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: TacheCommentaires::class)]
     private Collection $tacheCommentaires;
-
 
     public function __construct()
     {
@@ -63,6 +65,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->demandeDocuments = new ArrayCollection();
         $this->tacheProjets = new ArrayCollection();
         $this->projets = new ArrayCollection();
+        $this->evenements = new ArrayCollection();
         $this->tacheCommentaires = new ArrayCollection();
     }
 
@@ -326,6 +329,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+  
+      /**
+     * @return Collection<int, Evenement>
+     */
+    public function getEvenements(): Collection
+    {
+        return $this->evenements;
+    }
+
+    public function addEvenement(Evenement $evenement): static
+    {
+        if (!$this->evenements->contains($evenement)) {
+            $this->evenements->add($evenement);
+            $evenement->addUser($this);
+        }
+
+        return $this;
+    }
 
     public function getRoles(): array
     {
@@ -349,6 +370,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+  
+    public function removeEvenement(Evenement $evenement): static
+    {
+        if ($this->evenements->removeElement($evenement)) {
+            $evenement->removeUser($this);
+         }
+
+        return $this;
+    }
 
     public function removeTacheCommentaire(TacheCommentaires $tacheCommentaire): static
     {
@@ -361,5 +391,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
 }
