@@ -1,0 +1,25 @@
+{% extends 'front/home/index.html.twig' %}
+
+{% block body %}
+    <h2>Informations de l'utilisateur</h2>
+    {% if app.user %}
+            <div class="mb-3">
+                <label for="userEmail" class="form-label">Email :</label>
+                <input type="email" id="userEmail" name="email" class="form-control" value="{{ app.user.email }}" required>
+            </div>
+
+
+            <div class="mb-3">
+                <a href="{{ path('app_user_edit2', {'id': app.user.id}) }}">edit</a>
+            </div>
+        </form>
+
+        <div class="mb-3">
+            <a href="{{ path('app_user_delete', {'id': app.user.id}) }}" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.');">
+                Supprimer mon compte
+            </a>
+        </div>
+    {% else %}
+        <p>Aucun utilisateur connecté.</p>
+    {% endif %}
+{% endblock %}

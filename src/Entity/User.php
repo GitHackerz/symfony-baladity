@@ -8,9 +8,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements PasswordAuthenticatedUserInterface, userInterface
+
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -18,21 +20,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
+    #[Assert\NotBlank(message: "L'adresse email ne doit pas être vide.")]
+    #[Assert\Email(message: "L'adresse email '{{ value }}' n'est pas une adresse email valide.")]
     private ?string $email = null;
 
-    #[ORM\Column]
-    private array $roles = [];
+
 
     #[ORM\Column(length: 255)]
-    private ?string $role= null;
+    private ?string $role = null;
 
     /**
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Le password ne doit pas être vide.")]
     private ?string $password = null;
 
-    #[ORM\Column]
+
+    #[ORM\Column(type: 'string', length: 8)]
+    #[Assert\NotBlank(message: "Le numéro de téléphone ne doit pas être vide.")]
+    #[Assert\Regex(
+        pattern: "/^\d{8}$/",
+        message: "Le numéro de téléphone doit contenir exactement 8 chiffres."
+    )]
     private ?int $numTel = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -76,6 +86,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->email;
     }
+    public function getRoles(): array
+    {
+        return [$this->role]; // Vous pouvez ajuster cette méthode selon votre logique de gestion des rôles
+    }
 
     public function setEmail(string $email): static
     {
@@ -105,21 +119,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
-    public function getRoles(): array
-    {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
 
-        return array_unique($roles);
-    }
-
-    public function setRoles(array $roles): static
-    {
-        $this->roles = $roles;
-
-        return $this;
-    }
 
     public function getRole(): ?string
     {
