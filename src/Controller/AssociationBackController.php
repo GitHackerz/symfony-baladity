@@ -10,10 +10,48 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 #[Route('/dashboard/association')]
 class AssociationBackController extends AbstractController
+
 {
+    
+    #[Route('/pdf', name: 'pdf', methods: ['GET'])]
+    public function pdf(AssociationRepository $AssociationRepository): Response
+    {
+        // Configure Dompdf according to your needs
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+    
+        // Instantiate Dompdf with our options
+        $dompdf = new Dompdf($pdfOptions);
+    
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('back/associationback/pdf.html.twig', [
+            'associations' => $AssociationRepository->findAll(),
+        ]);
+    
+        // Load HTML to Dompdf
+        $dompdf->loadHtml($html);
+    
+        // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
+        $dompdf->setPaper('A4', 'portrait');
+    
+        // Render the HTML as PDF
+        $dompdf->render();
+    
+        // Output the generated PDF for download
+        return new Response(
+            $dompdf->output(),
+            200,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'attachment; filename="mypdf.pdf"',
+            ]
+        );
+    }
     #[Route('/', name: 'association_back_index', methods: ['GET'])]
     public function index(AssociationRepository $associationRepository): Response
     {
@@ -78,4 +116,5 @@ class AssociationBackController extends AbstractController
 
         return $this->redirectToRoute('association_back_index', [], Response::HTTP_SEE_OTHER);
     }
+    
 }

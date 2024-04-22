@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Association details</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .green-bar {
+            background-color: #4CAF50;
+            height: 10px;
+        }
+        .wide-green-band {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 24px;
+            line-height: 50px; /* For vertical centering of text */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="green-bar"></div>
+    
+    <div class="wide-green-band text-center mb-3">
+        Association Details
+    </div>
+    
+    <div class="container">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Adresse</th>
+                        <th>Caisse</th>
+                        <th>Type</th>
+                        <th>Statut</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for association in associations %}
+                        <tr>    
+                            <td>{{ association.id }}</td>
+                            <td>{{ association.nom }}</td>
+                            <td>{{ association.adresse }}</td>
+                            <td>{{ association.caisse }}</td>
+                            <td>{{ association.type }}</td>
+                            <td>
+                                {% if association.statut == "Actif" %}
+                                    <span class="badge bg-success">Actif</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Inactif</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="text-center">
+            <img src="{{asset ('../../front/img/logo.png')}}" alt="logo" class="img-fluid" />
+        </div>
+    </div>
+
+</body>
+</html>
