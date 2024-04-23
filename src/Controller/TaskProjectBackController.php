@@ -7,6 +7,7 @@ use App\Entity\TacheCommentaires;
 use App\Entity\TacheProjet;
 use App\Entity\User;
 use App\Form\TacheProjetType;
+use App\Repository\ProjetRepository;
 use App\Repository\TacheProjetRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,10 +20,24 @@ use Symfony\Component\Routing\Annotation\Route;
 class TaskProjectBackController extends AbstractController
 {
     #[Route('/', name: 'task_project_back_index', methods: ['GET'])]
-    public function index(TacheProjetRepository $tacheProjetRepository): Response
+    public function index(TacheProjetRepository $tacheProjetRepository, ProjetRepository $projetRepository): Response
     {
+        $tasks = $tacheProjetRepository->findAll();
+        $todoTasks = array_filter($tasks, function($task) {
+            return $task->getStatut() === 'To Do';
+        });
+        $inProgressTasks = array_filter($tasks, function($task) {
+            return $task->getStatut() === 'In Progress';
+        });
+        $doneTasks = array_filter($tasks, function($task) {
+            return $task->getStatut() === 'Done';
+        });
         return $this->render('back/task_project/index.html.twig', [
+            'projects' => $projetRepository->findAll(),
             'tache_projets' => $tacheProjetRepository->findAll(),
+            'todoTasks' => $todoTasks,
+            'inProgressTasks' => $inProgressTasks,
+            'doneTasks' => $doneTasks
         ]);
     }
 
@@ -78,6 +93,8 @@ class TaskProjectBackController extends AbstractController
         $users = $entityManager->getRepository(User::class)->findAll();
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $tacheProjet->setStatut('To Do');
+            $entityManager->persist($tacheProjet);
             $entityManager->flush();
 
             return $this->redirectToRoute('task_project_back_index', [], Response::HTTP_SEE_OTHER);
@@ -113,6 +130,23 @@ class TaskProjectBackController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}/start', name: 'task_project_back_start', methods: ['PUT'])]
+    public function start(Request $request, TacheProjet $tacheProjet, EntityManagerInterface $entityManager): Response
+    {
+        $tacheProjet->setStatut('In Progress');
+        $entityManager->flush();
+
+        return $this->redirectToRoute('task_project_back_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/done', name: 'task_project_back_done', methods: ['PUT'])]
+    public function done(Request $request, TacheProjet $tacheProjet, EntityManagerInterface $entityManager): Response
+    {
+        $tacheProjet->setStatut('Done');
+        $entityManager->flush();
+
+        return $this->redirectToRoute('task_project_back_index', [], Response::HTTP_SEE_OTHER);
+    }
 
     #[Route('/{id}', name: 'task_project_back_delete', methods: ['DELETE'])]
     public function delete(Request $request, TacheProjet $tacheProjet, EntityManagerInterface $entityManager): Response

@@ -15,11 +15,18 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[Route('/dashboard/project')]
 class ProjectBackController extends AbstractController
 {
-    #[Route('/', name: 'project_back_index', methods: ['GET'])]
+    #[Route('', name: 'project_back_index', methods: ['GET'])]
     public function index(ProjetRepository $projetRepository): Response
     {
+        $totalBudgets = array_map(fn($project) => $project->getBudget(), $projetRepository->findAll());
+        $activeProjects = $projetRepository->findActiveProjects();
+        $completedProjects = $projetRepository->findCompletedProjects();
         return $this->render('back/project/index.html.twig', [
-            'projets' => $projetRepository->findAll(),
+            'projects' => $projetRepository->findAll(),
+            'totalBudgets' => array_sum($totalBudgets),
+            'averageBudgets' => count($totalBudgets) > 0 ? array_sum($totalBudgets) / count($totalBudgets) : 'N/A',
+            'numberOfActiveProjects' => count($activeProjects),
+            'numberOfCompletedProjects' => count($completedProjects),
         ]);
     }
 

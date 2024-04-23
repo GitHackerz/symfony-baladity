@@ -50,13 +50,12 @@
     <script src={{ asset("back/vendor/js/helpers.js") }}></script>
 
     <script src={{ asset("back/js/config.js") }}></script>
-    {% block stylesheets %}
-        {{ encore_entry_link_tags('app') }}
-    {% endblock %}
+    {% block stylesheets %}{{ encore_entry_link_tags('app') }}{% endblock %}
+    <link rel="stylesheet" href="{{ asset('build/app.css') }}">
 
-    {% block javascripts %}
-        {{ encore_entry_script_tags('app') }}
-    {% endblock %}
+    {#    <script src="https://cdn.tailwindcss.com"></script> #}
+
+
 </head>
 <body>
 <div class="layout-wrapper layout-content-navbar">
@@ -75,6 +74,9 @@
         </div>
     </div>
 </div>
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}
 </body>
 
 <!-- Core JS -->

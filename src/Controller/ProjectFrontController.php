@@ -17,7 +17,6 @@ class ProjectFrontController extends AbstractController
     public function index(ProjetRepository $projetRepository, ): Response
     {
         $participatedProjects = array_map(fn($project) => $project->getId(), $projetRepository->findProjectsByUser(1));
-
         return $this->render('front/project/index.html.twig', [
             'projects' => $projetRepository->findAll(),
             'participatedProjects' => $participatedProjects
