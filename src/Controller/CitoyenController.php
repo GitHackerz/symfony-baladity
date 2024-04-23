@@ -41,6 +41,11 @@ class CitoyenController extends AbstractController
             'femaleCount' => $femaleCount,
         ]);
     }
+    #[Route('/profile', name: 'back_profile')]
+    public function profile(): Response
+    {
+        return $this->render('back/citoyen/profile.html.twig', []);
+    }
     #[Route('/gender-stats', name: 'citoyen_gender_stats')]
     public function genderStats(CitoyenRepository $citoyenRepository): Response
     {
@@ -97,17 +102,33 @@ class CitoyenController extends AbstractController
             'form' => $form,
         ]);
     }
-
     #[Route('/{id}', name: 'app_citoyen_delete', methods: ['POST'])]
-    public function delete(Request $request, Citoyen $citoyen, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Citoyen $citoyen, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $citoyen->getId(), $request->request->get('_token'))) {
+        $submittedToken = $request->request->get('_token');
+
+        if ($this->isCsrfTokenValid('delete' . $citoyen->getId(), $submittedToken)) {
+            // Vérifiez si un utilisateur est lié à ce citoyen
+            $user = $userRepository->findOneBy(['citoyen' => $citoyen]);
+
+            if ($user) {
+                // Supprimez d'abord l'utilisateur lié
+                $entityManager->remove($user);
+                $entityManager->flush();
+                $this->addFlash('warning', 'L\'utilisateur associé au citoyen a été supprimé.');
+            }
+
+            // Ensuite, supprimez le citoyen
             $entityManager->remove($citoyen);
             $entityManager->flush();
+            $this->addFlash('success', 'Le citoyen a été supprimé avec succès.');
+        } else {
+            $this->addFlash('error', 'Le jeton CSRF n\'est pas valide.');
         }
 
         return $this->redirectToRoute('app_citoyen_index', [], Response::HTTP_SEE_OTHER);
     }
+
 
     #[Route('/{id}', name: 'x', methods: ['POST'])]
     public function delete2(Request $request, Citoyen $citoyen, EntityManagerInterface $entityManager, CsrfTokenManagerInterface $csrfTokenManager): Response

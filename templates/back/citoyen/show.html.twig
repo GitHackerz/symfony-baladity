@@ -3,7 +3,11 @@
 {% block title %}Hello citoyen !{% endblock %}
 
 {% block body %}
-    <h1>citoyen details </h1>
+<div class="content-wrapper">
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="card">
+            <h5 class="card-header">Citoyen </h5>
+            <div class="table-responsive text-nowrap">
 
     <table class="table">
         <tbody>
@@ -37,10 +41,19 @@
             </tr>
         </tbody>
     </table>
+</div>
 
-    <a href="{{ path('app_citoyen_index') }}">back to list</a>
+    
 
-    <a href="{{ path('app_citoyen_edit', {'id': citoyen.id}) }}">edit</a>
+    
+    <div class="card-footer">
+        <a href="{{ path('app_citoyen_index') }}" class="btn btn-secondary">Retour</a>
+        <a href="{{ path('app_citoyen_edit', {'id': citoyen.id}) }}" class="btn btn-primary">Modifier</a>
+    </div>
 
     {{ include('back/citoyen/_delete_form.html.twig') }}
+</div>
+</div>
+
+</div>
 {% endblock %}

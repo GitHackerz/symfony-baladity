@@ -6,18 +6,18 @@
  <div class="content-wrapper">
     <div class="container-xxl flex-grow-1 container-p-y">
  <div class="card">
-    <h5 class="card-header">Table Basic</h5>
+    <h5 class="card-header">Table des citoyens</h5>
     <div class="table-responsive text-nowrap">
       <div id="table-container">
 
       <table class="table" >
         <thead>
           <tr>
-            <th>Id</th>
+            {# <th>Id</th> #}
             <th>Cin</th>
             <th>Nom</th>
             <th>Prenom</th>
-            <th>Adresse</th>
+            {# <th>Adresse</th> #}
             <th>Date Naissance</th>
             <th>Genre</th>
             <th>Actions</th>
@@ -26,11 +26,11 @@
         <tbody class="table-border-bottom-0">
           {% for citoyen in citoyens %}
           <tr>
-              <td>{{ citoyen.id }}</td>
+              {# <td>{{ citoyen.id }}</td> #}
               <td>{{ citoyen.cin }}</td>
               <td>{{ citoyen.nom }}</td>
               <td>{{ citoyen.prenom }}</td>
-              <td>{{ citoyen.adresse }}</td>
+              {# <td>{{ citoyen.adresse }}</td> #}
               <td>{{ citoyen.dateNaissance ? citoyen.dateNaissance|date('Y-m-d') : '' }}</td>
               <td>{{ citoyen.genre }}</td>
               <td>
@@ -55,22 +55,6 @@
                 </div>
               </div>
             </td>
-
-
-
-
-
-
-
-
-
-
-
-
-            
-
-            
-          
         </tbody>
       </table>
     </div>
@@ -94,34 +78,36 @@
 <div class="content-wrapper">
   <div class="container-xxl flex-grow-1 container-p-y">
 <div class="card">
-  <h5 class="card-header">Table Basic</h5>
+  <h5 class="card-header">Table des utilisateurs</h5>
   <div class="table-responsive text-nowrap">
     <div id="table-container">
 
     <table class="table" >
       <thead>
         <tr>
-          <th>Id</th>
+          {# <th>Id</th> #}
           <th>Email</th>
           <th>Role</th>
-          <th>Password</th>
+          {# <th>Password</th> #}
           <th>NumTel</th>
-          <th>HeureDebut</th>
-          <th>HeureFin</th>
+          {# <th>HeureDebut</th> #}
+          {# <th>HeureFin</th> #}
           <th>Image</th>
           <th>actions</th>
+          <th>Qr code</th>
       </tr>
       </thead>
       <tbody class="table-border-bottom-0">
         {% for user in users %}
         <tr>
-          <td>{{ user.id }}</td>
+          {# <td>{{ user.id }}</td> #}
           <td>{{ user.email }}</td>
           <td>{{ user.role }}</td> 
-          <td>{{ user.password }}</td>
+          {# <td>{{ user.password }}</td> #}
           <td>{{ user.numTel }}</td>
-          <td>{{ user.heureDebut }}</td>
-          <td>{{ user.heureFin }}</td>
+          {# <td>{{ user.heureDebut }}</td> #}
+          {# <td>{{ user.heureFin }}</td> #}
+         
           <td>
             {% if user.image %}
              <img src="{{ asset('uploads/' ~ user.image) }}" alt="Image de l'utilisateur" style="width: 100px; height: auto;"/>
@@ -133,6 +119,17 @@
               <a href="{{ path('app_user_show', {'id': user.id}) }}">show</a>
               <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
           </td>
+
+          <td>
+            <!-- Placeholder for QR Code -->
+            <div id="qr-code-{{ user.id }}"></div>
+            <script>
+              // Generate QR Code after the element is defined
+              generateQRCodeForUser('{{ user.id }}', "{{ user.email|e('js') }}");
+            </script>
+          </td>
+        
+        
       </tr>
         {% else %}
         <tr>
@@ -172,6 +169,7 @@
 </div>
 </div>
 </div>
+
 </div>
 
 {% include 'back/citoyen/gender_stats.html.twig' %}
@@ -180,6 +178,22 @@
   {% block javascripts %}
 {{ parent() }}
 <script src="{{ asset('back/js/search.js') }}" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator"></script>
+
+<script>
+  // JavaScript function to generate a mailto link QR code for each user
+function generateQRCodeForUser(userId, email) {
+    let qr = qrcode(0, 'L');
+    qr.addData(`mailto:${email}`);
+    qr.make();
+
+    // Find the container for the QR code and set the data URL as the source for an image
+    let qrCodeContainer = document.getElementById(`qr-code-${userId}`);
+    qrCodeContainer.innerHTML = `<img src="${qr.createDataURL()}" alt="QR Code">`;
+}
+
+</script>
+
 
 {% endblock %}
 

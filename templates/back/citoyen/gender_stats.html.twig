@@ -1,8 +1,16 @@
 
 {% block body %}
-<h2>Gender Statistics</h2>
-<canvas id="genderChart"></canvas>
 
+<div class="content-wrapper">
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="card">
+            <h2 class="card-header">Gender Statistics</h2>
+
+<canvas id="genderChart"></canvas>
+</div>
+
+</div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
   const ctx = document.getElementById('genderChart').getContext('2d');
