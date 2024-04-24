@@ -5,18 +5,24 @@ namespace App\Controller;
 use App\Entity\Projet;
 use App\Entity\User;
 use App\Repository\ProjetRepository;
+use App\Repository\UserRepository;
+use App\Service\MailerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/project')]
 class ProjectFrontController extends AbstractController
 {
     #[Route('', name: 'project_front_index', methods: ['GET'])]
-    public function index(ProjetRepository $projetRepository, ): Response
+    public function index(ProjetRepository $projetRepository): Response
     {
-        $participatedProjects = array_map(fn($project) => $project->getId(), $projetRepository->findProjectsByUser(1));
+        $participatedProjects = array_map(fn($project) => $project->getId(), $projetRepository->findProjectsByUser(2));
         return $this->render('front/project/index.html.twig', [
             'projects' => $projetRepository->findAll(),
             'participatedProjects' => $participatedProjects
@@ -24,17 +30,30 @@ class ProjectFrontController extends AbstractController
     }
 
     #[Route('/participer/{id}/{user_id}', name: 'app_projet_participer', methods: ['POST'])]
-    public function participer(Projet $projet, int $user_id, EntityManagerInterface $entityManager): Response
+    public function participer(Projet $projet, int $user_id, EntityManagerInterface $entityManager, MailerService $mailerService): Response
     {
         $user = $entityManager->getRepository(User::class)->find($user_id);
+        if (!$user) {
+            throw $this->createNotFoundException('User not found');
+        }
 
         $projet->addUser($user);
-
         $entityManager->persist($projet);
         $entityManager->flush();
 
+        $recipient = $user->getEmail();
+        $subject = 'Event Participation';
+        $body = '
+            <p>Dear ' . $user->getCitoyen()->getNom() . ',</p>
+            <p>You have successfully participated in the event <span style="font-weight: bold;">' . $projet->getTitre() . '</span></p>
+            <p>Thank you for your participation.</p>
+        ';
+
+        $mailerService->sendEmail($recipient, $subject, $body);
+
         return $this->redirectToRoute('project_front_index', [], Response::HTTP_SEE_OTHER);
     }
+
 
     #[Route('/quitter/{id}/{user_id}', name: 'app_projet_quitter', methods: ['POST'])]
     public function quitter(Projet $projet, int $user_id, EntityManagerInterface $entityManager): Response
