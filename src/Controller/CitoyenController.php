@@ -14,25 +14,14 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/citoyen')]
+#[Route('/dashboard/citoyen')]
 class CitoyenController extends AbstractController
 {
-    #[Route('/', name: 'app_citoyen_index', methods: ['GET'])]
+    #[Route('', name: 'app_citoyen_index', methods: ['GET'])]
     public function index(CitoyenRepository $citoyenRepository, UserRepository $userRepository): Response
     {
-        $maleCount = $citoyenRepository->createQueryBuilder('c')
-            ->select('count(c.id)')
-            ->where('c.genre = :male')
-            ->setParameter('male', 'Homme')
-            ->getQuery()
-            ->getSingleScalarResult();
-
-        $femaleCount = $citoyenRepository->createQueryBuilder('c')
-            ->select('count(c.id)')
-            ->where('c.genre = :female')
-            ->setParameter('female', 'Femme')
-            ->getQuery()
-            ->getSingleScalarResult();
+        $maleCount = $citoyenRepository->count(['genre' => 'Homme']);
+        $femaleCount = $citoyenRepository->count(['genre' => 'Femme']);
 
         return $this->render('back/citoyen/index.html.twig', [
             'citoyens' => $citoyenRepository->findAll(),
@@ -41,22 +30,13 @@ class CitoyenController extends AbstractController
             'femaleCount' => $femaleCount,
         ]);
     }
+
     #[Route('/profile', name: 'back_profile')]
     public function profile(): Response
     {
         return $this->render('back/citoyen/profile.html.twig', []);
     }
-    #[Route('/gender-stats', name: 'citoyen_gender_stats')]
-    public function genderStats(CitoyenRepository $citoyenRepository): Response
-    {
-        $maleCount = $citoyenRepository->count(['genre' => 'Homme']);
-        $femaleCount = $citoyenRepository->count(['genre' => 'Femme']);
 
-        return $this->render('back/citoyen/gender_stats.html.twig', [
-            'maleCount' => $maleCount,
-            'femaleCount' => $femaleCount,
-        ]);
-    }
     #[Route('/new', name: 'app_citoyen_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -102,23 +82,21 @@ class CitoyenController extends AbstractController
             'form' => $form,
         ]);
     }
+
     #[Route('/{id}', name: 'app_citoyen_delete', methods: ['POST'])]
     public function delete(Request $request, Citoyen $citoyen, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
         $submittedToken = $request->request->get('_token');
 
         if ($this->isCsrfTokenValid('delete' . $citoyen->getId(), $submittedToken)) {
-            // Vérifiez si un utilisateur est lié à ce citoyen
             $user = $userRepository->findOneBy(['citoyen' => $citoyen]);
 
             if ($user) {
-                // Supprimez d'abord l'utilisateur lié
                 $entityManager->remove($user);
                 $entityManager->flush();
                 $this->addFlash('warning', 'L\'utilisateur associé au citoyen a été supprimé.');
             }
 
-            // Ensuite, supprimez le citoyen
             $entityManager->remove($citoyen);
             $entityManager->flush();
             $this->addFlash('success', 'Le citoyen a été supprimé avec succès.');
@@ -129,29 +107,6 @@ class CitoyenController extends AbstractController
         return $this->redirectToRoute('app_citoyen_index', [], Response::HTTP_SEE_OTHER);
     }
 
-
-    #[Route('/{id}', name: 'x', methods: ['POST'])]
-    public function delete2(Request $request, Citoyen $citoyen, EntityManagerInterface $entityManager, CsrfTokenManagerInterface $csrfTokenManager): Response
-    {
-        $submittedToken = $request->request->get('_token');
-
-        if ($csrfTokenManager->isTokenValid(new CsrfToken('delete' . $citoyen->getId(), $submittedToken))) {
-            // Perform the deletion
-            $entityManager->remove($citoyen);
-            $entityManager->flush();
-
-            // Fetch the updated list of citoyens
-            $updatedCitoyensList = $entityManager->getRepository(Citoyen::class)->findAll();
-
-            // Render the same page with the updated list
-            return $this->render('back/citoyen/index.html.twig', [
-                'citoyens' => $updatedCitoyensList,
-            ]);
-        }
-
-        // If the token is invalid, throw an exception or handle it as required
-        throw $this->createAccessDeniedException('Invalid CSRF token.');
-    }
     #[Route('/citoyen/recherche', name: 'citoyen_recherche', methods: ['GET'])]
     public function recherche(Request $request, EntityManagerInterface $entityManager): Response
     {

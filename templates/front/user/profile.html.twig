@@ -4,40 +4,33 @@
     {% include "front/Header.html.twig" %}
 
     <div class="container-fluid wow fadeInUp" data-wow-delay="0.1s">
-        <div class="container">
-            <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
-                <h5 class="fw-bold text-primary text-uppercase">User</h5>
-                <h1 class="mb-0">Votre compte</h1>
-            </div>
-            <div class="row g-5">
-                
-    
-    
-            </form>
-    
-      
-
-
-
+        <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
+            <h5 class="fw-bold text-primary text-uppercase">User</h5>
+            <h1 class="mb-0">Votre compte</h1>
+        </div>
         <div class="container py-5 h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-12 col-lg-10 mb-4 mb-lg-0"> <!-- Increased width from col-lg-6 to col-lg-8 -->
                     <div class="card mb-3" style="border-radius: .5rem;">
                         <div class="row g-0">
-                            <div class="col-md-5 gradient-custom text-center text-white" 
-                                 style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem; padding: 2rem;"> <!-- Increased to col-md-5 and added padding -->
-                                 {% if app.user.image %}
-                                 <img src="{{ asset('uploads/' ~ app.user.image) }}" alt="Image de l'utilisateur" style="width: 100px; height: auto;"/>
-                                 {% else %}
-                                  Pas d'image disponible
-                                  {% endif %}                                     alt="Avatar" class="img-fluid my-5" style="width: 120px;" /> <!-- Increased image size -->
-                                  <h4 style="font-size: 24px;">emir</h4>
-                                  
-                                  <p style="font-size: 20px;">Web Designer</p> <!-- Increased font size -->
+                            <div class="col-md-5 gradient-custom text-center text-white"
+                                 style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem; padding: 2rem;">
+                                <!-- Increased to col-md-5 and added padding -->
+                                {% if app.user.image %}
+                                    <img src="{{ asset('uploads/' ~ app.user.image) }}" alt="Image de l'utilisateur"
+                                         style="width: 100px; height: auto;"/>
+                                {% else %}
+                                    Pas d'image disponible
+                                {% endif %} alt="Avatar" class="img-fluid my-5" style="width: 120px;" />
+                                <!-- Increased image size -->
+                                <h4 style="font-size: 24px;">emir</h4>
+
+                                <p style="font-size: 20px;">Web Designer</p> <!-- Increased font size -->
                                 <i class="far fa-edit mb-5" style="font-size: 24px;"></i> <!-- Increased icon size -->
                             </div>
                             <div class="col-md-7"> <!-- Increased to col-md-7 -->
-                                <div class="card-body p-4" style="font-size: 18px;"> <!-- Increased font size in card body -->
+                                <div class="card-body p-4" style="font-size: 18px;">
+                                    <!-- Increased font size in card body -->
                                     <h6>Information</h6>
                                     <hr class="mt-0 mb-4">
                                     <div class="row pt-1">
@@ -77,7 +70,7 @@
         <div class="mb-3">
             <a href="{{ path('app_user_edit2', {'id': app.user.id}) }}" class="btn btn-primary">edit</a>
         </div>
-        
+    </div>
 
-   
+
 {% endblock %}

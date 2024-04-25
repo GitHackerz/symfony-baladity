@@ -25,18 +25,12 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 #[Route('/user')]
 class UserController extends AbstractController
 {
-    #[Route('/', name: 'app_user_index', methods: ['GET'])]
-    public function index(UserRepository $userRepository): Response
-    {
-        return $this->render('front/user/index.html.twig', [
-            'users' => $userRepository->findAll(),
-        ]);
-    }
     #[Route('/cin', name: 'citoyen_cin', methods: ['GET'])]
     public function enterCin(): Response
     {
         return $this->render('front/user/_enter_cin.html.twig');
     }
+
     #[Route('/test-qr-code', name: 'test_qr_code')]
     public function testQrCode(): Response
     {
@@ -54,6 +48,7 @@ class UserController extends AbstractController
             'qrCodeDataUri' => $qrCodeDataUri
         ]);
     }
+
     #[Route('/cin/submit', name: 'citoyen_cin_submit', methods: ['POST'])]
     public function submitCin(Request $request, CitoyenRepository $citoyenRepository, SessionInterface $session): Response
     {
@@ -70,17 +65,8 @@ class UserController extends AbstractController
         }
     }
 
-
-
-    #[Route('/login', name: 'login', methods: ['GET'])]
-    public function index2(UserRepository $userRepository): Response
-    {
-        return $this->render('front/user/login.html.twig', [
-            'users' => $userRepository->findAll(),
-        ]);
-    }
     #[Route('/auth', name: 'app_user_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger, UserPasswordHasherInterface $passwordHasher, SessionInterface $session,  CitoyenRepository $citoyenRepository): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger, UserPasswordHasherInterface $passwordHasher, SessionInterface $session, CitoyenRepository $citoyenRepository): Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -142,6 +128,7 @@ class UserController extends AbstractController
             'form' => $form,
         ]);
     }
+
     #[Route('/stats', name: 'user_citoyen_stats')]
     public function stats(EntityManagerInterface $entityManager): JsonResponse
     {
@@ -193,6 +180,7 @@ class UserController extends AbstractController
             'form' => $form,
         ]);
     }
+
     #[Route('/{id}/edit2', name: 'app_user_edit2', methods: ['GET', 'POST'])]
     public function edit2(Request $request, User $user, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
@@ -219,10 +207,6 @@ class UserController extends AbstractController
         ]);
     }
 
-
-
-
-
     #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
@@ -233,6 +217,7 @@ class UserController extends AbstractController
 
         return $this->redirectToRoute('app_citoyen_index', [], Response::HTTP_SEE_OTHER);
     }
+
     #[Route('/{id}', name: 'app_user_delete2', methods: ['POST'])]
     public function delete2(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
@@ -243,7 +228,6 @@ class UserController extends AbstractController
 
         return $this->redirectToRoute('app_login', [], Response::HTTP_SEE_OTHER);
     }
-
 
     #[Route('/send-email/{id}', name: 'send_email')]
     public function sendEmail(int $userId, MailerInterface $mailer, UserRepository $userRepository): Response
