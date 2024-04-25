@@ -1,0 +1,156 @@
+{{ form_start(form) }}
+{{ form_widget(form._token) }}
+
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h3 class="fw-bold">{{ button_label }} Projet</h3>
+    </div>
+    <div class="card-body">
+        <form>
+            <div class="mb-3 d-flex flex-column">
+                <label class="form-label" for="basic-icon-default-fullname">Titre Projet</label>
+                <div class="input-group input-group-merge">
+                    <span id="basic-icon-default-fullname2" class="input-group-text">
+                        <i class="bx bx-user"></i>
+                    </span>
+                    <input
+                            type="text"
+                            class="form-control"
+                            id="basic-icon-default-fullname"
+                            name="{{ field_name(form.titre) }}"
+                            value="{{ field_value(form.titre) }}"
+                            placeholder="{{ field_label(form.titre) }} Projet"
+                            aria-label="John Doe"
+                            aria-describedby="basic-icon-default-fullname2"
+                    />
+                </div>
+                <div class="text-danger mt-2">{{ form_errors(form.titre) }}</div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="basic-icon-default-company">Description Projet</label>
+                <div class="input-group input-group-merge flex-row">
+                            <span id="basic-icon-default-company2" class="input-group-text">
+                                <i class="bx bx-buildings align-self-start mt-1"></i>
+                            </span>
+                    <textarea
+                            rows="5"
+                            maxlength="255"
+                            style="resize: none"
+                            id="basic-icon-default-company"
+                            class="form-control"
+                            name="{{ field_name(form.description) }}"
+                            placeholder="{{ field_label(form.description) }} Projet"
+                            aria-label="ACME Inc."
+                            aria-describedby="basic-icon-default-company2"
+                    >{{ field_value(form.description) }}</textarea>
+                </div>
+                <span id="description-char-count">0/255 caractères</span>
+                <div class="text-danger mt-2">{{ form_errors(form.description) }}</div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="html5-date-input">Date Debut</label>
+                <div class="input-group input-group-merge">
+                    <span class="input-group-text"><i class="bx bx-calendar"></i></span>
+                    <input class="form-control" type="date"
+                           name="{{ field_name(form.dateDebut) }}"
+                           value="{{ field_value(form.dateDebut) }}"
+                           placeholder="{{ field_label(form.dateDebut) }} Projet"
+                           id="html5-date-input"
+                    />
+                </div>
+                <div class="text-danger mt-2">{{ form_errors(form.dateDebut) }} </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="html5-date-input">Date Fin</label>
+                <div class="input-group input-group-merge">
+                    <span class="input-group-text"><i class="bx bx-calendar"></i></span>
+                    <input class="form-control"
+                           type="date"
+                           id="html5-date-input"
+                           name="{{ field_name(form.dateFin) }}"
+                           value="{{ field_value(form.dateFin) }}"
+                           placeholder="{{ field_label(form.dateFin) }} Projet"
+                    />
+                </div>
+                <div class="text-danger mt-2">{{ form_errors(form.dateFin) }} </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="basic-icon-default-phone">Budget (TND)</label>
+                <div class="input-group input-group-merge">
+                    <span id="basic-icon-default-phone2" class="input-group-text">
+                        <i class="bx bx-dollar"></i>
+                    </span>
+                    <input
+                            type="number"
+                            id="basic-icon-default-phone"
+                            class="form-control phone-mask"
+                            name="{{ field_name(form.budget) }}"
+                            value="{{ field_value(form.budget) }}"
+                            placeholder="{{ field_label(form.budget) }} Projet"
+                            aria-label="658 799 8941"
+                            aria-describedby="basic-icon-default-phone2"
+                    />
+                </div>
+                <div class="text-danger mt-2">{{ form_errors(form.budget) }}</div>
+            </div>
+
+            <div class="mb-3">
+                <div class="form-check mt-3">
+                    <input
+                            name="{{ field_name(form.statut) }}" {# Ensure each radio button group has the same name #}
+                            class="form-check-input"
+                            type="radio"
+                            value="Planned"
+                            id="defaultRadio1"
+                            {{ field_value(form.statut) == 'Planned' ? 'checked' : '' }}
+                    />
+                    <label class="form-check-label" for="defaultRadio1"> Planned </label>
+                </div>
+                <div class="form-check">
+                    <input
+                            name="{{ field_name(form.statut) }}" {# Ensure each radio button group has the same name #}
+                            class="form-check-input"
+                            type="radio"
+                            value="In Progress"
+                            id="defaultRadio2" {# Use unique ids for each radio button #}
+                            {{ field_value(form.statut) == 'In Progress' ? 'checked' : '' }}
+                    />
+                    <label class="form-check-label" for="defaultRadio2"> In Progress </label>
+                </div>
+                <div class="form-check">
+                    <input
+                            name="{{ field_name(form.statut) }}" {# Ensure each radio button group has the same name #}
+                            class="form-check-input"
+                            type="radio"
+                            value="Completed"
+                            id="defaultRadio2" {# Use unique ids for each radio button #}
+                            {{ field_value(form.statut) == 'Completed' ? 'checked' : '' }}
+                    />
+                    <label class="form-check-label" for="defaultRadio2">Completed</label>
+                </div>
+                <div class="text-danger mt-2">{{ form_errors(form.statut) }} </div>
+            </div>
+            <button type="submit" class="btn btn-primary">{{ button_label|default('Send') }}</button>
+        </form>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        const descriptionTextarea = $('#basic-icon-default-company');
+        const charCountSpan = $('#description-char-count');
+
+        descriptionTextarea.on('input', function () {
+            const charCount = $(this).val().length;
+            charCountSpan.text(`${charCount}/255 caractères`);
+        });
+
+        // Trigger the input event on page load to display the initial character count
+        descriptionTextarea.trigger('input');
+    });
+</script>
+
+
+{{ form_end(form) }}

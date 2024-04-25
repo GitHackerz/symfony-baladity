@@ -15,4 +15,11 @@ class DashboardController extends AbstractController
             'controller_name' => 'DashboardController',
         ]);
     }
+    #[Route('/front', name: 'front')]
+    public function index2(): Response
+    {
+        return $this->render('front/user/frontpagelogin.html.twig', [
+            'controller_name' => 'DashboardController',
+        ]);
+    }
 }
