@@ -1,0 +1,54 @@
+{% extends 'back/base.html.twig' %}
+{% block body %}
+    <div class="content-wrapper">
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="card">
+            <div class="card-header d-flex flex-row justify-content-between align-items-center">
+                <h5>Liste des evenements</h5>
+                <a href="{{ path('event_back_new') }}" class="btn btn-success ">Create new</a>
+            </div>
+
+            <div class="table-responsive text-nowrap">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Titre</th>
+                        <th>Description</th>
+                        <th>Date</th>
+                        <th>Lieu</th>
+                        <th>Nom Contact</th>
+                        <th>Email Contact</th>
+                        <th>Statut</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for event in events %}
+                        <tr>
+                            <th scope="row">{{ event.id }}</th>
+                            <td>{{ event.titre }}</td>
+                            <td>{{ event.description }}</td>
+                            <td>{{ event.date }}</td>
+                            <td>{{ event.lieu }}</td>
+                            <td>{{ event.nomContact }}</td>
+                            <td>{{ event.emailContact }}</td>
+                            <td>{{ event.statut ? 'fini' : 'pas fini' }}</td>
+                            <td>
+                                <a href="{{ path('event_back_show', {'id': event.id}) }}"
+                                   class="btn btn-primary btn-sm">Show</a>
+                                <a href="{{ path('event_back_edit', {'id': event.id}) }}"
+                                   class="btn btn-secondary btn-sm">Edit</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="9" class="text-center">No records found</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'back/base.html.twig' %}
+
+{% block title %}Liste des Associations{% endblock %}
+
+{% block body %}
+<div class="content-wrapper">
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="card-title">Liste des Associations</h5>
+                    <a href="{{ path('association_back_new') }}" class="btn btn-success">Créer une nouvelle</a>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Nom</th>
+                                <th>Adresse</th>
+                                <th>Caisse</th>
+                                <th>Type</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for association in associations %}
+                                <tr>
+                                    <td>{{ association.id }}</td>
+                                    <td>{{ association.nom }}</td>
+                                    <td>{{ association.adresse }}</td>
+                                    <td>{{ association.caisse }}</td>
+                                    <td>{{ association.type }}</td>
+                                    <td>{% if association.statut == "Actif" %} <span class="badge bg-label-success">Actif</span>
+                                {% else %}<span class="badge bg-label-danger">Inactif</span>
+                                {% endif %}
+                                </td>
+                                    {#<td>{{ association.statut }}</td>#}
+                                   <td>
+    <a href="{{ path('association_back_show', {'id': association.id}) }}" style="margin-right: 10px;" class="btn btn-primary btn-sm">
+        <span class="bx bx-show" </span>
+        
+    </a>
+
+    <a href="{{ path('association_back_edit', {'id': association.id}) }}" class="btn btn-secondary btn-sm">
+        <span class="bx bx-edit-alt" </span>
+        
+    </a>
+</td>
+
+                            {% else %}
+                                <tr>
+                                    <td colspan="7">Aucun enregistrement trouvé.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

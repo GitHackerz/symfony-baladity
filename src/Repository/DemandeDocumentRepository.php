@@ -45,4 +45,37 @@ class DemandeDocumentRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+
+
+
+    /**
+     * Update a Document entity.
+     *
+     * @param Document $document The document entity to update
+     * @return void
+     */
+    public function Gerer_demande(DemandeDocument $ddoc): void
+    {
+        $entityManager = $this->getEntityManager();
+        $entityManager->persist($ddoc);
+        $entityManager->flush();
+    }
+
+
+    //    /**
+//     * @return DemandeDocument[] Returns an array of DemandeDocument objects
+//     */
+    public function find_Aceepted_Rejected(): array
+    {
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.statut IN (:statuses)')
+            ->setParameter('statuses', ['acceptée', 'rejetée'])
+            ->orderBy('d.dateTraitement', 'DESC')
+            ->setMaxResults(50)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 }

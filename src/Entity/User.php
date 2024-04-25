@@ -29,9 +29,6 @@ class User implements PasswordAuthenticatedUserInterface, userInterface
     #[ORM\Column(length: 255)]
     private ?string $role = null;
 
-    /**
-     * @var string The hashed password
-     */
     #[ORM\Column]
     #[Assert\NotBlank(message: "Le password ne doit pas être vide.")]
     private ?string $password = null;
@@ -54,7 +51,7 @@ class User implements PasswordAuthenticatedUserInterface, userInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
-    #[ORM\ManyToOne(inversedBy: 'users')]
+    #[ORM\ManyToOne(targetEntity: Citoyen::class, inversedBy: 'users')]
     private ?Citoyen $citoyen = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: DemandeAssociation::class)]
@@ -63,11 +60,17 @@ class User implements PasswordAuthenticatedUserInterface, userInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: DemandeDocument::class)]
     private Collection $demandeDocuments;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: TacheProjet::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: TacheProjet::class, cascade: ['remove', 'persist'])]
     private Collection $tacheProjets;
 
-    #[ORM\ManyToMany(targetEntity: Projet::class, mappedBy: 'user')]
+    #[ORM\ManyToMany(targetEntity: Projet::class, mappedBy: 'user', cascade: ['remove', 'persist'])]
     private Collection $projets;
+
+    #[ORM\ManyToMany(targetEntity: Evenement::class, mappedBy: 'user')]
+    private Collection $evenements;
+  
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: TacheCommentaires::class)]
+    private Collection $tacheCommentaires;
 
     public function __construct()
     {
@@ -75,6 +78,8 @@ class User implements PasswordAuthenticatedUserInterface, userInterface
         $this->demandeDocuments = new ArrayCollection();
         $this->tacheProjets = new ArrayCollection();
         $this->projets = new ArrayCollection();
+        $this->evenements = new ArrayCollection();
+        $this->tacheCommentaires = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -342,6 +347,63 @@ class User implements PasswordAuthenticatedUserInterface, userInterface
     {
         if ($this->projets->removeElement($projet)) {
             $projet->removeUser($this);
+        }
+
+        return $this;
+    }
+  
+      /**
+     * @return Collection<int, Evenement>
+     */
+    public function getEvenements(): Collection
+    {
+        return $this->evenements;
+    }
+
+    public function addEvenement(Evenement $evenement): static
+    {
+        if (!$this->evenements->contains($evenement)) {
+            $this->evenements->add($evenement);
+            $evenement->addUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TacheCommentaires>
+     */
+    public function getTacheCommentaires(): Collection
+    {
+        return $this->tacheCommentaires;
+    }
+
+    public function addTacheCommentaire(TacheCommentaires $tacheCommentaire): static
+    {
+        if (!$this->tacheCommentaires->contains($tacheCommentaire)) {
+            $this->tacheCommentaires->add($tacheCommentaire);
+            $tacheCommentaire->setUser($this);
+        }
+
+        return $this;
+    }
+  
+    public function removeEvenement(Evenement $evenement): static
+    {
+        if ($this->evenements->removeElement($evenement)) {
+            $evenement->removeUser($this);
+         }
+
+        return $this;
+    }
+
+    public function removeTacheCommentaire(TacheCommentaires $tacheCommentaire): static
+    {
+        if ($this->tacheCommentaires->removeElement($tacheCommentaire)) {
+            // set the owning side to null (unless already changed)
+            if ($tacheCommentaire->getUser() === $this) {
+                $tacheCommentaire->setUser(null);
+            }
         }
 
         return $this;
