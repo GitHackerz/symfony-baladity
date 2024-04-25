@@ -1,0 +1,135 @@
+<div class="content-wrapper">
+  <div class="container-xxl flex-grow-1 container-p-y">
+    <div class="card">
+      <h5 class="card-header">User</h5>
+      <div class="table-responsive text-nowrap">
+        <div class="container">
+          {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+          <div class="form-group">
+            {{ form_label(form.email, "Email") }}
+            {{ form_widget(form.email, { attr: { class: "form-control" } }) }}
+            {% if form_errors(form.email) is not empty %}
+            <div class="alert alert-danger">
+              {{ form_errors(form.email) }}
+            </div>
+            {% endif %}
+          </div>
+
+          <div class="form-group">
+            {{ form_label(form.password, "password") }}
+            {{
+              form_widget(form.password, { attr: { class: "form-control" } })
+            }}
+            {% if form_errors(form.password) is not empty %}
+            <div class="alert alert-danger">
+              {{ form_errors(form.password) }}
+            </div>
+            {% endif %}
+          </div>
+          <div class="form-group">
+            {{ form_label(form.numTel, "Numero") }}
+            {{ form_widget(form.numTel, { attr: { class: "form-control" } }) }}
+            {% if form_errors(form.numTel) is not empty %}
+            <div class="alert alert-danger">
+              {{ form_errors(form.numTel) }}
+            </div>
+            {% endif %}
+          </div>
+
+          <div class="form-group">
+            {{ form_label(form.image, "Image") }}
+            {{
+              form_widget(form.image, {
+                attr: { class: "form-control-file", accept: "image/*" }
+              })
+            }}
+            {% if form_errors(form.image) is not empty %}
+            <div class="alert alert-danger">
+              {{ form_errors(form.image) }}
+            </div>
+
+            {% endif %}
+            <small class="form-text text-muted"
+              >Please upload a JPEG or PNG image.</small
+            >
+          </div>
+
+          <button class="btn">{{ button_label|default('Save') }}</button>
+          {{ form_end(form) }}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% block stylesheets %}
+  <style>
+    /* General container styles */
+    .container {
+      max-width: 800px; /* Limiting the maximum width of the form */
+      margin: 40px auto; /* Centering the form on the page with some margin on top and bottom */
+      padding: 20px;
+      background: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Styling for form elements */
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box; /* Makes sure padding does not affect the width */
+    }
+
+    .form-control-file {
+      border: none;
+    }
+
+    .alert-danger {
+      color: #721c24;
+      background-color: #f8d7da;
+      border-color: #f5c6cb;
+      padding: 10px;
+      border-radius: 4px;
+      margin-top: 5px;
+    }
+
+    .btn {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+
+    /* Small text helper for file inputs */
+    .form-text.text-muted {
+      display: block;
+      margin-top: 5px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .container {
+        width: 90%; /* Makes the container take more space on smaller screens */
+        margin: 20px auto;
+      }
+    }
+  </style>
+  {% endblock %}
+</div>

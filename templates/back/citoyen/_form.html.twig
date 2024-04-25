@@ -1,0 +1,247 @@
+<div class="container">
+  {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+  <div class="form-group">
+    {{ form_label(form.cin, "CIN") }}
+    {{ form_widget(form.cin, { attr: { class: "form-control" } }) }}
+    {% if form_errors(form.cin) is not empty %}
+    <div class="alert alert-danger">
+      {{ form_errors(form.cin) }}
+    </div>
+
+    {% endif %}
+  </div>
+  <!-- Bouton pour démarrer la webcam -->
+
+  <!-- L'élément vidéo pour afficher la webcam -->
+  <video
+    id="video"
+    width="640"
+    height="480"
+    autoplay
+    style="display: none"
+  ></video>
+
+  <!-- Le canvas pour capturer l'image -->
+  <canvas id="canvas" width="640" height="480" style="display: none"></canvas>
+
+  <!-- Zone pour afficher le texte extrait -->
+  <div id="extractedText"></div>
+
+  <!-- Intégration de Tesseract.js -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@2"></script>
+
+  <div class="form-group">
+    {{ form_label(form.nom, "Nom") }}
+    {{ form_widget(form.nom, { attr: { class: "form-control" } }) }}
+    {% if form_errors(form.nom) is not empty %}
+    <div class="alert alert-danger">
+      {{ form_errors(form.nom) }}
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="form-group">
+    {{ form_label(form.prenom, "Prénom") }}
+    {{ form_widget(form.prenom, { attr: { class: "form-control" } }) }}
+    {% if form_errors(form.prenom) is not empty %}
+    <div class="alert alert-danger">
+      {{ form_errors(form.prenom) }}
+    </div>
+    {% endif %}
+  </div>
+  <!-- Include Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  />
+
+  <!-- Include Leaflet JavaScript -->
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+  <div class="form-group">
+    {{ form_label(form.adresse, "Adresse") }}
+    <div class="input-group">
+      {{
+        form_widget(form.adresse, {
+          id: "adresse",
+          attr: { class: "form-control", readonly: true }
+        })
+      }}
+      <button type="button" class="btn btn-outline-secondary" id="openMap">
+        Choose on map
+      </button>
+    </div>
+    <!-- Place this in your Twig file where you want the map modal to appear -->
+    <div
+      class="modal fade"
+      id="mapModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="mapModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="mapModalLabel">Select Location</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="mapid" style="height: 400px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% if form_errors(form.adresse) is not empty %}
+    <div class="alert alert-danger">
+      {{ form_errors(form.adresse) }}
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="form-group">
+    {{ form_label(form.dateNaissance, "Date de Naissance") }}
+    {{ form_widget(form.dateNaissance, { attr: { class: "form-control" } }) }}
+    {% if form_errors(form.dateNaissance) is not empty %}
+    <div class="alert alert-danger">
+      {{ form_errors(form.dateNaissance) }}
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="form-group">
+    {{ form_label(form.genre, "Genre") }}
+    {{ form_widget(form.genre, { attr: { class: "form-control" } }) }}
+
+    {% if form_errors(form.genre) is not empty %}
+    <div class="alert alert-danger">
+      {{ form_errors(form.genre) }}
+    </div>
+    {% endif %}
+  </div>
+
+  <button class="btn">{{ button_label|default('Save') }}</button>
+  {{ form_end(form) }}
+
+  <button id="startCamera" class="btn btn-primary">
+    Démarrer la caméra pour capture cin number
+  </button>
+  <button id="closeCamera" class="btn btn-warning">Fermer la caméra</button>
+</div>
+
+<!-- Add these inside your {% block stylesheets %} if it exists or directly in the <head> -->
+<link
+  rel="stylesheet"
+  href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+/>
+
+{% block javascripts %}
+<!-- Your existing Leaflet JS inclusion and custom script -->
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<!-- Include Bootstrap's JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script>
+  var initialLatitude = 36.8065;
+  var initialLongitude = 10.1815;
+
+  var map = L.map("mapid").setView([initialLatitude, initialLongitude], 13);
+
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    attribution: "© OpenStreetMap contributors",
+  }).addTo(map);
+
+  var marker;
+
+  map.on("click", function (e) {
+    var lat = e.latlng.lat;
+    var lng = e.latlng.lng;
+
+    var nominatimUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`;
+
+    fetch(nominatimUrl)
+      .then((response) => response.json())
+      .then((data) => {
+        var fullAddress = data.display_name;
+
+        document.getElementById("adresse").value = fullAddress;
+      })
+      .catch((error) => {
+        console.error("Error during reverse geocoding:", error);
+      });
+  });
+
+  document.getElementById("openMap").addEventListener("click", function () {
+    $("#mapModal").modal("show");
+    setTimeout(function () {
+      map.invalidateSize();
+    }, 10);
+  });
+
+  let stream = null;
+
+  document.getElementById("startCamera").addEventListener("click", function () {
+    navigator.mediaDevices
+      .getUserMedia({ video: true })
+      .then(function (stream) {
+        document.getElementById("video").srcObject = stream;
+        document.getElementById("video").style.display = "block";
+      })
+      .catch(function (err) {
+        console.error("Erreur lors de l'accès à la caméra: ", err);
+      });
+  });
+
+  const video = document.getElementById("video");
+  const canvas = document.getElementById("canvas");
+  const context = canvas.getContext("2d");
+
+  video.addEventListener("play", function () {
+    function capture() {
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      Tesseract.recognize(canvas, "fra", {}).then(({ data: { text } }) => {
+        const cinRegex = /\b\d{7,8}\b/;
+        const cinMatch = text.match(cinRegex);
+        if (cinMatch) {
+          document.querySelector('input[name="citoyen[cin]"]').value =
+            cinMatch[0];
+        }
+      });
+    }
+
+    setInterval(capture, 1000);
+    let textFromImage =
+      "Votre texte OCR ici avec le numéro CIN quelque part dedans 01234567";
+
+    let regex = /\b\d{8}\b/;
+    let matches = textFromImage.match(regex);
+
+    if (matches && matches[0]) {
+      let cinNumber = matches[0];
+      document.querySelector('input[name="citoyen[cin]"]').value = cinNumber;
+    }
+  });
+
+  document.getElementById("closeCamera").addEventListener("click", () => {
+    if (stream) {
+      const tracks = stream.getTracks();
+      tracks.forEach((track) => track.stop());
+    }
+
+    document.getElementById("video").style.display = "none";
+    document.getElementById("overlay").style.display = "none";
+    document.getElementById("canvas").style.display = "none";
+    document.getElementById("video").srcObject = null;
+  });
+</script>
+{% endblock %} {% endblock %}
