@@ -28,7 +28,7 @@ class EventFrontController extends AbstractController
     #[Route('/participer/{id}/{user_id}', name: 'app_evenement_participer', methods: ['POST'])]
     public function participer(Evenement $evenement, int $user_id, EntityManagerInterface $entityManager): Response
     {
-        $user = $entityManager->getRepository(User::class)->find(2git add );
+        $user = $entityManager->getRepository(User::class)->find(2);
 
         $evenement->addUser($user);
 
