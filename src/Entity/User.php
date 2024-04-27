@@ -59,6 +59,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: TacheCommentaires::class)]
     private Collection $tacheCommentaires;
 
+    #[ORM\OneToMany(mappedBy: 'manager', targetEntity: Projet::class)]
+    private Collection $managedProjects;
+
     public function __construct()
     {
         $this->demandeAssociations = new ArrayCollection();
@@ -67,6 +70,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->projets = new ArrayCollection();
         $this->evenements = new ArrayCollection();
         $this->tacheCommentaires = new ArrayCollection();
+        $this->managedProjects = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -386,6 +390,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($tacheCommentaire->getUser() === $this) {
                 $tacheCommentaire->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Projet>
+     */
+    public function getManagedProjects(): Collection
+    {
+        return $this->managedProjects;
+    }
+
+    public function addManagedProject(Projet $managedProject): static
+    {
+        if (!$this->managedProjects->contains($managedProject)) {
+            $this->managedProjects->add($managedProject);
+            $managedProject->setManager($this);
+        }
+
+        return $this;
+    }
+
+    public function removeManagedProject(Projet $managedProject): static
+    {
+        if ($this->managedProjects->removeElement($managedProject)) {
+            // set the owning side to null (unless already changed)
+            if ($managedProject->getManager() === $this) {
+                $managedProject->setManager(null);
             }
         }
 

@@ -34,6 +34,7 @@ class ProjectBackController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager, ValidatorInterface $validator): Response
     {
         $projet = new Projet();
+        $projet->setManager($this->getUser());
         $form = $this->createForm(ProjetType::class, $projet);
         $form->handleRequest($request);
 

@@ -58,6 +58,9 @@ class Projet
     #[Assert\GreaterThanOrEqual(propertyPath: 'dateDebut', message: 'La date de fin doit être supérieure à la date de début')]
     private ?DateTimeInterface $dateFin;
 
+    #[ORM\ManyToOne(inversedBy: 'managedProjects')]
+    private ?User $manager = null;
+
     public function __construct()
     {
         $this->tacheProjets = new ArrayCollection();
@@ -193,6 +196,18 @@ class Projet
     public function setDateFin(\DateTimeInterface $dateFin): static
     {
         $this->dateFin = $dateFin;
+
+        return $this;
+    }
+
+    public function getManager(): ?User
+    {
+        return $this->manager;
+    }
+
+    public function setManager(?User $manager): static
+    {
+        $this->manager = $manager;
 
         return $this;
     }
