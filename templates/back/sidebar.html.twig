@@ -14,7 +14,8 @@ fi{% set path = app.request.getPathInfo %}$
 
     <div class="menu-inner-shadow"></div>
 
-    <ul class="menu-inner py-1">
+    <ul
+            class="menu-inner py-1">
         <!-- Dashboard -->
         <li class="menu-item">
             <a href="/dashboard" class="menu-link">
@@ -23,9 +24,10 @@ fi{% set path = app.request.getPathInfo %}$
             </a>
         </li>
 
+
         <li class="menu-item {{ 'ciation' in cleanPath | lower ? 'active' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-layout"></i>
+                <i class="menu-icon tf-icons bx bx-group"></i>
                 <div data-i18n="Layouts">Association</div>
             </a>
 
@@ -52,9 +54,9 @@ fi{% set path = app.request.getPathInfo %}$
         </li>
         <li class="menu-item {{ 'project' in cleanPath | lower ? 'active' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-layout"></i>
+                <i class="menu-icon tf-icons bx bxl-product-hunt"></i>
                 <div data-i18n="Layouts">Projet</div>
-               
+
             </a>
 
             <ul class="menu-sub">
@@ -82,7 +84,7 @@ fi{% set path = app.request.getPathInfo %}$
         </li>
         <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-layout"></i>
+                <i class="menu-icon tf-icons bx bx-calendar-event"></i>
                 <div data-i18n="Layouts">Evenement</div>
             </a>
 
@@ -109,31 +111,49 @@ fi{% set path = app.request.getPathInfo %}$
                 </li>
             </ul>
         </li>
-
-        <li class="menu-item {{ 'cument' in cleanPath | lower ? 'active' : '' }}">
+        <li class="menu-item{{ 'cument' in cleanPath | lower ? 'active' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-file"></i>
                 <div data-i18n="Layouts">Document</div>
             </a>
-
             <ul class="menu-sub">
                 <li class="menu-item">
                     <a href="/dashboard/document" class="menu-link">
-                        <div data-i18n="Without menu">Liste des Documents</div>
+                        <div data-i18n="Withoutmenu">Liste des Documents</div>
                     </a>
                 </li>
                 <li class="menu-item">
                     <a href="/dashboard/document/new" class="menu-link">
-                        <div data-i18n="Without navbar">Ajouter un Document</div>
+                        <div data-i18n="Withoutnavbar">Ajouter un Document</div>
                     </a>
                 </li>
                 <li class="menu-item">
                     <a href="{{ path('app_demande_document_front_index') }}" class="menu-link">
-                        <div data-i18n="Without navbar">Les Demandes</div>
+                        <div data-i18n="Withoutnavbar">Les Demandes</div>
                     </a>
                 </li>
-
             </ul>
         </li>
+
+        <li class="menu-item {{ 'user'in cleanPath|lower?'active':'' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-user"></i>
+                <div data-i18n="Layouts">Utilisateur</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="{{ path('app_citoyen_index') }}" class="menu-link">
+                        <div data-i18n="Withoutmenu">Liste des Utilisateur et Citoyens</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{ path('app_citoyen_new') }}" class="menu-link">
+                        <div data-i18n="Withoutnavbar">Ajouter un Citoyen</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+
     </ul>
 </aside>

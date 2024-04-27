@@ -38,6 +38,9 @@
             "./migrations/.gitignore"
         ]
     },
+    "endroid/qr-code-bundle": {
+        "version": "5.0.1"
+    },
     "php-http/discovery": {
         "version": "1.19",
         "recipe": {
@@ -326,6 +329,6 @@
         "version": "v0.5.1"
     },
     "twig/extra-bundle": {
-        "version": "v3.8.0"
+        "version": "v3.9.3"
     }
 }
