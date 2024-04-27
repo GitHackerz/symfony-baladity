@@ -17,8 +17,10 @@ class MembreController extends AbstractController
     #[Route('/', name: 'membre_back_index', methods: ['GET'])]
     public function index(MembreRepository $membreRepository): Response
     {
+        $membresByEvent = $membreRepository->findCountByEvent();
         return $this->render('back/membre/index.html.twig', [
             'membres' => $membreRepository->findAll(),
+            'membresByEvent' => $membresByEvent,
         ]);
     }
 
@@ -78,4 +80,6 @@ class MembreController extends AbstractController
 
         return $this->redirectToRoute('membre_back_index', [], Response::HTTP_SEE_OTHER);
     }
+
+   
 }

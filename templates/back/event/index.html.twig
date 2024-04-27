@@ -1,32 +1,40 @@
 {% extends 'back/base.html.twig' %}
+
 {% block body %}
-    <div class="content-wrapper">
+<div class="content-wrapper">
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="card">
             <div class="card-header d-flex flex-row justify-content-between align-items-center">
-                <h5>Liste des evenements</h5>
-                <a href="{{ path('event_back_new') }}" class="btn btn-success ">Create new</a>
+                <h5>Liste des événements</h5>
+                <div>
+                    <a href="{{ path('event_back_new') }}" class="btn btn-success">Créer un nouvel événement</a>
+                    <a href="{{ path('generate_pdf') }}" class="btn btn-success">Télécharger en PDF</a>
+                </div>
             </div>
-
-            <div class="table-responsive text-nowrap">
+            <div class="card-body">
+                <form action="{{ path('event_back_search') }}" method="GET">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Rechercher par titre...">
+                </form>
+            </div>
+            <div id="searchResults" class="table-responsive">
                 <table class="table table-striped">
                     <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Titre</th>
-                        <th>Description</th>
-                        <th>Date</th>
-                        <th>Lieu</th>
-                        <th>Nom Contact</th>
-                        <th>Email Contact</th>
-                        <th>Statut</th>
-                        <th>Actions</th>
-                    </tr>
+                        <tr>
+                            <th>Id</th>
+                            <th>Titre</th>
+                            <th>Description</th>
+                            <th>Date</th>
+                            <th>Lieu</th>
+                            <th>Nom Contact</th>
+                            <th>Email Contact</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    {% for event in events %}
+                        {% for event in events %}
                         <tr>
-                            <th scope="row">{{ event.id }}</th>
+                            <td>{{ event.id }}</td>
                             <td>{{ event.titre }}</td>
                             <td>{{ event.description }}</td>
                             <td>{{ event.date }}</td>
@@ -35,20 +43,69 @@
                             <td>{{ event.emailContact }}</td>
                             <td>{{ event.statut ? 'fini' : 'pas fini' }}</td>
                             <td>
-                                <a href="{{ path('event_back_show', {'id': event.id}) }}"
-                                   class="btn btn-primary btn-sm">Show</a>
-                                <a href="{{ path('event_back_edit', {'id': event.id}) }}"
-                                   class="btn btn-secondary btn-sm">Edit</a>
+                                <a href="{{ path('event_back_show', {'id': event.id}) }}" class="btn btn-primary btn-sm">Afficher</a>
+                                <a href="{{ path('event_back_edit', {'id': event.id}) }}" class="btn btn-secondary btn-sm">Modifier</a>
                             </td>
                         </tr>
-                    {% else %}
+                        {% else %}
                         <tr>
-                            <td colspan="9" class="text-center">No records found</td>
+                            <td colspan="9" class="text-center">Aucun enregistrement trouvé</td>
                         </tr>
-                    {% endfor %}
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    var searchInput = document.getElementById('searchInput');
+    var searchResults = document.getElementById('searchResults');
+
+    searchInput.addEventListener('input', function() {
+        var searchTerm = searchInput.value.trim();
+
+        // Envoyer une requête AJAX au backend pour récupérer les résultats de la recherche
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/dashboard/event/search?q=' + searchTerm);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    var data = JSON.parse(xhr.responseText);
+                    renderSearchResults(data); // Afficher les résultats de la recherche
+                } else {
+                    console.error('Erreur lors de la requête : ' + xhr.status);
+                }
+            }
+        };
+        xhr.send();
+    });
+
+    function renderSearchResults(data) {
+        searchResults.innerHTML = ''; // Effacer le contenu actuel du tableau
+
+        data.forEach(function(event) {
+            var row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${event.id}</td>
+                <td>${event.titre}</td>
+                <td>${event.description}</td>
+                <td>${event.date}</td>
+                <td>${event.lieu}</td>
+                <td>${event.nomContact}</td>
+                <td>${event.emailContact}</td>
+                <td>${event.statut ? 'fini' : 'pas fini'}</td>
+                <td>
+                    <a href="/dashboard/event/${event.id}" class="btn btn-primary btn-sm">Afficher</a>
+                    <a href="/dashboard/event/${event.id}/edit" class="btn btn-secondary btn-sm">Modifier</a>
+                </td>
+            `;
+            searchResults.appendChild(row);
+        });
+    }
+});
+
+</script>
 {% endblock %}

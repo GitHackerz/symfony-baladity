@@ -10,6 +10,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+
+//use TCPDF;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 #[Route('/dashboard/event')]
 class EventBackController extends AbstractController
@@ -78,4 +85,64 @@ class EventBackController extends AbstractController
 
         return $this->redirectToRoute('event_back_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/generate-pdf', name: 'generate_pdf')]
+    public function generatePdf(EvenementRepository $eventRepository): Response
+    {
+        // Récupérer la liste des événements
+        $events = $eventRepository->findAll();
+    
+        // Créer une instance de Dompdf
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+        $dompdf = new Dompdf($pdfOptions);
+    
+        // Générer le contenu HTML pour le PDF
+        $html = $this->renderView('back/event/pdf.html.twig', [
+            'events' => $events,
+        ]);
+    
+        // Charger le contenu HTML dans Dompdf
+        $dompdf->loadHtml($html);
+    
+        // Rendre le PDF
+        $dompdf->render();
+    
+        // Renvoyer la réponse avec le PDF en tant que fichier téléchargeable
+        $output = $dompdf->output();
+        return new Response($output, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="events.pdf"',
+        ]);
+    }
+
+    #[Route('/', name: 'event_back_search', methods: ['GET'])]
+    public function search(Request $request, EvenementRepository $eventRepository): JsonResponse
+    {
+        $searchTerm = $request->query->get('q');
+
+        // Implémentez la logique de recherche en utilisant le terme de recherche
+        // Utilisez la méthode appropriée dans votre repository
+        $events = $eventRepository->findByTitle($searchTerm);
+
+        // Créez un tableau associatif contenant les données à renvoyer
+        $data = [];
+        foreach ($events as $event) {
+            $data[] = [
+                'id' => $event->getId(),
+                'titre' => $event->getTitre(),
+                'description' => $event->getDescription(),
+                'date' => $event->getDate(),
+                'lieu' => $event->getLieu(),
+                'nomContact' => $event->getNomContact(),
+                'emailContact' => $event->getEmailContact(),
+                'statut' => $event->isStatut(),
+            ];
+        }
+
+        // Renvoyez les données au format JSON
+        return new JsonResponse($data);
+    }
+
+
 }

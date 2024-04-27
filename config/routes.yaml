@@ -1,3 +1,10 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+
+generate_pdf:
+    path: /generate-pdf
+    controller: 'App\Controller\EventBackController::generatePdf'
+    methods: ['GET'] # ou 'POST' si nécessaire
+
+

@@ -1,0 +1,21 @@
+{% if events is not empty %}
+    {% for event in events %}
+        <tr>
+            <td>{{ event.id }}</td>
+            <td>{{ event.titre }}</td>
+            <td>{{ event.description }}</td>
+            <td>{{ event.date }}</td>
+            <td>{{ event.lieu }}</td>
+            <td>{{ event.nomContact }}</td>
+            <td>{{ event.emailContact }}</td>
+            <td>{{ event.statut }}</td>
+            
+
+            <!-- Ajoutez d'autres colonnes si nécessaire -->
+        </tr>
+    {% endfor %}
+{% else %}
+    <tr>
+        <td colspan="2">Aucun événement trouvé pour "{{ searchTerm }}"</td>
+    </tr>
+{% endif %}

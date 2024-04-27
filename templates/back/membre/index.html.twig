@@ -17,7 +17,7 @@
                                 <th>Nom</th>
                                 <th>Prénom</th>
                                 <th>Age</th>
-                                <th> evenement </th>
+                                <th>Evenement</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -28,7 +28,7 @@
                                     <td>{{ membre.nom }}</td>
                                     <td>{{ membre.prenom }}</td>
                                     <td>{{ membre.age }}</td>
-                                    <td> {{membre.event.titre}}</td>
+                                    <td>{{ membre.event.titre }}</td>
                                     <td>
                                         <a href="{{ path('membre_back_show', {'id': membre.id}) }}"
                                            class="btn btn-primary btn-sm">Show</a>
@@ -38,7 +38,7 @@
                                 </tr>
                             {% else %}
                                 <tr>
-                                    <td colspan="5" class="text-center">No records found</td>
+                                    <td colspan="6" class="text-center">No records found</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -47,4 +47,62 @@
             </div>
         </div>
     </div>
+
+    <div class="content-wrapper">
+        <!-- Diagramme en barre -->
+        <div class="card">
+            <div class="card-header">
+                Nombre de membres par événement
+            </div>
+            <div class="card-body">
+                <canvas id="membresChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var ctx = document.getElementById('membresChart').getContext('2d');
+            var membresByEvent = {{ membresByEvent|json_encode|raw }};
+
+            var labels = [];
+            var data = [];
+            var backgroundColors = []; // Tableau pour stocker les couleurs
+
+            // Définir les couleurs pour chaque événement
+            var colors = ['#FF5733', '#33FF57', '#33C7FF', '#FF33FF']; // Ajoutez plus de couleurs si nécessaire
+
+            membresByEvent.forEach(function (membre, index) {
+                labels.push(membre.titre);
+                data.push(membre.count);
+                backgroundColors.push(colors[index % colors.length]); // Choix de couleur circulaire
+            });
+
+            var chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Nombre de membres',
+                        data: data,
+                        backgroundColor: backgroundColors,
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
 {% endblock %}
