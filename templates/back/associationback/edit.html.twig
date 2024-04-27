@@ -1,0 +1,22 @@
+{% extends 'back/base.html.twig' %}
+
+{% block title %}Modifier Association{% endblock %}
+
+{% block body %}
+<div class="content-wrapper">
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Modifier Association</h3>
+                    </div>
+                    <div class="card-body">
+                        {{ include('back/associationback/_form.html.twig', {'button_label': 'Modifier'}) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
