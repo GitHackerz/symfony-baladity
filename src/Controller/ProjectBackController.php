@@ -18,6 +18,9 @@ class ProjectBackController extends AbstractController
     #[Route('', name: 'project_back_index', methods: ['GET'])]
     public function index(ProjetRepository $projetRepository): Response
     {
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
         $totalBudgets = array_map(fn($project) => $project->getBudget(), $projetRepository->findAll());
         $activeProjects = $projetRepository->findActiveProjects();
         $completedProjects = $projetRepository->findCompletedProjects();
@@ -33,6 +36,9 @@ class ProjectBackController extends AbstractController
     #[Route('/new', name: 'project_back_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, ValidatorInterface $validator): Response
     {
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
         $projet = new Projet();
         $projet->setManager($this->getUser());
         $form = $this->createForm(ProjetType::class, $projet);
@@ -54,6 +60,9 @@ class ProjectBackController extends AbstractController
     #[Route('/edit/{id}', name: 'project_back_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Projet $projet, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
         $form = $this->createForm(ProjetType::class, $projet);
         $form->handleRequest($request);
 
@@ -72,6 +81,9 @@ class ProjectBackController extends AbstractController
     #[Route('/{id}', name: 'project_back_show', methods: ['GET'])]
     public function show(Projet $projet): Response
     {
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
         return $this->render('back/project/show.html.twig', [
             'project' => $projet,
         ]);
@@ -80,6 +92,9 @@ class ProjectBackController extends AbstractController
     #[Route('/{id}', name: 'project_back_delete', methods: ['DELETE'])]
     public function delete(Projet $projet, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
         $entityManager->remove($projet);
         $entityManager->flush();
 
