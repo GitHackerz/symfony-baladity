@@ -1,0 +1,59 @@
+{% extends '/back/base.html.twig' %}
+
+{% block title %}Hello citoyen !{% endblock %}
+
+{% block body %}
+<div class="content-wrapper">
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="card">
+            <h5 class="card-header">Citoyen </h5>
+            <div class="table-responsive text-nowrap">
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ citoyen.id }}</td>
+            </tr>
+            <tr>
+                <th>Cin</th>
+                <td>{{ citoyen.cin }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ citoyen.nom }}</td>
+            </tr>
+            <tr>
+                <th>Prenom</th>
+                <td>{{ citoyen.prenom }}</td>
+            </tr>
+            <tr>
+                <th>Adresse</th>
+                <td>{{ citoyen.adresse }}</td>
+            </tr>
+            <tr>
+                <th>DateNaissance</th>
+                <td>{{ citoyen.dateNaissance ? citoyen.dateNaissance|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Genre</th>
+                <td>{{ citoyen.genre }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+    
+
+    
+    <div class="card-footer">
+        <a href="{{ path('app_citoyen_index') }}" class="btn btn-secondary">Retour</a>
+        <a href="{{ path('app_citoyen_edit', {'id': citoyen.id}) }}" class="btn btn-primary">Modifier</a>
+    </div>
+
+    {{ include('back/citoyen/_delete_form.html.twig') }}
+</div>
+</div>
+
+</div>
+{% endblock %}

@@ -8,9 +8,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements PasswordAuthenticatedUserInterface, userInterface
+
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -18,21 +20,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
+    #[Assert\NotBlank(message: "L'adresse email ne doit pas être vide.")]
+    #[Assert\Email(message: "L'adresse email '{{ value }}' n'est pas une adresse email valide.")]
     private ?string $email = null;
 
-    #[ORM\Column]
-    private array $roles = [];
+
 
     #[ORM\Column(length: 255)]
-    private ?string $role= null;
+    private ?string $role = null;
 
-    /**
-     * @var string The hashed password
-     */
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Le password ne doit pas être vide.")]
     private ?string $password = null;
 
-    #[ORM\Column]
+
+    #[ORM\Column(type: 'string', length: 8)]
+    #[Assert\NotBlank(message: "Le numéro de téléphone ne doit pas être vide.")]
+    #[Assert\Regex(
+        pattern: "/^\d{8}$/",
+        message: "Le numéro de téléphone doit contenir exactement 8 chiffres."
+    )]
     private ?int $numTel = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -44,7 +51,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
-    #[ORM\ManyToOne(inversedBy: 'users')]
+    #[ORM\ManyToOne(targetEntity: Citoyen::class, inversedBy: 'users')]
     private ?Citoyen $citoyen = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: DemandeAssociation::class)]
@@ -53,14 +60,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: DemandeDocument::class)]
     private Collection $demandeDocuments;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: TacheProjet::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: TacheProjet::class, cascade: ['remove', 'persist'])]
     private Collection $tacheProjets;
+
+    #[ORM\ManyToMany(targetEntity: Projet::class, mappedBy: 'user', cascade: ['remove', 'persist'])]
+    private Collection $projets;
+
+    #[ORM\ManyToMany(targetEntity: Evenement::class, mappedBy: 'user')]
+    private Collection $evenements;
+  
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: TacheCommentaires::class)]
+    private Collection $tacheCommentaires;
 
     public function __construct()
     {
         $this->demandeAssociations = new ArrayCollection();
         $this->demandeDocuments = new ArrayCollection();
         $this->tacheProjets = new ArrayCollection();
+        $this->projets = new ArrayCollection();
+        $this->evenements = new ArrayCollection();
+        $this->tacheCommentaires = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -71,6 +90,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getEmail(): ?string
     {
         return $this->email;
+    }
+    public function getRoles(): array
+    {
+        return [$this->role]; // Vous pouvez ajuster cette méthode selon votre logique de gestion des rôles
     }
 
     public function setEmail(string $email): static
@@ -101,21 +124,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
-    public function getRoles(): array
-    {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
 
-        return array_unique($roles);
-    }
-
-    public function setRoles(array $roles): static
-    {
-        $this->roles = $roles;
-
-        return $this;
-    }
 
     public function getRole(): ?string
     {
@@ -310,6 +319,90 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($tacheProjet->getUser() === $this) {
                 $tacheProjet->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Projet>
+     */
+    public function getProjets(): Collection
+    {
+        return $this->projets;
+    }
+
+    public function addProjet(Projet $projet): static
+    {
+        if (!$this->projets->contains($projet)) {
+            $this->projets->add($projet);
+            $projet->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProjet(Projet $projet): static
+    {
+        if ($this->projets->removeElement($projet)) {
+            $projet->removeUser($this);
+        }
+
+        return $this;
+    }
+  
+      /**
+     * @return Collection<int, Evenement>
+     */
+    public function getEvenements(): Collection
+    {
+        return $this->evenements;
+    }
+
+    public function addEvenement(Evenement $evenement): static
+    {
+        if (!$this->evenements->contains($evenement)) {
+            $this->evenements->add($evenement);
+            $evenement->addUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TacheCommentaires>
+     */
+    public function getTacheCommentaires(): Collection
+    {
+        return $this->tacheCommentaires;
+    }
+
+    public function addTacheCommentaire(TacheCommentaires $tacheCommentaire): static
+    {
+        if (!$this->tacheCommentaires->contains($tacheCommentaire)) {
+            $this->tacheCommentaires->add($tacheCommentaire);
+            $tacheCommentaire->setUser($this);
+        }
+
+        return $this;
+    }
+  
+    public function removeEvenement(Evenement $evenement): static
+    {
+        if ($this->evenements->removeElement($evenement)) {
+            $evenement->removeUser($this);
+         }
+
+        return $this;
+    }
+
+    public function removeTacheCommentaire(TacheCommentaires $tacheCommentaire): static
+    {
+        if ($this->tacheCommentaires->removeElement($tacheCommentaire)) {
+            // set the owning side to null (unless already changed)
+            if ($tacheCommentaire->getUser() === $this) {
+                $tacheCommentaire->setUser(null);
             }
         }
 

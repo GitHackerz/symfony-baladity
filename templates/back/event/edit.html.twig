@@ -1,0 +1,14 @@
+{% extends 'back/base.html.twig' %}
+
+{% block body %}
+<div class="content-wrapper">
+    <div class="container-xxl flex-grow-1 container-p-y">
+
+        {{ include('back/event/_form.html.twig', {'button_label': 'Update'}) }}
+
+        <div class="btn-container">
+            <a href="{{ path('event_back_index') }}" class="btn btn-secondary">Back to list</a>
+            {{ include('back/event/_delete_form.html.twig', {'id': event.id}) }}
+        </div>
+    </div>
+{% endblock %}
