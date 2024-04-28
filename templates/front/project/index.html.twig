@@ -90,7 +90,8 @@
                     event.preventDefault();
                     const projectId = this.getAttribute('data-project-id');
                     const participated = this.getAttribute('data-participated') === 'true';
-                    const url = participated ? `/project/quitter/${projectId}/10` : `/project/participer/${projectId}/10`;
+                    const url = participated ? `/project/quitter/${projectId}/2` : `/project/participer/${projectId}/2`;
+                    this.textContent = 'En cours...';
                     fetch(url, {
                         method: 'POST',
                         headers: {
@@ -109,6 +110,7 @@
                         })
                         .catch(error => {
                             // Handle errors
+                            this.textContent = participated ? 'Annuler la participation' : 'Participer';
                             console.error('Error:', error);
                         });
                 });

@@ -3,6 +3,29 @@
 
  {% block body %}
 
+
+ 
+
+<script src="{{ asset('back/js/search.js') }}" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator"></script>
+
+<script>
+  // JavaScript function to generate a mailto link QR code for each user
+function generateQRCodeForUser(userId, email) {
+    let qr = qrcode(0, 'L');
+    qr.addData(`mailto:${email}`);
+    qr.make();
+
+    // Find the container for the QR code and set the data URL as the source for an image
+    let qrCodeContainer = document.getElementById(`qr-code-${userId}`);
+    qrCodeContainer.innerHTML = `<img src="${qr.createDataURL()}" alt="QR Code">`;
+}
+
+</script>
+
+
+
+
  <div class="content-wrapper">
     <div class="container-xxl flex-grow-1 container-p-y">
  <div class="card">
@@ -175,25 +198,5 @@
 {% include 'back/citoyen/gender_stats.html.twig' %}
 
   {% endblock %}
-  {% block javascripts %}
-{{ parent() }}
-<script src="{{ asset('back/js/search.js') }}" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator"></script>
-
-<script>
-  // JavaScript function to generate a mailto link QR code for each user
-function generateQRCodeForUser(userId, email) {
-    let qr = qrcode(0, 'L');
-    qr.addData(`mailto:${email}`);
-    qr.make();
-
-    // Find the container for the QR code and set the data URL as the source for an image
-    let qrCodeContainer = document.getElementById(`qr-code-${userId}`);
-    qrCodeContainer.innerHTML = `<img src="${qr.createDataURL()}" alt="QR Code">`;
-}
-
-</script>
-
-
-{% endblock %}
+  
 

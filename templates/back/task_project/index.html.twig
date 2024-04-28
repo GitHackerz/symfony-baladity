@@ -10,8 +10,16 @@
     <div class="content-wrapper">
         <div class="container-xxl flex-grow-1 container-p-y">
             <div class="card">
-                <div class="card-header p-3">
+                <div class="card-header p-3 inline-flex justify-between">
                     <h5 class="mb-0"><i class="fas fa-tasks me-2"></i>Task List</h5>
+                    <div>
+                        <select id="projectFilter" class="form-control">
+                            <option value="">All Projects</option>
+                            {% for project in projects %}
+                                <option value="{{ project.id }}">{{ project.titre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                 </div>
                 <div class="card-body" data-mdb-perfect-scrollbar="true">
 
@@ -28,7 +36,8 @@
                         </thead>
                         <tbody>
                         {% for tache_projet in tache_projets %}
-                            <tr class="fw-normal hoverable-row" data-id="{{ tache_projet.id }}">
+                            <tr class="fw-normal hoverable-row" data-id="{{ tache_projet.id }}"
+                                data-project-id="{{ tache_projet.projet.id }}">
 
                                 <th class="align-middle">
                                     <span>{{ tache_projet.titre }}</span>
@@ -44,7 +53,9 @@
                                         style="width: auto;"
 
                                 >
-                                    <img src="{{ tache_projet.user.image }}" alt="Avatar" class="rounded-circle"  style="width: 30px; height: auto;"/>
+                                    <img src="{{ asset('uploads/'~tache_projet.user.image) }}" alt="Avatar"
+                                         class="rounded-circle"
+                                         style="width: 30px; height: auto;"/>
                                 </td>
                                 <td class="align-middle">
                                     <span>{{ tache_projet.tacheCommentaires.count }}</span>
@@ -55,12 +66,6 @@
                                                 class="badge {{ tache_projet.statut | lower == 'to do' ? 'bg-danger' : tache_projet.statut | lower == 'in progress' ? 'bg-warning' : 'bg-success' }}">{{ tache_projet.statut }}</span>
                                     </h6>
                                 </td>
-{#                                <td class="align-middle">#}
-{#                                    <a href="#!" data-mdb-tooltip-init title="Done"><i#}
-{#                                                class="fas fa-check text-success me-3"></i></a>#}
-{#                                    <a href="javascript:void(0);" data-task-id="{{ tache_projet.id }}" data-mdb-tooltip-init title="Remove" class="delete-task"><i#}
-{#                                                class="fas fa-trash-alt text-danger"></i></a>#}
-{#                                </td>#}
                                 <td>
                                     <div class="dropdown">
                                         <button
@@ -71,10 +76,12 @@
                                             <i class="bx bx-dots-vertical-rounded"></i>
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item text-warning" href="/dashboard/project-tasks/{{ tache_projet.id }}/edit"
+                                            <a class="dropdown-item text-warning"
+                                               href="/dashboard/project-tasks/{{ tache_projet.id }}/edit"
                                             ><i class="bx bx-edit-alt me-1"></i> Edit</a
                                             >
-                                            <a data-task-id="{{ tache_projet.id }}" class="dropdown-item text-danger delete-task" href="javascript:void(0);">
+                                            <a data-task-id="{{ tache_projet.id }}"
+                                               class="dropdown-item text-danger delete-task" href="javascript:void(0);">
                                                 <i class="bx bx-trash me-1"></i> Delete
                                             </a>
                                         </div>
@@ -91,20 +98,192 @@
 
                 </div>
             </div>
+            <div class="flex h-screen w-full flex-col">
+                <div class="flex-1 overflow-auto p-6">
+                    <div class="grid grid-cols-3 gap-6">
+                        <div class="rounded-lg border p-4  bg-white">
+                            <div class="mb-4 flex items-center justify-between">
+                                <h2 class="text-lg font-semibold">To Do</h2>
+                                <div id="todo-length"
+                                     class="inline-flex w-fit items-center whitespace-nowrap rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground">
+                                    {{ todoTasks | length }}
+                                </div>
+                            </div>
+                            <div class="space-y-4">
+                                {% for todoTask in todoTasks %}
+                                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm "
+                                         data-v0-t="card" id="todoCard" data-project-id="{{ todoTask.projet.id }}">
+                                        <div class="p-6 relative">
+                                            <h3 class="text-base font-medium">{{ todoTask.titre }}</h3>
+                                            <h4 class="text-sm text-gray-500 mb-2"><span
+                                                        class="font-semibold">Projet: </span>{{ todoTask.projet.titre }}
+                                            </h4>
+                                            {#                                            <p class="text-sm text-gray-500 ">{{ todoTask.description }}</p> #}
+                                            <div class="mt-2 flex items-center space-x-2">
+                                            <span class="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full">
+                                              <img class="aspect-square h-full w-full"
+                                                   src="{{ asset('uploads/'~todoTask.user.image) }}"/>
+                                            </span>
+                                                <span class="text-sm text-gray-500 ">{{ todoTask.user.citoyen.prenom ~ " " ~ todoTask.user.citoyen.nom }}</span>
+                                            </div>
+                                            <button data-board-task-id="{{ todoTask.id }}"
+                                                    class="absolute right-4 bottom-2 text-green-700 font-semibold"
+                                                    id="startTask">
+                                                Start Task
+                                            </button>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="rounded-lg border bg-white p-4  ">
+                            <div class="mb-4 flex items-center justify-between">
+                                <h2 class="text-lg font-semibold">In Progress</h2>
+                                <div id="inprogress-length"
+                                     class="inline-flex w-fit items-center whitespace-nowrap rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground">
+                                    {{ inProgressTasks | length }}
+                                </div>
+                            </div>
+                            <div id="inProgressList" class="space-y-4">
+                                {% for inProgressTask in inProgressTasks %}
+                                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm "
+                                         data-v0-t="card" id="inProgressCard"
+                                         data-project-id="{{ inProgressTask.projet.id }}">
+                                        <div class="p-6 relative">
+                                            <h3 class="text-base font-medium">{{ inProgressTask.titre }}</h3>
+                                            <h4 class="text-sm text-gray-500 mb-2"><span
+                                                        class="font-semibold">Projet: </span>{{ inProgressTask.projet.titre }}
+                                            </h4>
+                                            {#                                            <p class="text-sm text-gray-500 ">{{ inProgressTask.description }}</p> #}
+                                            <div class="mt-2 flex items-center space-x-2">
+                                            <span class="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full">
+                                              <img class="aspect-square h-full w-full"
+                                                   src="{{ asset('uploads/'~inProgressTask.user.image) }}"/>
+                                            </span>
+                                                <span class="text-sm text-gray-500 ">{{ inProgressTask.user.citoyen.prenom ~ " " ~ inProgressTask.user.citoyen.nom }}</span>
+                                            </div>
+                                            <button data-board-task-id="{{ inProgressTask.id }}"
+                                                    class="absolute right-4 bottom-2 text-red-700 font-semibold"
+                                                    id="endTask">
+                                                End Task
+                                            </button>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="rounded-lg border bg-white p-4">
+                            <div class="mb-4 flex items-center justify-between">
+                                <h2 class="text-lg font-semibold">Done</h2>
+                                <div id="done-length"
+                                     class="inline-flex w-fit items-center whitespace-nowrap rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground">
+                                    {{ doneTasks | length }}
+                                </div>
+                            </div>
+                            <div id="doneList" class="space-y-4">
+                                {% for doneTask in doneTasks %}
+                                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm "
+                                         data-v0-t="card" id="doneCard" data-project-id="{{ doneTask.projet.id }}">
+                                        <div class="p-6">
+                                            <h3 class="text-base font-medium">{{ doneTask.titre }}</h3>
+                                            <h4 class="text-sm text-gray-500 mb-2"><span
+                                                        class="font-semibold">Projet: </span>{{ doneTask.projet.titre }}
+                                            </h4>
+                                            {#                                            <p class="text-xs text-gray-500 ">{{ doneTask.description }}</p> #}
+                                            <div class="mt-2 flex items-center space-x-2">
+                                            <span class="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full">
+                                              <img class="aspect-square h-full w-full"
+                                                   src="{{ asset('uploads/'~    doneTask.user.image) }}"/>
+                                            </span>
+                                                <span class="text-sm text-gray-500 ">{{ doneTask.user.citoyen.prenom ~ " " ~ doneTask.user.citoyen.nom }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     {% block script %}
         <script>
-            $(document).ready(function() {
-                $('tr[data-id]').on('click', function() {
+            $('#projectFilter').on('change', function () {
+                const selectedProjectId = $(this).val();
+                console.log(selectedProjectId)
+
+                if (selectedProjectId) {
+                    $('tr[data-project-id]').hide();
+                    $('tr[data-project-id="' + selectedProjectId + '"]').show();
+                    $('[data-project-id]').hide();
+                    $('[data-project-id="' + selectedProjectId + '"]').show();
+                } else {
+                    $('tr[data-project-id]').show();
+                    $('[data-project-id]').show();
+                }
+            });
+            $(document).ready(function () {
+                $('body').on('click', '#startTask', function (e) {
+                    e.preventDefault();
+                    const taskId = $(this).data('board-task-id');
+                    const taskCard = $(this).closest('#todoCard'); // Get the task card
+                    const button = $(this);
+
+                    button.prop('disabled', true).text('Loading...');
+
+                    $.ajax({
+                        url: '/dashboard/project-tasks/' + taskId + '/start',
+                        type: 'PUT',
+                        success: function (response) {
+                            taskCard.remove();
+                            button.text('End Task').attr('id', 'endTask').removeClass('text-green-700').addClass('text-red-700');
+                            taskCard.attr('id', 'inProgressCard');
+                            $('#inProgressList').append(taskCard);
+                            button.prop('disabled', false);
+                            $("#todo-length").text(parseInt($('#todo-length').text()) - 1);
+                            $('#inprogress-length').text(parseInt($('#inprogress-length').text()) + 1);
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(error);
+                            button.prop('disabled', false).text('Start Task');
+                        }
+                    });
+                })
+                $('body').on('click', '#endTask', function (e) {
+                    e.preventDefault();
+                    const taskId = $(this).data('board-task-id');
+                    const taskCard = $(this).closest('#inProgressCard'); // Get the task card
+                    const button = $(this);
+
+                    button.prop('disabled', true).text('Loading...');
+
+                    $.ajax({
+                        url: '/dashboard/project-tasks/' + taskId + '/done',
+                        type: 'PUT',
+                        success: function (response) {
+                            taskCard.remove();
+                            taskCard.attr('id', 'doneCard');
+                            $('#doneList').append(taskCard);
+                            button.remove();
+                            $("#inprogress-length").text(parseInt($('#inprogress-length').text()) - 1);
+                            $('#done-length').text(parseInt($('#done-length').text()) + 1);
+                        },
+                        error: function (xhr, status, error) {
+                            console.log(error)
+                            button.prop('disabled', false).text('End Task');
+                        }
+                    });
+                })
+                $('tr[data-id]').on('click', function () {
                     const taskId = $(this).data('id');
                     window.location.href = '/dashboard/project-tasks/' + taskId;
                 });
-                $('.dropdown').click(function(event) {
+                $('.dropdown').click(function (event) {
                     event.stopPropagation();
                 });
-                $('.delete-task').click(function(e) {
+                $('.delete-task').click(function (e) {
                     e.preventDefault();
                     const taskId = $(this).data('task-id');
                     const deleteLink = $(this); // Store reference to this
@@ -112,14 +291,15 @@
                     $.ajax({
                         url: '/dashboard/project-tasks/' + taskId,
                         type: 'DELETE',
-                        success: function(response) {
+                        success: function (response) {
                             deleteLink.closest('tr').remove(); // Use stored reference
                         },
-                        error: function(xhr, status, error) {
+                        error: function (xhr, status, error) {
                             console.error(error);
                         }
                     });
                 });
+
             });
         </script>
     {% endblock %}
