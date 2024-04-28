@@ -1,96 +1,191 @@
 {% extends "back/base.html.twig" %}
 
 {% block stylesheets %}
-<style>
-    .hoverable-row:hover {
-        cursor: pointer;
-    }
-</style>
+    <style>
+        .hoverable-row:hover {
+            cursor: pointer;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
     <div class="content-wrapper">
         <div class="container-xxl flex-grow-1 container-p-y">
-            <div class="card">
-                <h5 class="card-header">Liste des projets</h5>
-                <div class="table-responsive text-nowrap">
-                    <table class="table table-hover">
-                        <thead>
-                        <tr>
-                            <th>Projet</th>
-                            <th>Date Debut</th>
-                            <th>Date Fin</th>
-                            <th>Statut</th>
-                            <th>Budget</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody class="table-border-bottom-0">
-                        {% for projet in projets %}
-                            <tr data-id="{{ projet.id }}" class="hoverable-row">
-                                <td>
-                                    <strong>{{ projet.titre }}</strong>
-                                </td>
-                                <td>{{ projet.dateDebut.format("d M Y") }}</td>
-                                <td>{{ projet.dateFin.format("d M Y") }}</td>
-                                <td>
-                                    <span class="badge {{ (projet.statut | lower) == "planned" ? 'bg-label-danger' : (projet.statut | lower) == "in progress" ? 'bg-label-warning' : "bg-label-primary" }} me-1">{{ projet.statut }}</span>
-                                </td>
-                                <td>{{ projet.budget|format_currency('TND') }}</td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button
-                                                type="button"
-                                                class="btn p-0 dropdown-toggle hide-arrow shadow-none"
-                                                data-bs-toggle="dropdown"
-                                        >
-                                            <i class="bx bx-dots-vertical-rounded"></i>
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <a class="dropdown-item text-warning" href="/dashboard/project/edit/{{ projet.id }}"
-                                            ><i class="bx bx-edit-alt me-1"></i> Edit</a
-                                            >
-                                            <a data-project-id="{{ projet.id }}" class="dropdown-item text-danger delete-project" href="javascript:void(0);">
-                                                <i class="bx bx-trash me-1"></i> Delete
-                                            </a>
-                                        </div>
-                                    </div>
-                                </td>
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-3 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title d-flex align-items-start justify-content-between">
+                                <div class="avatar flex-shrink-0">
+                                    <img
+                                            src="{{ asset('back/img/icons/unicons/chart-success.png') }}"
+                                            alt="chart success"
+                                            class="rounded"
+                                    />
+                                </div>
+                            </div>
+                            <span class="fw-semibold d-block mb-1 text-xl">Budget Total</span>
+                            <h3 class="card-title mb-2 text-sm">{{ totalBudgets | format_currency('TND') }}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-3 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title d-flex align-items-start justify-content-between">
+                                <div class="avatar flex-shrink-0">
+                                    <img
+                                            src="{{ asset('back/img/icons/unicons/chart-success.png') }}"
+                                            alt="chart success"
+                                            class="rounded"
+                                    />
+                                </div>
+
+                            </div>
+                            <span class="fw-semibold d-block mb-1 text-xl">Budget Moyen</span>
+                            <h3 class="card-title mb-2 text-sm">{{ averageBudgets|format_currency('TND') }}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-2 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title d-flex align-items-start justify-content-between">
+                                <div class="avatar flex-shrink-0">
+                                    <img
+                                            src="{{ asset('back/img/icons/unicons/chart-success.png') }}"
+                                            alt="chart success"
+                                            class="rounded"
+                                    />
+                                </div>
+
+                            </div>
+                            <span class="fw-semibold d-block mb-1">Active Projects</span>
+                            <h3 class="card-title mb-2">{{ numberOfActiveProjects }}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-2 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title d-flex align-items-start justify-content-between">
+                                <div class="avatar flex-shrink-0">
+                                    <img
+                                            src="{{ asset('back/img/icons/unicons/chart-success.png') }}"
+                                            alt="chart success"
+                                            class="rounded"
+                                    />
+                                </div>
+
+                            </div>
+                            <span class="fw-semibold d-block mb-1 ">InActive Projects</span>
+                            <h3 class="card-title mb-2 ">{{ numberOfCompletedProjects }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="card">
+                    <div class="card-header d-inline-flex justify-content-between">
+                        <h5>Liste des projets</h5>
+                        <div>
+                            <input type="text" id="search" class="form-control" placeholder="Search">
+                        </div>
+                    </div>
+                    <div class="table-responsive text-nowrap">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>Projet</th>
+                                <th>Date Debut</th>
+                                <th>Date Fin</th>
+                                <th>Statut</th>
+                                <th>Budget</th>
+                                <th>Actions</th>
                             </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody class="table-border-bottom-0">
+                            {% for project in projects %}
+                                <tr data-id="{{ project.id }}" class="hoverable-row">
+                                    <td>
+                                        <strong>{{ project.titre }}</strong>
+                                    </td>
+                                    <td>{{ project.dateDebut.format("d M Y") }}</td>
+                                    <td>{{ project.dateFin.format("d M Y") }}</td>
+                                    <td>
+                                        <span class="badge {{ (project.statut | lower) == "planned" ? 'bg-label-danger' : (project.statut | lower) == "in progress" ? 'bg-label-warning' : "bg-label-primary" }} me-1">{{ project.statut }}</span>
+                                    </td>
+                                    <td>{{ project.budget|format_currency('TND') }}</td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button
+                                                    type="button"
+                                                    class="btn p-0 dropdown-toggle hide-arrow shadow-none"
+                                                    data-bs-toggle="dropdown"
+                                            >
+                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item text-warning"
+                                                   href="/dashboard/project/edit/{{ project.id }}"
+                                                ><i class="bx bx-edit-alt me-1"></i> Edit</a
+                                                >
+                                                <a data-project-id="{{ project.id }}"
+                                                   class="dropdown-item text-danger delete-project"
+                                                   href="javascript:void(0);">
+                                                    <i class="bx bx-trash me-1"></i> Delete
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     {% block script %}
         <script>
-        $(document).ready(function() {
-            $('tr[data-id]').on('click', function() {
-                const projectId = $(this).data('id');
-                window.location.href = '/dashboard/project/' + projectId;
-            });
-            $('.dropdown').click(function(event) {
-                event.stopPropagation();
-            });
-            $('.delete-project').click(function(e) {
-                e.preventDefault();
-                const projectId = $(this).data('project-id');
-                const deleteLink = $(this); // Store reference to this
+            $(document).ready(function () {
+                $('tr[data-id]').on('click', function () {
+                    const projectId = $(this).data('id');
+                    window.location.href = '/dashboard/project/' + projectId;
+                });
+                $('.dropdown').click(function (event) {
+                    event.stopPropagation();
+                });
+                $('.delete-project').click(function (e) {
+                    e.preventDefault();
+                    const projectId = $(this).data('project-id');
+                    const deleteLink = $(this); // Store reference to this
 
-                $.ajax({
-                    url: '/dashboard/project/' + projectId,
-                    type: 'DELETE',
-                    success: function(response) {
-                        deleteLink.closest('tr').remove(); // Use stored reference
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                    }
+                    $.ajax({
+                        url: '/dashboard/project/' + projectId,
+                        type: 'DELETE',
+                        success: function (response) {
+                            deleteLink.closest('tr').remove(); // Use stored reference
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                });
+                $('#search').on('keyup', function () {
+                    let value = $(this).val().toLowerCase();
+                    $('table tbody tr').each(function () {
+                        let rowText = $(this).text().toLowerCase();
+                        console.log(rowText);
+                            if (rowText.indexOf(value) > -1) {
+                            $(this).show();
+                        } else {
+                            $(this).hide();
+                        }
+                    });
                 });
             });
-        });
         </script>
     {% endblock %}
 {% endblock %}
