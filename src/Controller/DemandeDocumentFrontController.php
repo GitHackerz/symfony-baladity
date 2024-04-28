@@ -34,6 +34,10 @@ class DemandeDocumentFrontController extends AbstractController
         $form = $this->createForm(DemandeDocumentType::class, $demandeDocument);
         $form->handleRequest($request);
 
+        //check user connected
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($demandeDocument);
             $entityManager->flush();
