@@ -130,12 +130,11 @@ class CitoyenController extends AbstractController
         throw $this->createAccessDeniedException('Invalid CSRF token.');
     }
 
-    #[Route('/recherche', name: 'citoyen_recherche2', methods: ['GET'])]
-    public function recherche(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/citoyen/recherche', name: 'citoyen_recherche2', methods: ['GET'])]
+    public function recherche(Request $request, EntityManagerInterface $entityManager, CitoyenRepository $citoyenRepository): Response
     {
         $query = $request->query->get('q');
-        $citoyens = $entityManager->getRepository(Citoyen::class)->findByQuery($query);
-        var_dump(count($citoyens));
+        $citoyens = $citoyenRepository->findByQuery($query);
 
         return $this->render('back/citoyen/tableContent.html.twig', [
             'citoyens' => $citoyens,

@@ -4,8 +4,11 @@
  {% block body %}
 
 
+
  
 
+{% block javascripts %}
+{{ parent() }}
 <script src="{{ asset('back/js/search.js') }}" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator"></script>
 
@@ -22,6 +25,9 @@ function generateQRCodeForUser(userId, email) {
 }
 
 </script>
+
+
+{% endblock %}
 
 
 
