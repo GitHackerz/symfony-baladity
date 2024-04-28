@@ -37,8 +37,8 @@ class Document
     #[ORM\Column(length: 255)]
     private ?bool $estArchive = null;
 
-    #[ORM\Column]
-    private ?int $nbReq = null;
+    #[ORM\Column(options: ['default' => 0])]
+    private ?int $nbReq = 0;
 
     #[ORM\OneToMany(mappedBy: 'document', targetEntity: DemandeDocument::class)]
     private Collection $demandeDocuments;

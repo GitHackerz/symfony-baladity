@@ -1,0 +1,47 @@
+{% extends 'back/base.html.twig' %}
+{% block body %}
+    <div class="content-wrapper">
+        <div class="container-xxl flex-grow-1 container-p-y">
+            <div class="card">
+                <div class="card-header d-flex flex-row justify-content-between align-items-center">
+                    <h5>Liste des evenements</h5>
+                    <a href="{{ path('membre_back_new') }}" class="btn btn-success ">Create new</a>
+                </div>
+
+                <div class="table-responsive text-nowrap">
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr>
+                            <th>Id</th>
+                            <td>{{ membre.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Nom</th>
+                            <td>{{ membre.nom }}</td>
+                        </tr>
+                        <tr>
+                            <th>prenom</th>
+                            <td>{{ membre.prenom }}</td>
+                        </tr>
+                        <tr>
+                            <th>Age</th>
+                            <td>{{ membre.age }}</td>
+                        </tr>
+                        <tr>
+                            <th>evenement</th>
+                            <td>{{ membre.event.titre}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="btn-container">
+                        <a href="{{ path('membre_back_index') }}" class="btn btn-secondary">Back to list</a>
+                        <a href="{{ path('membre_back_edit', {'id': membre.id}) }}" class="btn btn-warning">Edit</a>
+                        {{ include('back/membre/_delete_form.html.twig', {'id': membre.id}) }}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -23,4 +23,10 @@ class HomeController extends AbstractController
             'controller_name' => 'HomeController',
         ]);
     }
+
+    #[Route('/profile', name: 'app_profile')]
+    public function profile(): Response
+    {
+        return $this->render('front/user/profile.html.twig');
+    }
 }

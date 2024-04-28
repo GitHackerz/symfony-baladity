@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: CitoyenRepository::class)]
 class Citoyen
@@ -16,16 +18,26 @@ class Citoyen
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
+
+    #[ORM\Column(type: 'string', length: 8)]
+    #[Assert\NotBlank(message: "Le numéro de cin ne doit pas être vide.")]
+    #[Assert\Regex(
+        pattern: "/^\d{8}$/",
+        message: "Le numéro de cin doit contenir exactement 8 chiffres."
+    )]
     private ?int $cin = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le nom ne doit pas être vide.")]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le prenom ne doit pas être vide.")]
     private ?string $prenom = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "L'adresse' ne doit pas être vide.")]
+
     private ?string $adresse = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
@@ -148,6 +160,4 @@ class Citoyen
 
         return $this;
     }
-
-
 }

@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/document')]
 class DocumentFrontController extends AbstractController
 {
-    #[Route('/', name: 'app_demande_doc')]
+    #[Route('', name: 'app_demande_doc')]
     public function index(DocumentRepository $documentRepository): Response
     {
         $documents = $documentRepository->findByEstArchive(false);

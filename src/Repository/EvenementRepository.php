@@ -21,6 +21,18 @@ class EvenementRepository extends ServiceEntityRepository
         parent::__construct($registry, Evenement::class);
     }
 
+
+    public function findEventsByUser($userID): array
+    {
+        return $this->createQueryBuilder('e')
+            ->join('e.user', 'u')
+            ->where('u.id = :userID')
+            ->setParameter('userID', $userID)
+            ->getQuery()
+            ->getResult();
+    }
+
+
 //    /**
 //     * @return Evenement[] Returns an array of Evenement objects
 //     */
