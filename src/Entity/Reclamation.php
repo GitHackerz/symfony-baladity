@@ -25,9 +25,6 @@ class Reclamation
     #[ORM\OneToMany(mappedBy: 'reclamation', targetEntity: ReponseReclamation::class)]
     private Collection $reponseReclamations;
 
-    #[ORM\ManyToOne(inversedBy: 'reclamations')]
-    private ?User $user = null;
-
     #[ORM\Column(length: 255)]
     private ?string $titre = null;
 
@@ -39,6 +36,9 @@ class Reclamation
 
     #[ORM\Column(length: 255)]
     private ?string $image = null;
+
+    #[ORM\ManyToOne(inversedBy: 'reclamations')]
+    private ?User $user = null;
 
     public function __construct()
     {
@@ -104,18 +104,6 @@ class Reclamation
         return $this;
     }
 
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): static
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
     public function getTitre(): ?string
     {
         return $this->titre;
@@ -160,6 +148,18 @@ class Reclamation
     public function setImage(string $image): static
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

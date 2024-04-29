@@ -24,8 +24,6 @@ class User implements PasswordAuthenticatedUserInterface, userInterface
     #[Assert\Email(message: "L'adresse email '{{ value }}' n'est pas une adresse email valide.")]
     private ?string $email = null;
 
-
-
     #[ORM\Column(length: 255)]
     private ?string $role = null;
 

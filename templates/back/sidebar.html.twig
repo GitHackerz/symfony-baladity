@@ -47,9 +47,6 @@ fi{% set path = app.request.getPathInfo %}$
                         <div data-i18n="Without navbar">Liste des Demandes Association</div>
                     </a>
                 </li>
-                <a href="/dashboard/project" class="menu-link">
-                    <div data-i18n="Without menu">Liste des projets</div>
-                </a>
             </ul>
         </li>
         <li class="menu-item {{ 'project' in cleanPath | lower ? 'active' : '' }}">
@@ -62,7 +59,7 @@ fi{% set path = app.request.getPathInfo %}$
             <ul class="menu-sub">
                 <li class="menu-item">
                     <a href="/dashboard/project" class="menu-link">
-                        <div data-i18n="Without navbar">Liste des Projets</div>
+                        <div data-i18n="Without menu">Liste des projets</div>
                     </a>
                 </li>
                 <li class="menu-item">
@@ -111,7 +108,7 @@ fi{% set path = app.request.getPathInfo %}$
                 </li>
             </ul>
         </li>
-        <li class="menu-item{{ 'cument' in cleanPath | lower ? 'active' : '' }}">
+        <li class="menu-item {{ 'cument' in cleanPath | lower ? 'active' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-file"></i>
                 <div data-i18n="Layouts">Document</div>

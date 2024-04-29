@@ -150,6 +150,7 @@ class TaskProjectBackController extends AbstractController
         $entityManager->flush();
 
         return new JsonResponse([
+            'id' => $comment->getId(),
             'user' => $comment->getUser()->getCitoyen()->getNom() . ' ' . $comment->getUser()->getCitoyen()->getPrenom(),
             'image' => $comment->getUser()->getImage(),
             'date' => $comment->getDate()->format('Y-m-d H:i:s'),

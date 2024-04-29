@@ -50,6 +50,7 @@
         "symfony/web-link": "5.4.*",
         "symfony/webpack-encore-bundle": "*",
         "symfony/yaml": "5.4.*",
+        "symfonycasts/reset-password-bundle": "^1.21",
         "symfonycasts/tailwind-bundle": "^0.5.1",
         "twig/extra-bundle": "^3.8",
         "twig/intl-extra": "^3.8",
@@ -115,4 +116,5 @@
         "symfony/stopwatch": "5.4.*",
         "symfony/web-profiler-bundle": "5.4.*"
     }
+    
 }

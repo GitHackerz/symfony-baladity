@@ -1,19 +1,121 @@
-<form {{ form_enctype(form) }} method="{{ form_method(form) }}" action="{{ form_action(form) }}" class="needs-validation" novalidate>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="mb-3">
-                {{ form_label(form.field1, 'Label 1') }}
-                {{ form_widget(form.field1, {'attr': {'class': 'form-control', 'placeholder': 'Enter value'}}) }}
-                <div class="invalid-feedback">{{ form_errors(form.field1)|join(', ') }}</div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="mb-3">
-                {{ form_label(form.field2, 'Label 2') }}
-                {{ form_widget(form.field2, {'attr': {'class': 'form-control', 'placeholder': 'Enter value'}}) }}
-                <div class="invalid-feedback">{{ form_errors(form.field2)|join(', ') }}</div>
-            </div>
-        </div>
+{{ form_start(form) }}
+{{ form_widget(form._token) }}
+
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h3 class="fw-bold">Ajouter association</h3>
     </div>
-    <button type="submit" class="btn btn-primary">{{ button_label|default('Save') }}</button>
-</form>
+    <div class="card-body">
+        <form>
+            <div class="mb-3 d-flex flex-column">
+                <label class="form-label" for="basic-icon-default-fullname">nom association</label>
+                <div class="input-group input-group-merge">
+                    <span id="basic-icon-default-fullname2" class="input-group-text">
+                        <i class="bx bx-user"></i>
+                    </span>
+                    <input
+                            type="text"
+                            class="form-control"
+                            id="basic-icon-default-fullname"
+                            name="{{ field_name(form.nom) }}"
+                            value="{{ field_value(form.nom) }}"
+                            placeholder="{{ field_label(form.nom) }} association"
+                            aria-label="John Doe"
+                            aria-describedby="basic-icon-default-fullname2"
+                    />
+                </div>
+                <div class="text-danger mt-2">{{ form_errors(form.nom) }}</div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="basic-icon-default-company">adresse association</label>
+                <div class="input-group input-group-merge flex-row">
+                            <span id="basic-icon-default-company2" class="input-group-text">
+                                <i class="bx bx-buildings align-self-start mt-1"></i>
+                            </span>
+                    <textarea
+                            rows="3"
+                            maxlength="255"
+                            style="resize: none"
+                            id="basic-icon-default-company"
+                            class="form-control"
+                            name="{{ field_name(form.adresse) }}"
+                            placeholder="{{ field_label(form.adresse) }} association"
+                            aria-label="ACME Inc."
+                            aria-describedby="basic-icon-default-company2"
+                    >{{ field_value(form.adresse) }}</textarea>
+
+                </div>
+                <span id="adresse-char-count">0/255 caractères</span>
+                <div class="text-danger mt-2">{{ form_errors(form.adresse) }}</div>
+            </div>
+
+
+            <div class="mb-3">
+                <label class="form-label" for="basic-icon-default-phone">caisse (TND)</label>
+                <div class="input-group input-group-merge">
+                    <span id="basic-icon-default-phone2" class="input-group-text">
+                        <i class="bx bx-dollar"></i>
+                    </span>
+                    <input
+                            type="number"
+                            id="basic-icon-default-phone"
+                            class="form-control phone-mask"
+                            name="{{ field_name(form.caisse) }}"
+                            value="{{ field_value(form.caisse) }}"
+                            placeholder="{{ field_label(form.caisse) }} association"
+                            aria-label="658 799 8941"
+                            aria-describedby="basic-icon-default-phone2"
+                    />
+                </div>
+                <div class="text-danger mt-2">{{ form_errors(form.caisse) }}</div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="basic-icon-default-phone">type </label>
+                <div class="input-group input-group-merge">
+                    <span id="basic-icon-default-phone2" class="input-group-text">
+                        <i class="bx bx-dolla   r"></i>
+                    </span>
+                    <select
+                            id="basic-icon-default-phone"
+                            class="form-control phone-mask"
+                            name="{{ field_name(form.type) }}"
+                            aria-label="658 799 8941"
+                            aria-describedby="basic-icon-default-phone2"
+                    >
+                        <option value="">
+                            Selectionner le type
+                        </option>
+                        <option value="Sportive">Sportive</option>
+                        <option value="Culturelle">Culturelle</option>
+                        <option value="Académique">Académique</option>
+                        <option value="Religieuse">Religieuse</option>
+                        <option value="Professionnelle">Professionnelle</option>
+                    </select>
+                </div>
+                <div class="text-danger mt-2">{{ form_errors(form.type) }}</div>
+            </div>
+            <button type="submit" class="btn btn-primary">Ajouter</button>
+        </form>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        const adresseTextarea = $('#basic-icon-default-company');
+        const charCountSpan = $('#adresse-char-count');
+
+        adresseTextarea.on('input', function () {
+            const charCount = $(this).val().length;
+            charCountSpan.text(`${charCount}/255 caractères`);
+        });
+
+        // Trigger the input event on page load to display the initial character count
+        adresseTextarea.trigger('input');
+    });
+</script>
+
+
+{{ form_end(form) }}
