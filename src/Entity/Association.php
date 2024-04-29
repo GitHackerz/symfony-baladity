@@ -47,6 +47,9 @@ class Association
     #[ORM\OneToMany(mappedBy: 'association', targetEntity: HistoriqueModification::class)]
     private Collection $historiqueModifications;
 
+    #[ORM\ManyToOne(inversedBy: 'associations')]
+    private ?User $user = null;
+
     public function __construct()
     {
         $this->historiqueModifications = new ArrayCollection();
@@ -143,6 +146,18 @@ class Association
                 $historiqueModification->setAssociation(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

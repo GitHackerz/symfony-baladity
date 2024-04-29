@@ -106,9 +106,9 @@ fi{% set path = app.request.getPathInfo %}$
 				</li>
 			</ul>
 		</li>
-		<li class="menu-item{{'cument'incleanPath|lower?'active':''}}">
-			<a href="javascript:void(0);" class="menu-linkmenu-toggle">
-				<i class="menu-icontf-iconsbxbx-file"></i>
+		<li class="menu-item{{'cument'in cleanPath|lower?'active':''}}">
+			<a href="javascript:void(0);" class="menu-link menu-toggle">
+				<i class="menu-icon tf-icons bx bx-file"></i>
 				<div data-i18n="Layouts">Document</div>
 			</a>
 			<ul class="menu-sub">
@@ -130,9 +130,9 @@ fi{% set path = app.request.getPathInfo %}$
 			</ul>
 		</li>
 
-		<li class="menu-item{{'user'incleanPath|lower?'active':''}}">
-			<a href="javascript:void(0);" class="menu-linkmenu-toggle">
-				<i class="menu-icontf-iconsbxbx-file"></i>
+		<li class="menu-item{{'user'in cleanPath|lower?'active':''}}">
+			<a href="javascript:void(0);" class="menu-link menu-toggle">
+				<i class="menu-icon tf-icons bx bx-file"></i>
 				<div data-i18n="Layouts">Utilisateur</div>
 			</a>
 			<ul class="menu-sub">

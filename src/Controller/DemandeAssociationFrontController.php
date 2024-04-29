@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\DemandeAssociation;
+use App\Entity\User;
 use App\Form\DemandeAssociationType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,8 +17,13 @@ class DemandeAssociationFrontController extends AbstractController
 {
     #[Route('', name: 'demande_association_front_index', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager ,MailerService $mailer): Response
-    {
+    {   
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
         $demandeAssociation = new DemandeAssociation();
+        $demandeAssociation->setUser($this->getUser());
+
+        
         $form = $this->createForm(DemandeAssociationType::class, $demandeAssociation);
         $form->handleRequest($request);
 

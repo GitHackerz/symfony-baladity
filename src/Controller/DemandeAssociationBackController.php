@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Association;
 use App\Entity\DemandeAssociation;
 use App\Form\DemandeAssociationType;
 use App\Repository\DemandeAssociationRepository;
@@ -49,6 +50,22 @@ class DemandeAssociationBackController extends AbstractController
             'demande_association' => $demandeAssociation,
         ]);
     }
+
+    #[Route('/{id}/approve', name: 'demande_association_back_approve', methods: ['GET'])]
+    public function Approve(DemandeAssociation $demandeAssociation): Response
+    {
+        $association =new Association();
+        $association->setAdresse($demandeAssociation->getAdresse());
+        $association->setNom($demandeAssociation->getNom());
+        $association->setCaisse($demandeAssociation->getCaisse());
+        $association->setType($demandeAssociation->getType());
+
+
+
+        return $this->redirectToRoute('demande_association_back_index', [], Response::HTTP_SEE_OTHER);
+
+    }
+
 
     #[Route('/{id}', name: 'demande_association_back_delete', methods: ['POST'])]
     public function delete(Request $request, DemandeAssociation $demandeAssociation, EntityManagerInterface $entityManager): Response

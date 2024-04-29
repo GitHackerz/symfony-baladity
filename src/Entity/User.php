@@ -72,6 +72,9 @@ class User implements PasswordAuthenticatedUserInterface, userInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: TacheCommentaires::class)]
     private Collection $tacheCommentaires;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Association::class)]
+    private Collection $associations;
+
     public function __construct()
     {
         $this->demandeAssociations = new ArrayCollection();
@@ -80,6 +83,7 @@ class User implements PasswordAuthenticatedUserInterface, userInterface
         $this->projets = new ArrayCollection();
         $this->evenements = new ArrayCollection();
         $this->tacheCommentaires = new ArrayCollection();
+        $this->associations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -403,6 +407,36 @@ class User implements PasswordAuthenticatedUserInterface, userInterface
             // set the owning side to null (unless already changed)
             if ($tacheCommentaire->getUser() === $this) {
                 $tacheCommentaire->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Association>
+     */
+    public function getAssociations(): Collection
+    {
+        return $this->associations;
+    }
+
+    public function addAssociation(Association $association): static
+    {
+        if (!$this->associations->contains($association)) {
+            $this->associations->add($association);
+            $association->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAssociation(Association $association): static
+    {
+        if ($this->associations->removeElement($association)) {
+            // set the owning side to null (unless already changed)
+            if ($association->getUser() === $this) {
+                $association->setUser(null);
             }
         }
 
