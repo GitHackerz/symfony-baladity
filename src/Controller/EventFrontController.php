@@ -9,6 +9,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Notifier\Message\SmsMessage;
+use Symfony\Component\Notifier\TexterInterface;
 
 #[Route('/event')]
 class EventFrontController extends AbstractController
@@ -25,12 +27,19 @@ class EventFrontController extends AbstractController
          ]);
     }
 
-    #[Route('/participer/{id}/{user_id}', name: 'app_evenement_participer', methods: ['POST'])]
-    public function participer(Evenement $evenement, int $user_id, EntityManagerInterface $entityManager): Response
+    #[Route('/participer/{id}', name: 'app_evenement_participer', methods: ['POST'])]
+    public function participer(Evenement $evenement, EntityManagerInterface $entityManager,TexterInterface $texter): Response
     {
-        $user = $entityManager->getRepository(User::class)->find(2);
+        //$user = $entityManager->getRepository(User::class)->find(2);
 
-        $evenement->addUser($user);
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
+        $smsMessage = "Tu as un l'evenement  " . $evenement->getTitre() . " (" . $evenement->getDate() . ")";
+        $sms = new SmsMessage("+21628125264", $smsMessage);
+        $texter->send($sms);
+
+        $evenement->addUser($this->getUser());
 
         $entityManager->persist($evenement);
         $entityManager->flush();
@@ -38,12 +47,12 @@ class EventFrontController extends AbstractController
         return $this->redirectToRoute('event_front_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/quitter/{id}/{user_id}', name: 'app_evenement_quitter', methods: ['POST'])]
-    public function quitter(Evenement $evenement, int $user_id, EntityManagerInterface $entityManager): Response
+    #[Route('/quitter/{id}', name: 'app_evenement_quitter', methods: ['POST'])]
+    public function quitter(Evenement $evenement,  EntityManagerInterface $entityManager): Response
     {
-        $user = $entityManager->getRepository(User::class)->find($user_id);
+        //$user = $entityManager->getRepository(User::class)->find($user_id);
 
-        $evenement->removeUser($user);
+        $evenement->removeUser($this->getUser());
 
         $entityManager->persist($evenement);
         $entityManager->flush();

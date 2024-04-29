@@ -50,7 +50,7 @@
                     event.preventDefault();
                     const eventId = this.getAttribute('data-event-id');
                     const participated = this.getAttribute('data-participated') === 'true';
-                    const url = participated ? `/event/quitter/${eventId}/1` : `/event/participer/${eventId}/1`;
+                    const url = participated ? `/event/quitter/${eventId}` : `/event/participer/${eventId}`;
                     fetch(url, {
                         method: 'POST',
                         headers: {
