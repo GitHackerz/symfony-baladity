@@ -34,31 +34,31 @@
                 height: 200,
             });
 
-            // Load the second image
-            const img1 = new Image();
-            img1.src = 'public/images/stamp.png'; // Update the path to your second image file
-
 
             // Get QR code as image data
             const imageData = qrCode._el.firstChild.toDataURL("image/png");
 
             // Add header
-            doc.setFontSize(20);
-            doc.text("Document officiel de Baladity.tn", 10, 20);
+            doc.setFontSize(40);
+            doc.text( "{{ ddoc.type }}" , 70, 20);
 
             // Add paragraph
             doc.setFontSize(12);
-            doc.text("Note : Les utilisateurs sont tenus de respecter scrupuleusement la confidentialité des informations \n consignées dans le document, s'abstenant ainsi \n de les divulguer à des tiers sans l'autorisation expresse et préalable des autorités compétentes.\n Tout usage inapproprié, détourné ou en violation des dispositions clairement \n établies par le règlement en vigueur est formellement proscrit et peut entraîner des mesures disciplinaires sévères.\n En adhérant aux termes et conditions énoncés dans le règlement, les utilisateurs consentent \n et reconnaissent pleinement leur responsabilité quant à la préservation de l'intégrité, de la \n confidentialité et de la sécurité des informations contenues dans le document officiel, \n s'engageant ainsi à agir en  conformité avec les principes éthiques et professionnels qui régissent son utilisation.", 10, 30);
+            doc.text("Note : Les utilisateurs sont tenus de respecter scrupuleusement la confidentialité des informations \n consignées dans le document, s'abstenant ainsi  de les divulguer à des tiers sans l'autorisation \n expresse et préalable des autorités compétentes. Tout usage inapproprié, détourné ou en violation \n des dispositions clairement  établies par le règlement en vigueur est formellement proscrit et peut \n entraîner des mesures disciplinaires \n sévères. En adhérant aux termes et conditions énoncés dans le règlement, les utilisateurs consentent \n et reconnaissent pleinement leur responsabilité quant à la préservation de l'intégrité, de la \n confidentialité et de la sécurité des informations contenues dans le document officiel, \n s'engageant ainsi à agir en  conformité avec les principes éthiques et professionnels qui régissent \n son utilisation.", 9, 30);
 
+            doc.text("\n Description du document :{{ ddoc.description }}", 70, 80);
+            doc.text("\n Date Création du document  :{{ ddoc.date }}", 70, 90);
+            doc.text("\n Date de Traitement :{{ ddoc.dateTraitement }}", 70, 100);
 
 
 
             // Add QR code image to PDF
-            doc.addImage(imageData, "PNG", 100, 100);
+            doc.addImage(imageData, "PNG", 70, 150);
+
 
 
             // Save PDF
-            doc.save("Document-PDF.pdf");
+            doc.save("Document-Baladity-tn-PDF.pdf");
         }
 
         // Encrypt function using AES encryption
@@ -84,6 +84,8 @@
         window.close();
 
     </script>
+
+
 
 
 

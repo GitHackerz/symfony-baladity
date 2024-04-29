@@ -2,7 +2,10 @@
 
 {% block body %}
     {% include "front/Header.html.twig" %}
-<head>
+
+
+
+    <head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
@@ -37,7 +40,7 @@
                             <h5 class="mb-3"><i class="fa fa-check text-primary me-3"></i>Gestion efficace</h5>
                         </div>
                     </div>
-                        {% elseif demande.type|lower == 'budget municipal' %}
+                        {% elseif demande.type|lower == 'Plan d urbanisme' %}
 
                     <h1 class="mb-0">Plan d'urbanisme</h1>
                 </div>
@@ -86,7 +89,6 @@
             {% endif %}
 
                     <a  href="#" onclick="return openNewWindow();"  class="btn btn-primary py-3 px-5 mt-3 wow zoomIn" data-wow-delay="0.9s" style="visibility: visible; animation-delay: 0.9s; animation-name: zoomIn;">Acheter la version PDF</a> {#  onclick="GeneratePDFWithQRCode()"     href="{{ path('checkout')}}" #}
-                    <a href="" class="btn btn-primary py-3 px-5 mt-3 wow zoomIn" data-wow-delay="0.9s" style="visibility: visible; animation-delay: 0.9s; animation-name: zoomIn;">XXXXX</a>
                 </div>
                 <div class="col-lg-5" style="min-height: 500px;">
                     <div class="position-relative h-100">
@@ -104,6 +106,8 @@
 
 
     </div>
+
+
 
     <script>
         function openNewWindow() {
@@ -130,6 +134,7 @@
             return false;
         }
     </script>
+
 
 
 

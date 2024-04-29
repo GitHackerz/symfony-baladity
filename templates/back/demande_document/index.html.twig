@@ -2,6 +2,8 @@
 
 {% block body %}
 
+
+
     {#  <h1>DemandeDocument index</h1>
 
     <table class="table">
@@ -55,6 +57,7 @@
     }
 
 </style>
+
 
 
 
@@ -143,9 +146,21 @@
 
                         </tbody>
                     </table>
+
+
+                    <!-- Place to render the chart -->
                 </div>
             </div>
         </div>
+
+        <div class="container-xxl flex-grow-1 container-p-y">
+            <div class="card">
+                <h5 class="card-header">Statistiques sur les demandes par mois </h5>
+        <div id="chart"></div>
+            </div>
+        </div>
+    </div>
+
     </div>
 
 
@@ -153,7 +168,105 @@
 
 
 
+    <!-- JavaScript code -->
+    <script>
+        var options = {
+            series: [
+                {
+                    name: 'Jan',
+                    data: generateData(4, { min: -0, max: 11 })
+                },
+                {
+                    name: 'Feb',
+                    data: generateData(4, { min: -0, max: 11 })
+                },
+                {
+                    name: 'Mar',
+                    data: generateData(4, { min: -0, max: 11 })
+                },
+                {
+                    name: 'Avr',
+                    data: generateData(4, { min: -0, max: 11 })
+                },
+                {
+                    name: 'Mai',
+                    data: generateData(4, { min: -0, max: 11 })
+                },
+                {
+                    name: 'Jui',
+                    data: generateData(4, { min: -0, max: 11 })
+                },
+                {
+                    name: 'Juil',
+                    data: generateData(4, { min: -0, max: 11 })
+                },
+                {
+                    name: 'Aou',
+                    data: generateData(4, { min: -0, max: 55 })
+                },
+                {
+                    name: 'Sep',
+                    data: generateData(4, { min: -0, max: 55 })
+                },
+                {
+                    name: 'Oct',
+                    data: generateData(4, { min: -0, max: 55 })
+                },
+                {
+                    name: 'Nov',
+                    data: generateData(4, { min: -0, max: 55 })
+                },
+                {
+                    name: 'Dec',
+                    data: generateData(4, { min: -0, max: 55 })
+                },
+                // Add data for other months similarly...
+            ],
+            chart: {
+                height: 350,
+                type: 'heatmap',
+            },
+            plotOptions: {
+                heatmap: {
+                    shadeIntensity: 0.5,
+                    radius: 0,
+                    useFillColorAsStroke: true,
+                    colorScale: {
+                        ranges: [
+                            { from: 0, to: 2, name: 'Faible', color: '#00A100' },
+                            { from: 2, to: 4, name: 'Moyen', color: '#128FD9' },
+                            { from: 5, to:1000 , name: 'Intense', color: '#FFB200' },
+                        ]
+                    }
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                width: 1
+            },
+            title: {
+                text: ' '
+            },
+        };
 
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
+
+        // Function to generate random data
+        function generateData(count, yrange) {
+            var i = 0;
+            var series = [];
+            while (i < count) {
+                var x = 'Semaine' + (i + 1).toString();
+                var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+                series.push({ x: x, y: y });
+                i++;
+            }
+            return series;
+        }
+    </script>
 
 
 

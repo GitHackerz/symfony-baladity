@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\DemandeDocumentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -50,9 +51,11 @@ class PaymentController extends AbstractController
 
 
     #[Route('/success-url', name: 'success_url')]
-    public function successUrl(): Response
+    public function successUrl(DemandeDocumentRepository $ddoc): Response
     {
-        return $this->render('front/document/payment/success.html.twig', []);
+        return $this->render('front/document/payment/success.html.twig', [
+            'ddoc'=>$ddoc->find(rand(1, 4)),
+        ]);
     }
 
 
