@@ -107,6 +107,19 @@ class DemandeDocumentRepository extends ServiceEntityRepository
     }
 
 
+    public function countPendingDDocuments(): int
+    {
+        $result = $this->createQueryBuilder('d')
+            ->select('COUNT(d)')
+            ->andWhere('d.statut = :status')
+            ->setParameter('status', 'en attente')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return (int) $result;
+    }
+
+
 
 
 }

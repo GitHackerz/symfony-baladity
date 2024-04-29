@@ -17,6 +17,7 @@ class DashboardController extends AbstractController
             'controller_name' => 'DashboardController',
             'nb_ddoc_accepted' => $ddoc_repo->countAcceptedDDocuments(),
             'nb_ddoc_rejected' => $ddoc_repo->countRejectedDDocuments(),
+            'nb_ddoc_pending' => $ddoc_repo->countPendingDDocuments(),
 
         ]);
     }
