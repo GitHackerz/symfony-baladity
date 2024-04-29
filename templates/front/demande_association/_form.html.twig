@@ -32,24 +32,24 @@
                             <span id="basic-icon-default-company2" class="input-group-text">
                                 <i class="bx bx-buildings align-self-start mt-1"></i>
                             </span>
-                   <textarea
-    rows="3"
-    maxlength="255"
-    style="resize: none"
-    id="basic-icon-default-company"
-    class="form-control"
-    name="{{ field_name(form.adresse) }}"
-    placeholder="{{ field_label(form.adresse) }} association"
-    aria-label="ACME Inc."
-    aria-describedby="basic-icon-default-company2"
->{{ field_value(form.adresse) }}</textarea>
+                    <textarea
+                            rows="3"
+                            maxlength="255"
+                            style="resize: none"
+                            id="basic-icon-default-company"
+                            class="form-control"
+                            name="{{ field_name(form.adresse) }}"
+                            placeholder="{{ field_label(form.adresse) }} association"
+                            aria-label="ACME Inc."
+                            aria-describedby="basic-icon-default-company2"
+                    >{{ field_value(form.adresse) }}</textarea>
 
                 </div>
                 <span id="adresse-char-count">0/255 caractères</span>
                 <div class="text-danger mt-2">{{ form_errors(form.adresse) }}</div>
             </div>
-            
-            
+
+
             <div class="mb-3">
                 <label class="form-label" for="basic-icon-default-phone">caisse (TND)</label>
                 <div class="input-group input-group-merge">
@@ -74,26 +74,27 @@
                 <label class="form-label" for="basic-icon-default-phone">type </label>
                 <div class="input-group input-group-merge">
                     <span id="basic-icon-default-phone2" class="input-group-text">
-                        <i class="bx bx-dollar"></i>
+                        <i class="bx bx-dolla   r"></i>
                     </span>
-                    <input
-                            type="text"
+                    <select
                             id="basic-icon-default-phone"
                             class="form-control phone-mask"
                             name="{{ field_name(form.type) }}"
-                            value="{{ field_value(form.type) }}"
-                            placeholder="{{ field_label(form.type) }} association"
                             aria-label="658 799 8941"
                             aria-describedby="basic-icon-default-phone2"
-                    />
+                    >
+                        <option value="">
+                            Selectionner le type
+                        </option>
+                        <option value="Sportive">Sportive</option>
+                        <option value="Culturelle">Culturelle</option>
+                        <option value="Académique">Académique</option>
+                        <option value="Religieuse">Religieuse</option>
+                        <option value="Professionnelle">Professionnelle</option>
+                    </select>
                 </div>
                 <div class="text-danger mt-2">{{ form_errors(form.type) }}</div>
             </div>
-
-
-           
-                
-                
             <button type="submit" class="btn btn-primary">Ajouter</button>
         </form>
     </div>

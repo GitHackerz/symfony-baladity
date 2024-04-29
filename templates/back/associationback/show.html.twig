@@ -3,24 +3,25 @@
 {% block title %}Détails de l'Association{% endblock %}
 
 {% block body %}
-<div class="content-wrapper">
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="card">
-            <div class="card-header">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h5 class="card-title">Détails de l'Association</h5>
-                    <div>
-                        <a href="{{ path('association_back_index') }}" class="btn btn-primary">Retour à la liste</a>
-                        <a href="{{ path('association_back_edit', {'id': association.id}) }}" class="btn btn-primary">Modifier</a>
-                        {{ include('back/associationback/_delete_form.html.twig', {'id': association.id}) }}
+    <div class="content-wrapper">
+        <div class="container-xxl flex-grow-1 container-p-y">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="card-title">Détails de l'Association</h5>
+                        <div>
+                            <a href="{{ path('association_back_index') }}" class="btn btn-primary">Retour à la liste</a>
+                            <a href="{{ path('association_back_edit', {'id': association.id}) }}"
+                               class="btn btn-primary">Modifier</a>
+                            {{ include('back/associationback/_delete_form.html.twig', {'id': association.id}) }}
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <tbody>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tbody>
                             <tr>
                                 <th>Id</th>
                                 <td>{{ association.id }}</td>
@@ -45,23 +46,22 @@
                                 <th>Statut</th>
                                 <td>{{ association.statut }}</td>
                             </tr>
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!--     mapp  api JS   -->
-           <center>
-   <div class="col-md-6 wow fadeIn" data-wow-delay="0.1s">
-   
-                        <iframe class="position-relative rounded w-100 h-100"
+            <center>
+                <div class="col-md-6 wow fadeIn" data-wow-delay="0.1s">
+
+                    <iframe class="position-relative rounded w-100 h-100"
                             src="https://maps.google.com/maps?q={{ association.adresse }}&amp;ie=UTF8&amp;iwloc=&amp;output=embed"
                             frameborder="0" style="min-height: 350px; border:0;" allowfullscreen="" aria-hidden="false"
                             tabindex="0"></iframe>
-                    </div>
+                </div>
 
-</center>
+            </center>
+        </div>
     </div>
-</div>
 {% endblock %}

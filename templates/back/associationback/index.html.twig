@@ -3,20 +3,30 @@
 {% block title %}Liste des Associations{% endblock %}
 
 {% block body %}
-<div class="content-wrapper">
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="card">
-            <div class="card-header">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h5 class="card-title">Liste des Associations</h5>
-                    <a href="{{ path('association_back_new') }}" class="btn btn-success">Créer une nouvelle</a>
+    <div class="content-wrapper">
+        <div class="container-xxl flex-grow-1 container-p-y">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-inline-flex">
+                            <h5 class="card-title ">Liste des Associations</h5>
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    id="search-association"
+                                    name="search"
+                                    placeholder="Rechercher..."
+                                    style="margin-left: 10px;"
+                            >
+                        </div>
+                        <a href="{{ path('association_back_new') }}" class="btn btn-success">Créer une nouvelle</a>
+                    </div>
                 </div>
-            </div>
 
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="association-table" class="table table-striped">
+                            <thead>
                             <tr>
                                 <th>Id</th>
                                 <th>Nom</th>
@@ -26,44 +36,114 @@
                                 <th>Statut</th>
                                 <th>Actions</th>
                             </tr>
-                        </thead>
-                        <tbody>
+                            </thead>
+                            <tbody>
                             {% for association in associations %}
                                 <tr>
-                             +       <td>{{ association.id }}</td>
-                                    <td>{{ association.nom }}</td>
-                                    <td>{{ association.adresse }}</td>
-                                    <td>{{ association.caisse }}</td>
-                                    <td>{{ association.type }}</td>
-                                    <td>{% if association.statut == "Actif" %} <span class="badge bg-label-success">Actif</span>
-                                {% else %}<span class="badge bg-label-danger">Inactif</span>
-                                {% endif %}
+                                <td>{{ association.id }}</td>
+                                <td>{{ association.nom }}</td>
+                                <td>{{ association.adresse }}</td>
+                                <td>{{ association.caisse| format_currency('TND') }}</td>
+                                <td>{{ association.type }}</td>
+                                <td>{% if association.statut == "Actif" %} <span
+                                            class="badge bg-label-success">Actif</span>
+                                    {% else %}<span class="badge bg-label-danger">Inactif</span>
+                                    {% endif %}
                                 </td>
-                                    {#<td>{{ association.statut }}</td>#}
-                                   <td>
-    <a href="{{ path('association_back_show', {'id': association.id}) }}" style="margin-right: 10px;" class="btn btn-primary btn-sm">
-        <span class="bx bx-show" </span>
-        
-    </a>
+                                {# <td>{{ association.statut }}</td> #}
+                                <td>
+                                    <a href="{{ path('association_back_show', {'id': association.id}) }}"
+                                       style="margin-right: 10px;" class="btn btn-primary btn-sm">
+                                        <span class="bx bx-show"> </span>
 
-    <a href="{{ path('association_back_edit', {'id': association.id}) }}" class="btn btn-secondary btn-sm">
-        <span class="bx bx-edit-alt" </span>
-        
-    </a>
-</td>
+                                    </a>
+
+                                    <a href="{{ path('association_back_edit', {'id': association.id}) }}"
+                                       class="btn btn-secondary btn-sm">
+                                        <span class="bx bx-edit-alt"> </span>
+                                    </a>
+                                </td>
 
                             {% else %}
                                 <tr>
                                     <td colspan="7">Aucun enregistrement trouvé.</td>
                                 </tr>
                             {% endfor %}
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <center> <a href="{{ path('pdf') }}" class="btn btn-primary">list to pdf</a> </center>
+        <div style="text-align: center;"><a href="{{ path('pdf') }}" class="btn btn-primary">list to pdf</a></div>
 
-</div>
+        <div id="chart"></div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            console.log("ready")
+            $('#search-association').on('input', function () {
+                var search = $(this).val().toLowerCase();
+                $('#association-table tbody tr').filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(search) > -1)
+                });
+            });
+        });
+    </script>
+
+    {#    {% block script %} #}
+    <script>
+        let colors = ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
+            '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D'];
+
+        let associationsName = [];
+        let associationsCaisse = [];
+
+        {% for association in associations %}
+        associationsName.push("{{ association.nom }}")
+        associationsCaisse.push("{{ association.caisse }}")
+        {% endfor %}
+
+        var options = {
+            series: [{
+                data: associationsCaisse
+            }],
+            chart: {
+                height: 350,
+                type: 'bar',
+                events: {
+                    click: function (chart, w, e) {
+                        // console.log(chart, w, e)
+                    }
+                }
+            },
+            colors: colors,
+            plotOptions: {
+                bar: {
+                    columnWidth: '45%',
+                    distributed: true,
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            legend: {
+                show: false
+            },
+            xaxis: {
+                categories: associationsName,
+                labels: {
+                    style: {
+                        colors: colors,
+                        fontSize: '12px'
+                    }
+                }
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
+    </script>
+    {#    {% endblock %} #}
 {% endblock %}
