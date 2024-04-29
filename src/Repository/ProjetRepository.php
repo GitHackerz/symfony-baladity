@@ -31,6 +31,24 @@ class ProjetRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findActiveProjects(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.statut IN (:status)')
+            ->setParameter('status', ['Planned', 'In Progress'])
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findCompletedProjects(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.statut = :statut')
+            ->setParameter('statut', 'Completed')
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Projet[] Returns an array of Projet objects
 //     */

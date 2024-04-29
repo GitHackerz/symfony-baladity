@@ -442,4 +442,31 @@ class User implements PasswordAuthenticatedUserInterface, userInterface
 
         return $this;
     }
+
+    public function getManagedProjects(): Collection
+    {
+        return $this->managedProjects;
+    }
+
+    public function addManagedProject(Projet $managedProject): static
+    {
+        if (!$this->managedProjects->contains($managedProject)) {
+            $this->managedProjects->add($managedProject);
+            $managedProject->setManager($this);
+        }
+
+        return $this;
+    }
+
+    public function removeManagedProject(Projet $managedProject): static
+    {
+        if ($this->managedProjects->removeElement($managedProject)) {
+            // set the owning side to null (unless already changed)
+            if ($managedProject->getManager() === $this) {
+                $managedProject->setManager(null);
+            }
+        }
+
+        return $this;
+    }
 }
