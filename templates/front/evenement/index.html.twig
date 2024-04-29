@@ -39,6 +39,7 @@
                 {% endfor %}
             </div>
         </div>
+        <div id='calendar' style="width: 1500px; height: auto; margin: 0 auto;padding-top: 100px"></div>
     </div>
 
     <script>
@@ -72,6 +73,34 @@
                         });
                 });
             });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        let events = [];
+
+        {% for event in evenements %}
+            // Parse the date string into a Date object
+            var startDate = new Date("{{ event.date | format('Y-m-d') }}");
+
+            events.push({
+                title: '{{ event.titre }}',
+                start: startDate, // Comma was missing here
+                allDay: true
+            });
+        {% endfor %}
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'timeGridWeek',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            events: events
+        });
+        calendar.render();
+
         });
     </script>
 {% endblock %}
