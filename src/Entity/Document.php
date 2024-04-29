@@ -162,5 +162,10 @@ class Document
         return $this->getId();
     }
 
+    public function isEstArchive(): ?bool
+    {
+        return $this->estArchive;
+    }
+
 
 }

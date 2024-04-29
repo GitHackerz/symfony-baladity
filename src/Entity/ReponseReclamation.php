@@ -13,6 +13,9 @@ class ReponseReclamation
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $contenu = null;
+
     #[ORM\ManyToOne(inversedBy: 'reponseReclamations')]
     private ?Reclamation $reclamation = null;
 
@@ -29,6 +32,18 @@ class ReponseReclamation
     public function setReclamation(?Reclamation $reclamation): static
     {
         $this->reclamation = $reclamation;
+
+        return $this;
+    }
+
+    public function getContenu(): ?string
+    {
+        return $this->contenu;
+    }
+
+    public function setContenu(string $contenu): static
+    {
+        $this->contenu = $contenu;
 
         return $this;
     }
