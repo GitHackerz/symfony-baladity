@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\DemandeDocument;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -66,11 +67,14 @@ class DemandeDocumentRepository extends ServiceEntityRepository
     //    /**
 //     * @return DemandeDocument[] Returns an array of DemandeDocument objects
 //     */
-    public function find_Aceepted_Rejected(): array
+    public function find_Aceepted_Rejected(int $id_user): array
     {
         return $this->createQueryBuilder('d')
             ->andWhere('d.statut IN (:statuses)')
             ->setParameter('statuses', ['acceptée', 'rejetée'])
+            ->andWhere('d.user = :u_id')
+            ->setParameter('u_id', $id_user)
+
             ->orderBy('d.dateTraitement', 'DESC')
             ->setMaxResults(50)
             ->getQuery()
