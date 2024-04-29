@@ -75,6 +75,9 @@ class User implements PasswordAuthenticatedUserInterface, userInterface
     #[ORM\OneToMany(mappedBy: 'manager', targetEntity: Projet::class)]
     private Collection $managedProjects;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Reclamation::class)]
+    private Collection $reclamations;
+
     public function __construct()
     {
         $this->demandeAssociations = new ArrayCollection();
@@ -84,6 +87,7 @@ class User implements PasswordAuthenticatedUserInterface, userInterface
         $this->evenements = new ArrayCollection();
         $this->tacheCommentaires = new ArrayCollection();
         $this->managedProjects = new ArrayCollection();
+        $this->reclamations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -437,6 +441,36 @@ class User implements PasswordAuthenticatedUserInterface, userInterface
             // set the owning side to null (unless already changed)
             if ($managedProject->getManager() === $this) {
                 $managedProject->setManager(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reclamation>
+     */
+    public function getReclamations(): Collection
+    {
+        return $this->reclamations;
+    }
+
+    public function addReclamation(Reclamation $reclamation): static
+    {
+        if (!$this->reclamations->contains($reclamation)) {
+            $this->reclamations->add($reclamation);
+            $reclamation->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReclamation(Reclamation $reclamation): static
+    {
+        if ($this->reclamations->removeElement($reclamation)) {
+            // set the owning side to null (unless already changed)
+            if ($reclamation->getUser() === $this) {
+                $reclamation->setUser(null);
             }
         }
 
