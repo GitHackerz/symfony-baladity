@@ -107,7 +107,30 @@ class CitoyenController extends AbstractController
         return $this->redirectToRoute('app_citoyen_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/citoyen/recherche', name: 'citoyen_recherche', methods: ['GET'])]
+    #[Route('/{id}', name: 'x', methods: ['POST'])]
+    public function delete2(Request $request, Citoyen $citoyen, EntityManagerInterface $entityManager, CsrfTokenManagerInterface $csrfTokenManager): Response
+    {
+        $submittedToken = $request->request->get('_token');
+
+        if ($csrfTokenManager->isTokenValid(new CsrfToken('delete' . $citoyen->getId(), $submittedToken))) {
+            // Perform the deletion
+            $entityManager->remove($citoyen);
+            $entityManager->flush();
+
+            // Fetch the updated list of citoyens
+            $updatedCitoyensList = $entityManager->getRepository(Citoyen::class)->findAll();
+
+            // Render the same page with the updated list
+            return $this->render('back/citoyen/index.html.twig', [
+                'citoyens' => $updatedCitoyensList,
+            ]);
+        }
+
+        // If the token is invalid, throw an exception or handle it as required
+        throw $this->createAccessDeniedException('Invalid CSRF token.');
+    }
+
+    #[Route('/recherche', name: 'citoyen_recherche', methods: ['GET'])]
     public function recherche(Request $request, EntityManagerInterface $entityManager): Response
     {
         $query = $request->query->get('q');
