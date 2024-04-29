@@ -74,12 +74,39 @@ class DemandeDocumentRepository extends ServiceEntityRepository
             ->setParameter('statuses', ['acceptée', 'rejetée'])
             ->andWhere('d.user = :u_id')
             ->setParameter('u_id', $id_user)
-
             ->orderBy('d.dateTraitement', 'DESC')
             ->setMaxResults(50)
             ->getQuery()
             ->getResult()
         ;
     }
+
+
+    public function countAcceptedDDocuments(): int
+    {
+        $result = $this->createQueryBuilder('d')
+            ->select('COUNT(d)')
+            ->andWhere('d.statut = :status')
+            ->setParameter('status', 'acceptée')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return (int) $result;
+    }
+
+    public function countRejectedDDocuments(): int
+    {
+        $result = $this->createQueryBuilder('d')
+            ->select('COUNT(d)')
+            ->andWhere('d.statut = :status')
+            ->setParameter('status', 'rejetée')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return (int) $result;
+    }
+
+
+
 
 }
