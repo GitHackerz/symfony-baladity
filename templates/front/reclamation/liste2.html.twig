@@ -1,7 +1,6 @@
 {% extends 'back/base.html.twig' %}
 
-{% block title %}Liste des Réclamations
-{% endblock %}
+{% block title %}Liste des Réclamations{% endblock %}
 
 {% block body %}
     <div id="layoutSidenav_content">
@@ -44,13 +43,13 @@
                                             {% if A.statut == 'en cours' %}
                                                 <td>
                                                     <a href="{{ path('repondre', {'id': A.id}) }}">
-                                                        <img src="{{ asset('rep.png') }}"
+                                                        <img src="{{ asset('images/rep.png') }}"
                                                              style="width:30px;height:30px;border:0">
                                                     </a>
                                                 </td>
                                                 <td>
                                                     <a href="{{ path('fermer',{'id':A.id}) }}">
-                                                        <img src="{{ asset('fermer.png') }}"
+                                                        <img src="{{ asset('images/fermer.png') }}"
                                                              style="width:30px;height:30px;border:0">
                                                     </a>
                                                 </td>

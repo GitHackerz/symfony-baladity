@@ -26,15 +26,15 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ReclamationController extends AbstractController
 {
-    private function sendConfirmationEmail($reservation, MailerInterface $mailer): void
+    private function sendConfirmationEmail($reclamation, MailerInterface $mailer): void
     {
         $email = (new Email())
             ->from(new Address('yassmine.layes@gmail.com', 'Pidev'))
-            ->to($reservation->getUser()->getEmail())
+            ->to($reclamation->getUser()->getEmail())
             ->subject('Confirmation de réservation')
             ->html($this->renderView(
                 'front/reclamation/email.html.twig',
-                ['reclamation' => $reservation]
+                ['reclamation' => $reclamation]
             ));
 
         $mailer->send($email);
@@ -70,7 +70,7 @@ class ReclamationController extends AbstractController
     #[Route('/reclamation', name: 'app_reclamation')]
     public function index(ReclamationRepository $rp): Response
     {
-        $utilisateurId = 1;
+        $utilisateurId = $this->getUser()->getId();
         $recl = $rp->findBy(['user' => $utilisateurId]);
         return $this->render('front/reclamation/index.html.twig', [
             'reclamations' => $recl,
@@ -125,7 +125,7 @@ class ReclamationController extends AbstractController
         return $this->redirectToRoute('app_reclamation');
     }
 
-    #[Route('/reclamationback', name: 'app_reclamationback')]
+    #[Route('/dashboard/reclamation', name: 'app_reclamationback')]
     public function index2(ReclamationRepository $rp): Response
     {
         $totalReclamations = $rp->count([]);
@@ -150,7 +150,7 @@ class ReclamationController extends AbstractController
         ]);
     }
 
-    #[Route('/allreclamation', name: 'app_reclamationback2')]
+    #[Route('/dashboard/allreclamation', name: 'app_reclamationback2')]
     public function index3(ReclamationRepository $rp): Response
     {
         $recl = $rp->findAll();
