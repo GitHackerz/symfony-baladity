@@ -1,7 +1,9 @@
 {% extends "back/base.html.twig" %}
 
 {% block body %}
-<!--
+
+
+        <!--
     <h1>Document index</h1>
 
     <table class="table">
@@ -105,6 +107,111 @@
             </div>
         </div>
     </div>
+
+
+
+
+    <div class="card">
+        <div class="card-header header-elements">
+            <h5 class="card-title mb-0">Average Skills</h5>
+            <div class="card-header-elements ms-auto py-0 dropdown">
+                <button type="button" class="btn dropdown-toggle hide-arrow p-0" id="heat-chart-dd" data-bs-toggle="dropdown" aria-expanded="false"><i class="bx bx-dots-vertical-rounded"></i></button>
+                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="heat-chart-dd">
+                    <a class="dropdown-item" href="javascript:void(0);">Last 28 Days</a>
+                    <a class="dropdown-item" href="javascript:void(0);">Last Month</a>
+                    <a class="dropdown-item" href="javascript:void(0);">Last Year</a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <canvas id="polarChart" class="chartjs" data-height="337"></canvas>
+        </div>
+    </div>
+
+    <script>
+        // Color Variables
+        const purpleColor = '#836AF9',
+            yellowColor = '#ffe800',
+            cyanColor = '#28dac6',
+            orangeColor = '#FF8132',
+            oceanBlueColor = '#299AFF',
+            greyColor = '#4F5D70';
+        let cardColor, headingColor, labelColor, borderColor, legendColor;
+
+        if (isDarkStyle) {
+            cardColor = config.colors_dark.cardColor;
+            headingColor = config.colors_dark.headingColor;
+            labelColor = config.colors_dark.textMuted;
+            legendColor = config.colors_dark.bodyColor;
+            borderColor = config.colors_dark.borderColor;
+        } else {
+            cardColor = config.colors.cardColor;
+            headingColor = config.colors.headingColor;
+            labelColor = config.colors.textMuted;
+            legendColor = config.colors.bodyColor;
+            borderColor = config.colors.borderColor;
+        }
+        const polarChart = document.getElementById('polarChart');
+        if (polarChart) {
+            const polarChartVar = new Chart(polarChart, {
+                type: 'polarArea',
+                data: {
+                    labels: ['Africa', 'Asia', 'Europe', 'America', 'Antarctica', 'Australia'],
+                    datasets: [
+                        {
+                            label: 'Population (millions)',
+                            backgroundColor: [purpleColor, yellowColor, orangeColor, oceanBlueColor, greyColor, cyanColor],
+                            data: [19, 17.5, 15, 13.5, 11, 9],
+                            borderWidth: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: {
+                        duration: 500
+                    },
+                    scales: {
+                        r: {
+                            ticks: {
+                                display: false,
+                                color: labelColor
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            // Updated default tooltip UI
+                            rtl: isRtl,
+                            backgroundColor: cardColor,
+                            titleColor: headingColor,
+                            bodyColor: legendColor,
+                            borderWidth: 1,
+                            borderColor: borderColor
+                        },
+                        legend: {
+                            rtl: isRtl,
+                            position: 'right',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 25,
+                                boxWidth: 8,
+                                boxHeight: 8,
+                                color: legendColor
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+
+
+
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

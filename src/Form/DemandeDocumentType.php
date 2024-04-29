@@ -17,7 +17,7 @@ class DemandeDocumentType extends AbstractType
             ->add('statut')
             ->add('date')
             ->add('dateTraitement')
-            //->add('user')
+//            ->add('user')
             ->add('document')
         ;
     }
