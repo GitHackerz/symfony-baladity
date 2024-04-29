@@ -51,6 +51,14 @@ class TaskProjectBackController extends AbstractController
         ]);
     }
 
+    #[Route('/list', name: 'task_project_back_tasks', methods: ['GET'])]
+    public function getTasks(TacheProjetRepository $tacheProjetRepository): Response
+    {
+        $tasks = $tacheProjetRepository->findAll();
+
+        return new Response(json_encode(array($tasks)), 200, ['Content-Type' => 'application/json']);
+    }
+
     #[Route('/new', name: 'task_project_back_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {

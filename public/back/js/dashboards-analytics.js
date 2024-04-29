@@ -353,6 +353,9 @@
   if (typeof growthChartEl !== undefined && growthChartEl !== null) {
     const growthChart = new ApexCharts(growthChartEl, growthChartOptions);
     growthChart.render();
+    let growthChartDiv = document.getElementById('growthChart');
+    let value = growthChartDiv.dataset.value;
+    growthChart.updateSeries([value]);
   }
 
   // Profit Report Line Chart

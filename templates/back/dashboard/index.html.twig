@@ -1,4 +1,4 @@
-{% extends "back/base.html.twig" %} 
+{% extends "back/base.html.twig" %}
 
 {% block body %}
     <div class="content-wrapper">
@@ -586,33 +586,4 @@
         >
       </div>
     </div>
-    <script>
-
-        var nb_acc = {{ nb_ddoc_accepted }};
-        var nb_rej = {{ nb_ddoc_rejected }};
-
-
-        var options = {
-            series: [nb_acc, nb_rej],
-            chart: {
-                width: 380,
-                type: 'pie',
-            },
-            labels: ['Documents Acceptés', 'Documents Rejetés'],
-            responsive: [{
-                breakpoint: 480,
-                options: {
-                    chart: {
-                        width: 200
-                    },
-                    legend: {
-                        position: 'bottom'
-                    }
-                }
-            }]
-        };
-
-        var chart = new ApexCharts(document.querySelector("#chart"), options);
-        chart.render();
-    </script>
 {% endblock %}
