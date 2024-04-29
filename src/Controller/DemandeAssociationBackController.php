@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Association;
 use App\Entity\DemandeAssociation;
 use App\Form\DemandeAssociationType;
 use App\Repository\DemandeAssociationRepository;
@@ -50,13 +51,30 @@ class DemandeAssociationBackController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'demande_association_back_delete', methods: ['POST'])]
+    #[Route('/{id}/approve', name: 'demande_association_back_approve', methods: ['GET'])]
+    public function Approve(DemandeAssociation $demandeAssociation, EntityManagerInterface $entityManager): Response
+    {
+        $association = new Association();
+        $association->setAdresse($demandeAssociation->getAdresse());
+        $association->setNom($demandeAssociation->getNom());
+        $association->setCaisse($demandeAssociation->getCaisse());
+        $association->setType($demandeAssociation->getType());
+        $association->setStatut(true);
+
+        $entityManager->persist($association);
+        $entityManager->remove($demandeAssociation);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('demande_association_back_index', [], Response::HTTP_SEE_OTHER);
+
+    }
+
+
+    #[Route('/{id}/delete', name: 'demande_association_back_delete', methods: ['GET'])]
     public function delete(Request $request, DemandeAssociation $demandeAssociation, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$demandeAssociation->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($demandeAssociation);
-            $entityManager->flush();
-        }
+        $entityManager->remove($demandeAssociation);
+        $entityManager->flush();
 
         return $this->redirectToRoute('demande_association_back_index', [], Response::HTTP_SEE_OTHER);
     }

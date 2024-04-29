@@ -72,8 +72,8 @@ class User implements PasswordAuthenticatedUserInterface, userInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: TacheCommentaires::class)]
     private Collection $tacheCommentaires;
 
-    #[ORM\OneToMany(mappedBy: 'manager', targetEntity: Projet::class)]
-    private Collection $managedProjects;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Association::class)]
+    private Collection $associations;
 
     public function __construct()
     {
@@ -83,7 +83,7 @@ class User implements PasswordAuthenticatedUserInterface, userInterface
         $this->projets = new ArrayCollection();
         $this->evenements = new ArrayCollection();
         $this->tacheCommentaires = new ArrayCollection();
-        $this->managedProjects = new ArrayCollection();
+        $this->associations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -414,8 +414,35 @@ class User implements PasswordAuthenticatedUserInterface, userInterface
     }
 
     /**
-     * @return Collection<int, Projet>
+     * @return Collection<int, Association>
      */
+    public function getAssociations(): Collection
+    {
+        return $this->associations;
+    }
+
+    public function addAssociation(Association $association): static
+    {
+        if (!$this->associations->contains($association)) {
+            $this->associations->add($association);
+            $association->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAssociation(Association $association): static
+    {
+        if ($this->associations->removeElement($association)) {
+            // set the owning side to null (unless already changed)
+            if ($association->getUser() === $this) {
+                $association->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
     public function getManagedProjects(): Collection
     {
         return $this->managedProjects;

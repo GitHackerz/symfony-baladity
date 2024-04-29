@@ -15,7 +15,6 @@
     <title>Dashboard - Analytics | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
 
     <meta name="description" content=""/>
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset("back/img/favicon/favicon.ico") }}"/>
@@ -51,12 +50,16 @@
     <script src={{ asset("back/vendor/js/helpers.js") }}></script>
 
     <script src={{ asset("back/js/config.js") }}></script>
-    {% block stylesheets %}{{ encore_entry_link_tags('app') }}{% endblock %}
-    <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
 
-    {#    <script src="https://cdn.tailwindcss.com"></script> #}
+    {% block javascripts %}
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
-
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
 </head>
 <body>
 <div class="layout-wrapper layout-content-navbar">
@@ -75,9 +78,6 @@
         </div>
     </div>
 </div>
-{% block javascripts %}
-    {{ encore_entry_script_tags('app') }}
-{% endblock %}
 </body>
 
 <!-- Core JS -->
