@@ -21,6 +21,7 @@ use Dompdf\Options;
 #[Route('/dashboard/event')]
 class EventBackController extends AbstractController
 {
+    
     #[Route('/', name: 'event_back_index', methods: ['GET'])]
     public function index(EvenementRepository $eventRepository): Response
     {
@@ -52,8 +53,10 @@ class EventBackController extends AbstractController
     #[Route('/{id}', name: 'event_back_show', methods: ['GET'])]
     public function show(Evenement $event): Response
     {
+        $paricipants = $event->getUser();
         return $this->render('back/event/show.html.twig', [
             'event' => $event,
+            'participants' => $paricipants
         ]);
     }
 
