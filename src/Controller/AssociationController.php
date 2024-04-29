@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/association')]
 class AssociationController extends AbstractController
 {
-    #[Route('/', name: 'app_association_index', methods: ['GET'])]
+    #[Route('', name: 'app_association_index', methods: ['GET'])]
     public function index(AssociationRepository $associationRepository): Response
     {
         return $this->render('front/association/index.html.twig', [

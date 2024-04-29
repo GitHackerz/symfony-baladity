@@ -20,7 +20,7 @@ class DemandeDocumentFrontController extends AbstractController
     public function index(DemandeDocumentRepository $demandeDocumentRepository): Response
     {
         return $this->render('front/document/demande_document/index.html.twig', [
-            'demande_documents' => $demandeDocumentRepository->find_Aceepted_Rejected(),
+            'demande_documents' => $demandeDocumentRepository->find_Aceepted_Rejected($this->getUser()->getId()),
         ]);
     }
 
@@ -31,8 +31,13 @@ class DemandeDocumentFrontController extends AbstractController
         $id = $request->attributes->get('id');
 
         $demandeDocument = new DemandeDocument();
+        $demandeDocument->setUser($this->getUser());
         $form = $this->createForm(DemandeDocumentType::class, $demandeDocument);
         $form->handleRequest($request);
+
+        //check user connected
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($demandeDocument);
@@ -46,6 +51,8 @@ class DemandeDocumentFrontController extends AbstractController
             'form' => $form,
             'doc' => $doc_rep->find($id),
             'id_doc' => $id,
+
+
         ]);
     }
 

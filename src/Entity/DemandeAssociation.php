@@ -16,17 +16,20 @@ class DemandeAssociation
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotNull(message: "Le nom de l'association ne peut pas être vide.")]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotNull(message: "L'adresse de l'association ne peut pas être vide.")]
     private ?string $adresse = null;
 
     #[ORM\Column]
     #[Assert\NotNull(message: "Le montant de la caisse ne peut pas être vide.")]
-    #[Assert\Type(type: "float", message: "Le montant de la caisse doit être un nombre flottant.")]
+    #[Assert\PositiveOrZero(message: "Le montant de la caisse ne peut pas être négatif.")]
     private ?float $caisse = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotNull(message: "Le type de l'association ne peut pas être vide.")]
     private ?string $type = null;
 
     #[ORM\ManyToOne(inversedBy: 'demandeAssociations')]

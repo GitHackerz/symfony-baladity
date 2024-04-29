@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('search').addEventListener('input', function(e) {
+    document.getElementById('searchcitoyen').addEventListener('input', function(e) {
         const query = e.target.value;
         const searchUrl = this.getAttribute('data-search-url');
 
