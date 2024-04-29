@@ -12,6 +12,7 @@
 <script src="{{ asset('back/js/search.js') }}" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator"></script>
 
+
 <script>
   // JavaScript function to generate a mailto link QR code for each user
 function generateQRCodeForUser(userId, email) {
@@ -150,10 +151,8 @@ function generateQRCodeForUser(userId, email) {
           </td>
 
           <td>
-            <!-- Placeholder for QR Code -->
             <div id="qr-code-{{ user.id }}"></div>
             <script>
-              // Generate QR Code after the element is defined
               generateQRCodeForUser('{{ user.id }}', "{{ user.email|e('js') }}");
             </script>
           </td>
@@ -201,7 +200,11 @@ function generateQRCodeForUser(userId, email) {
 
 </div>
 
+
+
 {% include 'back/citoyen/gender_stats.html.twig' %}
+{% include 'back/citoyen/predictstat.html.twig' %}
+
 
   {% endblock %}
   
