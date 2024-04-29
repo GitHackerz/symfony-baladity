@@ -24,8 +24,6 @@ class User implements PasswordAuthenticatedUserInterface, userInterface
     #[Assert\Email(message: "L'adresse email '{{ value }}' n'est pas une adresse email valide.")]
     private ?string $email = null;
 
-
-
     #[ORM\Column(length: 255)]
     private ?string $role = null;
 
@@ -72,8 +70,11 @@ class User implements PasswordAuthenticatedUserInterface, userInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: TacheCommentaires::class)]
     private Collection $tacheCommentaires;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Association::class)]
-    private Collection $associations;
+    #[ORM\OneToMany(mappedBy: 'manager', targetEntity: Projet::class)]
+    private Collection $managedProjects;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Reclamation::class)]
+    private Collection $reclamations;
 
     public function __construct()
     {
@@ -83,7 +84,8 @@ class User implements PasswordAuthenticatedUserInterface, userInterface
         $this->projets = new ArrayCollection();
         $this->evenements = new ArrayCollection();
         $this->tacheCommentaires = new ArrayCollection();
-        $this->associations = new ArrayCollection();
+        $this->managedProjects = new ArrayCollection();
+        $this->reclamations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -414,35 +416,8 @@ class User implements PasswordAuthenticatedUserInterface, userInterface
     }
 
     /**
-     * @return Collection<int, Association>
+     * @return Collection<int, Projet>
      */
-    public function getAssociations(): Collection
-    {
-        return $this->associations;
-    }
-
-    public function addAssociation(Association $association): static
-    {
-        if (!$this->associations->contains($association)) {
-            $this->associations->add($association);
-            $association->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAssociation(Association $association): static
-    {
-        if ($this->associations->removeElement($association)) {
-            // set the owning side to null (unless already changed)
-            if ($association->getUser() === $this) {
-                $association->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getManagedProjects(): Collection
     {
         return $this->managedProjects;
@@ -464,6 +439,36 @@ class User implements PasswordAuthenticatedUserInterface, userInterface
             // set the owning side to null (unless already changed)
             if ($managedProject->getManager() === $this) {
                 $managedProject->setManager(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reclamation>
+     */
+    public function getReclamations(): Collection
+    {
+        return $this->reclamations;
+    }
+
+    public function addReclamation(Reclamation $reclamation): static
+    {
+        if (!$this->reclamations->contains($reclamation)) {
+            $this->reclamations->add($reclamation);
+            $reclamation->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReclamation(Reclamation $reclamation): static
+    {
+        if ($this->reclamations->removeElement($reclamation)) {
+            // set the owning side to null (unless already changed)
+            if ($reclamation->getUser() === $this) {
+                $reclamation->setUser(null);
             }
         }
 

@@ -1,0 +1,144 @@
+{% extends 'back/base.html.twig' %}
+
+{% block title %}Liste des Réclamations{% endblock %}
+
+{% block stylesheets %}
+    {# Inclure FontAwesome CSS #}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h4>Tableau de bord</h4>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><i class="fas fa-list-ul"></i> Nombre total de
+                                            réclamations
+                                        </h5>
+                                        <p class="card-text">{{ totalReclamations }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><i class="fas fa-calendar-alt"></i> Nombre de
+                                            réclamations ce
+                                            mois-ci</h5>
+                                        <p class="card-text">{{ reclamationsCeMois }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><i class="fas fa-exclamation-triangle"></i> Réclamations
+                                            par
+                                            priorité</h5>
+                                        <ul class="list-group">
+                                            <li class="list-group-item">Priorité
+                                                Faible: {{ reclamationsPriorite.faible }}</li>
+                                            <li class="list-group-item">Priorité
+                                                Moyenne: {{ reclamationsPriorite.moyenne }}</li>
+                                            <li class="list-group-item">Priorité
+                                                Haute: {{ reclamationsPriorite.haute }}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <h4>
+                        Liste des réclamations</h4>
+
+                    <div class="card-body">
+                        <table class="table table-hover table-striped table-bordered table-responsive" id="tableac">
+                            <script src="{{ asset('back/js/jquery-3.4.1.min.js') }}"></script>
+                            <input type="text" class="form-control" placeholder="Chercher" id="search">
+                            <Br>
+                            <thead class="thead-dark">
+                            <tr>
+                                <th>Titre</th>
+                                <th>Description</th>
+                                <th>Date de réclamation</th>
+                                <th>Priorité</th>
+                                <th>Statut</th>
+                                <th>Image</th>
+                                <th>Répondre</th>
+                                <th>Fermer</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for A in reclamations %}
+                                <tr>
+                                    <td>{{ A.titre }}</td>
+                                    <td>{{ A.description }}</td>
+                                    <td>{{ A.date|date('Y-m-d') }}</td>
+                                    <td>{{ A.priorite }}</td>
+                                    <td>{{ A.statut }}</td>
+
+                                    <td style="height: 10px;width: 10px;">
+                                        <img src="{{ asset('uploads/' ~ A.image) }}" style="height:40px;width:40px;">
+                                    </td>
+
+                                    <td>
+                                        <a href="{{ path('repondre', {'id': A.id}) }}">
+                                            <img src="{{ asset('images/rep.png') }}" style="width:30px;height:30px;border:0">
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ path('fermer',{'id':A.id}) }}">
+
+                                            <img src="{{ asset('images/fermer.png') }}"
+                                                 style="width:30px;height:30px;border:0">
+                                        </a>
+                                    </td>
+
+                                </tr>
+                                <script>
+                                    $(document).ready(function () {
+                                        $('#search').keyup(function () {
+                                            search_table($(this).val());
+                                        });
+
+                                        function search_table(value) {
+                                            $('#tableac tbody tr').each(function () {
+                                                var found = 'false';
+                                                $(this).each(function () {
+                                                    if ($(this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0) {
+                                                        found = 'true';
+                                                    }
+                                                });
+                                                if (found == 'true') {
+                                                    $(this).show();
+
+                                                } else {
+                                                    $(this).hide();
+
+                                                }
+                                            });
+                                        }
+                                    });
+                                </script>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

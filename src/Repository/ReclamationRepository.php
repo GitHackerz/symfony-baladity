@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Reclamation;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,6 +20,27 @@ class ReclamationRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Reclamation::class);
+    }
+
+    public function findByStatusEnCours()
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.statut = :val')
+            ->setParameter('val', 'en cours')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function countByDate(DateTime $dateDebut, DateTime $dateFin): int
+    {
+        return $this->createQueryBuilder('r')
+            ->select('COUNT(r.id)')
+            ->andWhere('r.date BETWEEN :dateDebut AND :dateFin')
+            ->setParameter('dateDebut', $dateDebut)
+            ->setParameter('dateFin', $dateFin)
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
 //    /**
