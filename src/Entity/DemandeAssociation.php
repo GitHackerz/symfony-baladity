@@ -4,8 +4,6 @@ namespace App\Entity;
 
 use App\Repository\DemandeAssociationRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ORM\Entity(repositoryClass: DemandeAssociationRepository::class)]
 class DemandeAssociation
@@ -22,8 +20,6 @@ class DemandeAssociation
     private ?string $adresse = null;
 
     #[ORM\Column]
-    #[Assert\NotNull(message: "Le montant de la caisse ne peut pas être vide.")]
-    #[Assert\Type(type: "float", message: "Le montant de la caisse doit être un nombre flottant.")]
     private ?float $caisse = null;
 
     #[ORM\Column(length: 255)]
@@ -95,17 +91,5 @@ class DemandeAssociation
         $this->user = $user;
 
         return $this;
-    }
-
-    /**
-     * @Assert\Callback
-     */
-    public function validate(ExecutionContextInterface $context, $payload)
-    {
-        if ($this->caisse !== null && $this->caisse < 0) {
-            $context->buildViolation("Le montant de la caisse ne peut pas être négatif.")
-                ->atPath('caisse')
-                ->addViolation();
-        }
     }
 }

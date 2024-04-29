@@ -5,7 +5,11 @@ namespace App\Entity;
 use App\Repository\ReclamationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
+use App\Validator\Constraints as CustomAssert;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: ReclamationRepository::class)]
 class Reclamation
@@ -15,39 +19,121 @@ class Reclamation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $type = null;
+    #[ORM\ManyToOne(inversedBy: 'reclamations')]
+    private ?User $user = null;
+
+
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le titre est obligatoire.")]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: "La description ne peut pas dépasser 255 caractères."
+    )]
+    private ?string $titre = null;
+
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "priorite est obligatoire.")]
+    private ?string $priorite = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $createddate = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\NotBlank(message: "image est obligatoire.")]
+    private ?string $image = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $status = null;
+
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "La description est obligatoire.")]
     private ?string $description = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $statut = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $date = null;
-
-    #[ORM\OneToMany(mappedBy: 'reclamation', targetEntity: ReponseReclamation::class)]
-    private Collection $reponseReclamations;
+    #[ORM\OneToMany(targetEntity: Reponse::class, mappedBy: 'reclamation')]
+    private Collection $reponses;
 
     public function __construct()
     {
-        $this->reponseReclamations = new ArrayCollection();
+        $this->reponses = new ArrayCollection();
     }
+
+
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getType(): ?string
+    public function getUser(): ?User
     {
-        return $this->type;
+        return $this->user;
     }
 
-    public function setType(string $type): static
+    public function setUser(?User $user): static
     {
-        $this->type = $type;
+        $this->user = $user;
+
+        return $this;
+    }
+
+  
+    public function getTitre(): ?string
+    {
+        return $this->titre;
+    }
+
+    public function setTitre(string $titre): static
+    {
+        $this->titre = $titre;
+
+        return $this;
+    }
+
+    public function getPriorite(): ?string
+    {
+        return $this->priorite;
+    }
+
+    public function setPriorite(string $priorite): static
+    {
+        $this->priorite = $priorite;
+
+        return $this;
+    }
+
+    public function getCreateddate(): ?\DateTimeInterface
+    {
+        return $this->createddate;
+    }
+
+    public function setCreateddate(\DateTimeInterface $createddate): static
+    {
+        $this->createddate = $createddate;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): static
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }
@@ -64,57 +150,37 @@ class Reclamation
         return $this;
     }
 
-    public function getStatut(): ?string
-    {
-        return $this->statut;
-    }
-
-    public function setStatut(string $statut): static
-    {
-        $this->statut = $statut;
-
-        return $this;
-    }
-
-    public function getDate(): ?string
-    {
-        return $this->date;
-    }
-
-    public function setDate(string $date): static
-    {
-        $this->date = $date;
-
-        return $this;
-    }
-
     /**
-     * @return Collection<int, ReponseReclamation>
+     * @return Collection<int, Reponse>
      */
-    public function getReponseReclamations(): Collection
+    public function getReponses(): Collection
     {
-        return $this->reponseReclamations;
+        return $this->reponses;
     }
 
-    public function addReponseReclamation(ReponseReclamation $reponseReclamation): static
+    public function addReponse(Reponse $reponse): static
     {
-        if (!$this->reponseReclamations->contains($reponseReclamation)) {
-            $this->reponseReclamations->add($reponseReclamation);
-            $reponseReclamation->setReclamation($this);
+        if (!$this->reponses->contains($reponse)) {
+            $this->reponses->add($reponse);
+            $reponse->setReclamation($this);
         }
 
         return $this;
     }
 
-    public function removeReponseReclamation(ReponseReclamation $reponseReclamation): static
+    public function removeReponse(Reponse $reponse): static
     {
-        if ($this->reponseReclamations->removeElement($reponseReclamation)) {
+        if ($this->reponses->removeElement($reponse)) {
             // set the owning side to null (unless already changed)
-            if ($reponseReclamation->getReclamation() === $this) {
-                $reponseReclamation->setReclamation(null);
+            if ($reponse->getReclamation() === $this) {
+                $reponse->setReclamation(null);
             }
         }
 
         return $this;
+    }
+    public function __toString()
+    {
+        return $this->titre;
     }
 }

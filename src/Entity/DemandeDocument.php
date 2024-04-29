@@ -4,8 +4,6 @@ namespace App\Entity;
 
 use App\Repository\DemandeDocumentRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-
 
 #[ORM\Entity(repositoryClass: DemandeDocumentRepository::class)]
 class DemandeDocument
@@ -19,8 +17,6 @@ class DemandeDocument
     private ?string $type = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message:"Une description d'au moins 5 caractéres est requise")]
-    #[Assert\Length(min:5,minMessage: "Une description d'au moins 5 caractéres est requise")]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]

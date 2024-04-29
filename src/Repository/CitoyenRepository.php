@@ -21,39 +21,28 @@ class CitoyenRepository extends ServiceEntityRepository
         parent::__construct($registry, Citoyen::class);
     }
 
-    //    /**
-    //     * @return Citoyen[] Returns an array of Citoyen objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('c.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+//    /**
+//     * @return Citoyen[] Returns an array of Citoyen objects
+//     */
+//    public function findByExampleField($value): array
+//    {
+//        return $this->createQueryBuilder('c')
+//            ->andWhere('c.exampleField = :val')
+//            ->setParameter('val', $value)
+//            ->orderBy('c.id', 'ASC')
+//            ->setMaxResults(10)
+//            ->getQuery()
+//            ->getResult()
+//        ;
+//    }
 
-    //    public function findOneBySomeField($value): ?Citoyen
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
-
-    public function findByQuery(string $query): array
-    {
-        return $this->createQueryBuilder('c')
-            ->where('c.cin LIKE :query')
-            ->orWhere('c.nom LIKE :query')
-            ->orWhere('c.prenom LIKE :query')
-            ->setParameter('query', '%' . $query . '%')
-            ->getQuery()
-            ->getResult();
-    }
+//    public function findOneBySomeField($value): ?Citoyen
+//    {
+//        return $this->createQueryBuilder('c')
+//            ->andWhere('c.exampleField = :val')
+//            ->setParameter('val', $value)
+//            ->getQuery()
+//            ->getOneOrNullResult()
+//        ;
+//    }
 }

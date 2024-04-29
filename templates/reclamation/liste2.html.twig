@@ -1,0 +1,96 @@
+{% extends 'back/base.html.twig' %}
+
+{% block title %}Liste des Réclamations
+{% endblock %}
+
+{% block body %}
+	<div id="layoutSidenav_content">
+		<main>
+			<div class="container mt-5">
+				<br>
+				
+				<div class="row">
+					<div class="col-12">
+						<div class="card">
+							<h4>Liste des réclamations</h4>
+							<div class="card-body">
+								<table class="table table-hover table-striped table-bordered table-responsive" id="tableac">
+									<script src="{{ asset('back/js/jquery-3.4.1.min.js') }}"></script>
+									<input type="text" class="form-control" placeholder="Chercher" id="search">
+									<Br>
+									<thead class="thead-dark">
+										<tr>
+											<th>Titre</th>
+											<th>Description</th>
+											<th>Date de réclamation</th>
+											<th>Priorité</th>
+											<th>Statut</th>
+											<th>Image</th>
+											<th>Répondre</th>
+											<th>Fermer</th>
+										</tr>
+									</thead>
+								</tr>
+							</thead>
+							<tbody>
+								{% for A in reclamations %}
+									<tr>
+										<td>{{ A.titre }}</td>
+										<td>{{ A.description }}</td>
+										<td>{{ A.createddate|date('Y-m-d') }}</td>
+										<td>{{ A.priorite }}</td>
+										<td>{{ A.status }}</td>
+										<td style="height: 10;width: 10;"><img src="{{ asset('images/' ~ A.image) }}" style="height:40px;width:40px;"></td>
+										{% if A.status == 'en cours' %}
+											<td>
+												<a href="{{ path('repondre', {'id': A.id}) }}">
+													<img src="{{ asset('rep.png') }}" style="width:30px;height:30px;border:0">
+												</a>
+											</td>
+											<td>
+												<a href="{{ path('fermer',{'id':A.id}) }}">
+													<img src="{{ asset('fermer.png') }}" style="width:30px;height:30px;border:0">
+												</a>
+											</td>
+										{% else %}
+											<td></td>
+											<td></td>
+										{% endif %}
+									</tr>
+									<script>
+										$(document).ready(function () {
+$('#search').keyup(function () {
+search_table($(this).val());
+});
+
+function search_table(value) {
+$('#tableac tbody tr').each(function () {
+var found = 'false';
+$(this).each(function () {
+if ($(this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0) {
+found = 'true';
+}
+});
+if (found == 'true') {
+$(this).show();
+} else {
+$(this).hide();
+}
+});
+}
+});
+									</script>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<br>
+		<br>
+		<br>
+		<br>
+
+	</main>
+{% endblock %}

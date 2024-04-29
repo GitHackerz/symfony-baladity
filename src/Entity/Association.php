@@ -6,7 +6,6 @@ use App\Repository\AssociationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AssociationRepository::class)]
 class Association
@@ -17,31 +16,18 @@ class Association
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "Le nom ne peut pas être vide.")]
-    #[Assert\Regex(
-        pattern: '/^[a-zA-Z\s]+$/',
-        message: "Le nom doit contenir uniquement des lettres et des espaces."
-    )]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "L'adresse ne peut pas être vide.")]
-    #[Assert\Length(max: 255, maxMessage: "L'adresse ne peut pas dépasser {{ limit }} caractères.")]
     private ?string $adresse = null;
 
     #[ORM\Column]
-    #[Assert\NotNull(message: "Le montant de la caisse ne peut pas être vide.")]
-    #[Assert\Type(type: "float", message: "Le montant de la caisse doit être un nombre flottant.")]
     private ?float $caisse = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "Le type ne peut pas être vide.")]
-    #[Assert\Length(max: 255, maxMessage: "Le type ne peut pas dépasser {{ limit }} caractères.")]
     private ?string $type = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "Le statut ne peut pas être vide.")]
-    #[Assert\Length(max: 255, maxMessage: "Le statut ne peut pas dépasser {{ limit }} caractères.")]
     private ?string $statut = null;
 
     #[ORM\OneToMany(mappedBy: 'association', targetEntity: HistoriqueModification::class)]

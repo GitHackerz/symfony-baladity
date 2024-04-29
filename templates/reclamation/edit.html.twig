@@ -1,0 +1,32 @@
+{% extends 'front/base.html.twig' %}
+
+{% block title %}Réclamation
+{% endblock %}
+
+{% block body %}
+	<div class="container-fluid position-relative p-0">
+		{% include "front/navbar.html.twig" %}
+		<div class="container mt-5">
+			<h2 class="mb-4">Réclamer</h2>
+			<div class="card">
+				<div class="card-body">
+					{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+					{% for field in form %}
+						{% if field.vars.name != '_token' %}
+							<div class="mb-3">
+								{{ form_label(field, null, {'label_attr': {'class': 'form-label'}}) }}
+								{{ form_widget(field, {'attr': {'class': 'form-control'}}) }}
+							</div>
+						{% endif %}
+					{% endfor %}
+
+					{{ form_end(form) }}
+
+
+				</div>
+
+			</div>
+			<br>
+		</div>
+	{% endblock %}

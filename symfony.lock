@@ -17,7 +17,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "main",
             "version": "2.4",
-            "ref": "91690c0a440faba1a3676256bcca2b4aa9f55b72"
+            "ref": "cc62b7e9470998c640ee99d284a013a676f1fc5e"
         },
         "files": [
             "./config/packages/doctrine.yaml",
@@ -36,21 +36,6 @@
         "files": [
             "./config/packages/doctrine_migrations.yaml",
             "./migrations/.gitignore"
-        ]
-    },
-    "endroid/qr-code-bundle": {
-        "version": "5.0.1"
-    },
-    "php-http/discovery": {
-        "version": "1.19",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "1.18",
-            "ref": "f45b5dd173a27873ab19f5e3180b2f661c21de02"
-        },
-        "files": [
-            "./config/packages/http_discovery.yaml"
         ]
     },
     "phpunit/phpunit": {
@@ -85,7 +70,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "main",
             "version": "5.3",
-            "ref": "1781ff40d8a17d87cf53f8d4cf0c8346ed2bb461"
+            "ref": "da0c8be8157600ad34f10ff0c9cc91232522e047"
         },
         "files": [
             "./bin/console"
@@ -133,15 +118,6 @@
             "./src/Controller/.gitignore",
             "./src/Kernel.php"
         ]
-    },
-    "symfony/google-mailer": {
-        "version": "5.4",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "4.4",
-            "ref": "f8fd4ddb9b477510f8f4bce2b9c054ab428c0120"
-        }
     },
     "symfony/mailer": {
         "version": "5.4",
@@ -240,15 +216,6 @@
             "./config/packages/security.yaml"
         ]
     },
-    "symfony/sendgrid-mailer": {
-        "version": "5.4",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "4.4",
-            "ref": "224aedffb66812dc2b0965dabc14d5f800941da6"
-        }
-    },
     "symfony/translation": {
         "version": "5.4",
         "recipe": {
@@ -275,15 +242,6 @@
             "./templates/base.html.twig"
         ]
     },
-    "symfony/twilio-notifier": {
-        "version": "5.4",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "5.0",
-            "ref": "10af129fcac6d00ffc9bb23d039d997dee35e657"
-        }
-    },
     "symfony/validator": {
         "version": "5.4",
         "recipe": {
@@ -309,26 +267,7 @@
             "./config/routes/web_profiler.yaml"
         ]
     },
-    "symfony/webpack-encore-bundle": {
-        "version": "2.1",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "2.0",
-            "ref": "082d754b3bd54b3fc669f278f1eea955cfd23cf5"
-        },
-        "files": [
-            "./assets/app.js",
-            "./assets/styles/app.css",
-            "./config/packages/webpack_encore.yaml",
-            "./package.json",
-            "./webpack.config.js"
-        ]
-    },
-    "symfonycasts/tailwind-bundle": {
-        "version": "v0.5.1"
-    },
     "twig/extra-bundle": {
-        "version": "v3.9.3"
+        "version": "v3.8.0"
     }
 }
