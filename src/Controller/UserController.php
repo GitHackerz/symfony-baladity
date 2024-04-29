@@ -245,26 +245,4 @@ class UserController extends AbstractController
 
         return $this->redirectToRoute('app_login', [], Response::HTTP_SEE_OTHER);
     }
-
-
-    #[Route('/send-email/{id}', name: 'send_email')]
-    public function sendEmail(int $userId, MailerInterface $mailer, UserRepository $userRepository): Response
-    {
-        $user = $userRepository->find($userId);
-        if (!$user) {
-            throw $this->createNotFoundException('Utilisateur non trouvé');
-        }
-
-        // Configurez ici votre logique d'envoi d'email
-        $email = (new Email())
-            ->from('your_email@example.com')
-            ->to($user->getEmail())
-            ->subject('Test QR Code')
-            ->text('Contenu de l\'email.');
-
-        $mailer->send($email);
-
-        // Vous pouvez renvoyer une réponse ou rediriger l'utilisateur
-        return new Response('Email envoyé avec succès !');
-    }
 }
