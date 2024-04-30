@@ -1,0 +1,22 @@
+{% set taskLink = url('task_project_back_show', {'id': task.id}) %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>New Task Assigned</title>
+</head>
+<body>
+<h1>Hello {{ task.user.citoyen.nom }},</h1>
+<p>You have been assigned a new task in the project. Here are the details:</p>
+<ul>
+    <li><strong>Task Title:</strong> {{ task.titre }}</li>
+    <li><strong>Task Description:</strong> {{ task.description }}</li>
+    <li><strong>Due Date:</strong> {{ task.date|date('Y-m-d') }}</li>
+</ul>
+<p>You can view the task and start working on it by clicking the link below:</p>
+<a href="{{ taskLink }}">View Task</a>
+<p>If you have any questions or need further clarification, please do not hesitate to contact your project manager.</p>
+<p>Best Regards,</p>
+<p>Your Project Management Team</p>
+</body>
+</html>

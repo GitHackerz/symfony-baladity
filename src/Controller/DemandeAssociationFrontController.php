@@ -16,26 +16,25 @@ use App\Service\MailerService;
 class DemandeAssociationFrontController extends AbstractController
 {
     #[Route('', name: 'demande_association_front_index', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager ,MailerService $mailer): Response
-    {   
+    public function new(Request $request, EntityManagerInterface $entityManager, MailerService $mailer): Response
+    {
         if (!$this->getUser())
             return $this->redirectToRoute('app_login');
+
         $demandeAssociation = new DemandeAssociation();
         $demandeAssociation->setUser($this->getUser());
 
-        
         $form = $this->createForm(DemandeAssociationType::class, $demandeAssociation);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($demandeAssociation);
             $entityManager->flush();
-            $message="Vous avez recu une nouvelle demande d'association.<br>
+
+            $message = "Vous avez recu une nouvelle demande d'association.<br>
             Veuillez verifier la nouvelle liste des demandes d'association.
             ";
-
-            $mailMessage = $message;
-            $mailer->sendEmail('Nouvelle demande d\'association', $mailMessage, $message);
+            $mailer->sendEmail($this->getUser()->getEmail(), 'Nouvelle demande d\'association', $message);
             return $this->redirectToRoute('demande_association_front_index', [], Response::HTTP_SEE_OTHER);
         }
 

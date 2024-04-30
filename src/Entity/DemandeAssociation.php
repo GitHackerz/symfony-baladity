@@ -32,7 +32,7 @@ class DemandeAssociation
     #[Assert\NotNull(message: "Le type de l'association ne peut pas être vide.")]
     private ?string $type = null;
 
-    #[ORM\ManyToOne(cascade: ['persist', 'remove'], inversedBy: 'demandeAssociations')]
+    #[ORM\ManyToOne( inversedBy: 'demandeAssociations')]
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?User $user = null;
 

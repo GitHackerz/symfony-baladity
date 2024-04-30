@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
@@ -60,7 +61,7 @@ class TaskProjectBackController extends AbstractController
     }
 
     #[Route('/new', name: 'task_project_back_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, MailerService $mailerService): Response
     {
         if (!$this->getUser())
             return $this->redirectToRoute('app_login');
@@ -78,6 +79,13 @@ class TaskProjectBackController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($tacheProjet);
             $entityManager->flush();
+
+            $mailerService->sendTwigEmail(
+                $tacheProjet->getUser()->getEmail(),
+                'New Task',
+                'back/task_project/mail.html.twig',
+                ['task' => $tacheProjet]
+            );
 
             return $this->redirectToRoute('task_project_back_index', [], Response::HTTP_SEE_OTHER);
         }
