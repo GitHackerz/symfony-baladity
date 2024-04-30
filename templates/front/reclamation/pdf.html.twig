@@ -61,17 +61,18 @@
             </tr>
             <tr>
                 <th>Date de création</th>
-                <td>{{ reclamation.createddate|date("d/m/Y H:i:s") }}</td>
+                <td>{{ reclamation.date|date("d/m/Y H:i:s") }}</td>
             </tr>
             <tr>
                 <th>Image</th>
-                <td><img src="{{ absolute_url(asset('images/' ~ reclamation.image)) }}" style="height:40px;width:40px;">
-
+                <td>
+                    <img src="{{ absolute_url(asset('uploads/' ~ reclamation.image)) }}"
+                         style="height:40px;width:40px;">
                 </td>
             </tr>
             <tr>
                 <th>Statut</th>
-                <td>{{ reclamation.status }}</td>
+                <td>{{ reclamation.statut }}</td>
             </tr>
             <tr>
                 <th>Description</th>

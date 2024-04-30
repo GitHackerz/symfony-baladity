@@ -66,7 +66,7 @@
                         </td>
                         <td>
                             <a href="{{ path('reclamationpdf', {'id': reclamation.id}) }}">
-                                <img src="{{ asset('image.png') }}" style="width:30px;height:30px;border:0">
+                                <img src="{{ asset('images/image.png') }}" style="width:30px;height:30px;border:0">
                             </a>
                         </td>
                     </tr>
@@ -93,7 +93,7 @@
                             <div
                                     class="modal-body">
                                 <!-- Reclamation details -->
-                                <img src="{{ asset('images/' ~ reclamation.image) }}" alt="Image de reclamation"
+                                <img src="{{ asset('uploads/' ~ reclamation.image) }}" alt="Image de reclamation"
                                      class="img-fluid">
                                 <p>Priorité :
                                     {{ reclamation.priorite }}</p>
@@ -120,6 +120,7 @@
                         </div>
                     </div>
                 </div>
+
             {% endfor %}
         </div>
         <br>

@@ -17,6 +17,7 @@ use Symfony\Component\Mime\Email;
 //use TCPDF;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[Route('/dashboard/event')]
 class EventBackController extends AbstractController
@@ -47,9 +48,12 @@ class EventBackController extends AbstractController
         $pdfOptions->set('defaultFont', 'Arial');
         $dompdf = new Dompdf($pdfOptions);
 
+//        $imagePath = $this->getParameter('kernel.project_dir') . '\public\images\user1.jpg';
+        $imagePath = realpath($this->getParameter('kernel.project_dir')) . '/public/path/to/your/image.jpg';
         // Générer le contenu HTML pour le PDF
         $html = $this->renderView('back/event/pdf.html.twig', [
             'events' => $events,
+            'imagePath' => $imagePath
         ]);
 
         // Charger le contenu HTML dans Dompdf

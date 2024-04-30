@@ -29,9 +29,9 @@ class ReclamationController extends AbstractController
     private function sendConfirmationEmail($reclamation, MailerInterface $mailer): void
     {
         $email = (new Email())
-            ->from(new Address('yassmine.layes@gmail.com', 'Pidev'))
+            ->from(new Address('habibbibani79@gmail.com', 'Pidev'))
             ->to($reclamation->getUser()->getEmail())
-            ->subject('Confirmation de réservation')
+            ->subject('Reclamation')
             ->html($this->renderView(
                 'front/reclamation/email.html.twig',
                 ['reclamation' => $reclamation]
