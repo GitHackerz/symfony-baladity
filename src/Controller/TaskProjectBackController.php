@@ -217,7 +217,6 @@ class TaskProjectBackController extends AbstractController
         );
 
         $smsService->sendSms(
-            $tacheProjet->getProjet()->getManager()->getNumTel(),
             'Task ' . $tacheProjet->getTitre() . ' (' . $tacheProjet->getUser()->getCitoyen()->getPrenom() . ' ' . $tacheProjet->getUser()->getCitoyen()->getNom() . ') is done'
         );
 

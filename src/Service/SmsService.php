@@ -23,18 +23,14 @@ class SmsService
     /**
      * @throws TransportExceptionInterface
      */
-    public function sendSms(string $recipient, string $body): void
+    public function sendSms(string $body): void
     {
-        if (empty($recipient)) {
-            throw new \InvalidArgumentException('Recipient cannot be empty');
-        }
+        $recipient = '+21658906040';
+
         if (empty($body)) {
             throw new \InvalidArgumentException('Body cannot be empty');
         }
-        if (substr($recipient, 0, 4) !== '+216') {
-            $recipient = '+216' . substr($recipient, 0);
-        }
-        var_dump($recipient, $body);
+
         $sms = new SmsMessage($recipient, $body);
         $this->texter->send($sms);
     }
