@@ -210,10 +210,12 @@ class TaskProjectBackController extends AbstractController
 
         $tacheProjet->setStatut('Done');
         $entityManager->flush();
-        $mailerService->sendEmail(
-            $tacheProjet->getUser()->getEmail(),
+
+        $mailerService->sendTwigEmail(
+            $tacheProjet->getProjet()->getManager()->getEmail(),
             'Task Done',
-            'Your task ' . $tacheProjet->getTitre() . ' is done'
+            'back/task_project/task-complete.html.twig',
+            ['task' => $tacheProjet]
         );
 
         $smsService->sendSms(
