@@ -18,9 +18,11 @@ class TacheCommentaires
     private ?string $content = null;
 
     #[ORM\ManyToOne(inversedBy: 'tacheCommentaires')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'tacheCommentaires')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?TacheProjet $tacheProjet = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, options: ['default' => 'CURRENT_TIMESTAMP'])]

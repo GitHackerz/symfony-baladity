@@ -9,11 +9,12 @@
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav ms-auto py-0">
             <a href="/" class="nav-item nav-link {% if app.request.getPathInfo == '/' %}active{% endif %}">Home</a>
-            <a href="/about" class="nav-item nav-link {% if app.request.getPathInfo == '/about' %}active{% endif %}">About</a>
-            <a href="/profile"
-               class="nav-item nav-link {% if app.request.getPathInfo == '/profile' %}active{% endif %}">Profile</a>
+            {% if app.user %}
+                <a href="/profile"
+                   class="nav-item nav-link {% if app.request.getPathInfo == '/profile' %}active{% endif %}">Profile</a>
+            {% endif %}
             <a href="/event"
-               class="nav-item nav-link {% if app.request.getPathInfo == '/evenement' %}active{% endif %}">evenement</a>
+               class="nav-item nav-link {% if app.request.getPathInfo == '/evenement' %}active{% endif %}">Evenement</a>
             <a href="{{ path('project_front_index') }}"
                class="nav-item nav-link {% if app.request.getPathInfo == '/project' %}active{% endif %}">Projet</a>
             <div class="nav-item dropdown">
@@ -37,33 +38,19 @@
                 </div>
             </div>
 
-            <div class="nav-item dropdown">
-                <a href="#"
-                   class="nav-link dropdown-toggle {% if app.request.getPathInfo starts with '/blog' %}active{% endif %}"
-                   data-bs-toggle="dropdown">Blog</a>
-                <div class="dropdown-menu m-0">
-                    <a href="/blog" class="dropdown-item">Blog Grid</a>
-                    <a href="/detail" class="dropdown-item">Blog Detail</a>
-                </div>
-            </div>
-            <div class="nav-item dropdown">
-                <a href="#"
-                   class="nav-link dropdown-toggle {% if app.request.getPathInfo starts with '/pages' %}active{% endif %}"
-                   data-bs-toggle="dropdown">Pages</a>
-                <div class="dropdown-menu m-0">
-                    <a href="/price" class="dropdown-item">Pricing Plan</a>
-                    <a href="/feature" class="dropdown-item">Our features</a>
-                    <a href="/team" class="dropdown-item">Team Members</a>
-                    <a href="/testimonial" class="dropdown-item">Testimonial</a>
-                    <a href="/quote" class="dropdown-item">Free Quote</a>
-                </div>
-            </div>
-            <a href="/contact"
-               class="nav-item nav-link {% if app.request.getPathInfo == '/contact' %}active{% endif %}">Contact</a>
+            <a href="{{ path('app_reclamation') }}"
+               class="nav-item nav-link {% if app.request.getPathInfo == '/reclamation' %}active{% endif %}">Reclamations</a>
         </div>
         <butaton type="button" class="btn text-primary ms-3" data-bs-toggle="modal" data-bs-target="#searchModal">
             <i class="fa fa-search"></i>
         </butaton>
-        <a href="{{ path('app_dashboard') }}" class="btn btn-primary py-2 px-4 ms-3 rounded-3">Dashboard</a>
+        {% if app.user %}
+            {% if app.user.role | lower == 'admin' %}
+                <a href="{{ path('app_dashboard') }}" class="btn btn-primary py-2 px-4 ms-3 rounded-3">Dashboard</a>
+            {% endif %}
+            <a href="{{ path('app_logout') }}" class="btn btn-dark py-2 px-4 ms-3 rounded-3">Logout</a>
+        {% else %}
+            <a href="{{ path('app_login') }}" class="btn btn-primary py-2 px-4 ms-3 rounded-3">Login</a>
+        {% endif %}
     </div>
 </nav>

@@ -1,19 +1,33 @@
-{% extends 'back/base-auth.html.twig' %} {% block title %}Reset your password{%
-endblock %} {% block body %} {% for flash_error in
-app.flashes('reset_password_error') %}
-<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-{% endfor %}
-<h1>Reset your password</h1>
+{% extends 'back/base-auth.html.twig' %}
 
-{{ form_start(requestForm) }}
-{{ form_row(requestForm.email) }}
-<div>
-  <small>
-    Enter your email address, and we will send you a link to reset your
-    password.
-  </small>
-</div>
+{% block title %}Reset your password{% endblock %}
 
-<button class="btn btn-primary">Send password reset email</button>
-{{ form_end(requestForm) }}
+{% block body %}
+    {{ form_start(requestForm) }}
+    {{ form_widget(requestForm._token) }}
+
+    <h4 class="mb-2">Forgot Password? 🔒</h4>
+    <p class="mb-4">Enter your email and we'll send you instructions to reset your password</p>
+    <form id="formAuthentication" class="mb-3" action="index.html" method="POST">
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input
+                    type="text"
+                    class="form-control"
+                    id="email"
+                    name="{{ field_name(requestForm.email) }}"
+                    value="{{ field_value(requestForm.email) }}"
+                    placeholder="Enter your email"
+                    autofocus
+            />
+        </div>
+        <button class="btn btn-primary d-grid w-100">Send Reset Link</button>
+    </form>
+    <div class="text-center mt-3 text-primary">
+        <a href="{{ path('app_login') }}" class="d-flex align-items-center justify-content-center">
+            <i class="bx bx-chevron-left scaleX-n1-rtl bx-sm"></i>
+            Back to login
+        </a>
+    </div>
+    {{ form_end(requestForm) }}
 {% endblock %}

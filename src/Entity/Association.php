@@ -48,6 +48,7 @@ class Association
     private Collection $historiqueModifications;
 
     #[ORM\ManyToOne(inversedBy: 'associations')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?User $user = null;
 
     public function __construct()

@@ -37,7 +37,8 @@ class Reclamation
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
-    #[ORM\ManyToOne(inversedBy: 'reclamations')]
+    #[ORM\ManyToOne( inversedBy: 'reclamations')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?User $user = null;
 
     public function __construct()

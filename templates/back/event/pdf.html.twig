@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liste des événements</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        h2 {
+            text-align: center; /* Aligner le titre au centre */
+            text-transform: uppercase; /* Mettre le texte en majuscules */
+            color: red; /* Couleur rouge */
+        }
+    </style>
+</head>
+<body>
+<h2>Liste des événements</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Titre</th>
+        <th>Description</th>
+        <th>Date</th>
+        <th>Lieu</th>
+        <th>Nom Contact</th>
+        <th>Email Contact</th>
+        <th>Statut</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for event in events %}
+        <tr>
+            <td>{{ event.id }}</td>
+            <td>{{ event.titre }}</td>
+            <td>{{ event.description }}</td>
+            <td>{{ event.date }}</td>
+            <td>{{ event.lieu }}</td>
+            <td>{{ event.nomContact }}</td>
+            <td>{{ event.emailContact }}</td>
+            <td>{{ event.statut ? 'fini' : 'pas fini' }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>

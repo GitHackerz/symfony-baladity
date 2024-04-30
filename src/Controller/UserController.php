@@ -144,6 +144,7 @@ class UserController extends AbstractController
             'form' => $form,
         ]);
     }
+
     #[Route('/stats', name: 'user_citoyen_stats')]
     public function stats(EntityManagerInterface $entityManager): JsonResponse
     {
@@ -221,10 +222,6 @@ class UserController extends AbstractController
         ]);
     }
 
-
-
-
-
     #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
@@ -235,6 +232,7 @@ class UserController extends AbstractController
 
         return $this->redirectToRoute('app_citoyen_index', [], Response::HTTP_SEE_OTHER);
     }
+
     #[Route('/{id}', name: 'app_user_delete2', methods: ['POST'])]
     public function delete2(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {

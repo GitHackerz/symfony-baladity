@@ -43,6 +43,9 @@ class ReclamationController extends AbstractController
     #[Route('/reclamation/pdf/{id}', name: 'reclamationpdf')]
     public function generatePDF($id, ReclamationRepository $repository): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
 
         $reclamation = $repository->find($id);
         $pdfContent = $this->renderView('front/reclamation/pdf.html.twig', [
@@ -70,8 +73,11 @@ class ReclamationController extends AbstractController
     #[Route('/reclamation', name: 'app_reclamation')]
     public function index(ReclamationRepository $rp): Response
     {
-        $utilisateurId = $this->getUser()->getId();
-        $recl = $rp->findBy(['user' => $utilisateurId]);
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $recl = $rp->findBy(['user' => $this->getUser()->getId()]);
         return $this->render('front/reclamation/index.html.twig', [
             'reclamations' => $recl,
         ]);
@@ -80,6 +86,10 @@ class ReclamationController extends AbstractController
     #[Route('/reclamation/edit/{id}', name: 'updaterecla')]
     public function edit(Request $request, $id, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $rec = $entityManager->getRepository(Reclamation::class)->find($id);
         if (!$rec) {
             throw $this->createNotFoundException('No Reclamation found for id ' . $rec->getId());
@@ -119,6 +129,10 @@ class ReclamationController extends AbstractController
     #[Route('reclamation/delete/{id}', name: 'Supprimerrecla')]
     public function delete($id, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $recl = $entityManager->getRepository(Reclamation::class)->find($id);
         $entityManager->remove($recl);
         $entityManager->flush();
@@ -128,6 +142,10 @@ class ReclamationController extends AbstractController
     #[Route('/dashboard/reclamation', name: 'app_reclamationback')]
     public function index2(ReclamationRepository $rp): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $totalReclamations = $rp->count([]);
 
         $reclamationsPriorite = [
@@ -153,6 +171,10 @@ class ReclamationController extends AbstractController
     #[Route('/dashboard/allreclamation', name: 'app_reclamationback2')]
     public function index3(ReclamationRepository $rp): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $recl = $rp->findAll();
         return $this->render('front/reclamation/liste2.html.twig', [
             'reclamations' => $recl,
@@ -162,6 +184,10 @@ class ReclamationController extends AbstractController
     #[Route('/repondre/{id}', name: 'repondre')]
     public function repondre(Request $request, MailerInterface $mailer, int $id, ReclamationRepository $reclamationRepository, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $reclamation = $reclamationRepository->find($id);
 
         if ($reclamation) {
@@ -190,6 +216,10 @@ class ReclamationController extends AbstractController
     #[Route('/fermer/{id}', name: 'fermer')]
     public function fermer(int $id, ReclamationRepository $reclamationRepository, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $reclamation = $reclamationRepository->find($id);
 
         if ($reclamation) {
@@ -209,6 +239,10 @@ class ReclamationController extends AbstractController
      */
     private function filterBadwords(string $text): string
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $badwordsList = ["badword1", "badword2", "badword3"];
 
         foreach ($badwordsList as $word) {
@@ -221,8 +255,12 @@ class ReclamationController extends AbstractController
     #[Route('/addreclamation', name: 'add_reclamation')]
     public function add(Request $request, UserRepository $userRepository, FlashBagInterface $flashBag, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $recl = new Reclamation();
-        $user = $userRepository->find(1);
+        $user = $this->getUser();
         $recl->setUser($user);
         $recl->setDate(new \DateTime());
         $recl->setStatut('en cours');
@@ -262,6 +300,10 @@ class ReclamationController extends AbstractController
     #[Route('/repondreback', name: 'app_repondreback')]
     public function indexrepondre(ReponseReclamationRepository $rp): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
 
         $recl = $rp->findAll();
         return $this->render('front/reclamation/indexreponse.html.twig', [

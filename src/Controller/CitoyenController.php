@@ -20,6 +20,9 @@ class CitoyenController extends AbstractController
     #[Route('', name: 'app_citoyen_index', methods: ['GET'])]
     public function index(CitoyenRepository $citoyenRepository, UserRepository $userRepository): Response
     {
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
         $maleCount = $citoyenRepository->count(['genre' => 'Homme']);
         $femaleCount = $citoyenRepository->count(['genre' => 'Femme']);
 
@@ -34,12 +37,18 @@ class CitoyenController extends AbstractController
     #[Route('/profile', name: 'back_profile')]
     public function profile(): Response
     {
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
         return $this->render('back/citoyen/profile.html.twig', []);
     }
 
     #[Route('/new', name: 'app_citoyen_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
         $citoyen = new Citoyen();
         $form = $this->createForm(CitoyenType::class, $citoyen);
         $form->handleRequest($request);
@@ -60,6 +69,9 @@ class CitoyenController extends AbstractController
     #[Route('/{id}', name: 'app_citoyen_show', methods: ['GET'])]
     public function show(Citoyen $citoyen): Response
     {
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
         return $this->render('back/citoyen/show.html.twig', [
             'citoyen' => $citoyen,
         ]);
@@ -68,6 +80,9 @@ class CitoyenController extends AbstractController
     #[Route('/{id}/edit', name: 'app_citoyen_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Citoyen $citoyen, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
         $form = $this->createForm(CitoyenType::class, $citoyen);
         $form->handleRequest($request);
 
@@ -86,6 +101,9 @@ class CitoyenController extends AbstractController
     #[Route('/{id}', name: 'app_citoyen_delete', methods: ['POST'])]
     public function delete(Request $request, Citoyen $citoyen, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
         $submittedToken = $request->request->get('_token');
 
         if ($this->isCsrfTokenValid('delete' . $citoyen->getId(), $submittedToken)) {
@@ -110,6 +128,9 @@ class CitoyenController extends AbstractController
     #[Route('/{id}', name: 'x', methods: ['POST'])]
     public function delete2(Request $request, Citoyen $citoyen, EntityManagerInterface $entityManager, CsrfTokenManagerInterface $csrfTokenManager): Response
     {
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
         $submittedToken = $request->request->get('_token');
 
         if ($csrfTokenManager->isTokenValid(new CsrfToken('delete' . $citoyen->getId(), $submittedToken))) {
@@ -133,6 +154,9 @@ class CitoyenController extends AbstractController
     #[Route('/citoyen/recherche', name: 'citoyen_recherche2', methods: ['GET'])]
     public function recherche(Request $request, EntityManagerInterface $entityManager, CitoyenRepository $citoyenRepository): Response
     {
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
         $query = $request->query->get('q');
         $citoyens = $citoyenRepository->findByQuery($query);
 

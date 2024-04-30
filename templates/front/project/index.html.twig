@@ -63,14 +63,17 @@
                                         {{ progress }}%
                                     </div>
                                 </div>
-                                {% if project.id in participatedProjects %}
-                                    <a class="text-uppercase text-warning participation-link"
-                                       data-project-id="{{ project.id }}" data-participated="true" href="#">Annuler la
-                                        participation <i class="bi bi-arrow-right"></i></a>
-                                {% else %}
-                                    <a class="text-uppercase text-primary participation-link"
-                                       data-project-id="{{ project.id }}" data-participated="false" href="#">Participer
-                                        <i class="bi bi-arrow-right"></i></a>
+                                {% if app.user %}
+                                    {% if project.id in participatedProjects %}
+                                        <a class="text-uppercase text-warning participation-link"
+                                           data-project-id="{{ project.id }}" data-participated="true" href="#">Annuler
+                                            la
+                                            participation <i class="bi bi-arrow-right"></i></a>
+                                    {% else %}
+                                        <a class="text-uppercase text-primary participation-link"
+                                           data-project-id="{{ project.id }}" data-participated="false" href="#">Participer
+                                            <i class="bi bi-arrow-right"></i></a>
+                                    {% endif %}
                                 {% endif %}
 
                             </div>
@@ -90,7 +93,7 @@
                     event.preventDefault();
                     const projectId = this.getAttribute('data-project-id');
                     const participated = this.getAttribute('data-participated') === 'true';
-                    const url = participated ? `/project/quitter/${projectId}/2` : `/project/participer/${projectId}/2`;
+                    const url = participated ? `/project/quitter/${projectId}` : `/project/participer/${projectId}`;
                     this.textContent = 'En cours...';
                     fetch(url, {
                         method: 'POST',

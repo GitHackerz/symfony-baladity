@@ -21,6 +21,16 @@ class MembreRepository extends ServiceEntityRepository
         parent::__construct($registry, Membre::class);
     }
 
+    public function findCountByEvent(): array
+    {
+        return $this->createQueryBuilder('m')
+            ->select('COUNT(m.id) as count', 'e.titre')
+            ->leftJoin('m.event', 'e')
+            ->groupBy('e.id')
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Membre[] Returns an array of Membre objects
 //     */

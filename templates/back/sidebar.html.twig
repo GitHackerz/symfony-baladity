@@ -132,7 +132,7 @@ fi{% set path = app.request.getPathInfo %}$
             </ul>
         </li>
 
-        <li class="menu-item {{ 'user'in cleanPath|lower?'active':'' }}">
+        <li class="menu-item {{ 'citoyen'in cleanPath|lower?'active':'' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-user"></i>
                 <div data-i18n="Layouts">Utilisateur</div>
@@ -146,6 +146,24 @@ fi{% set path = app.request.getPathInfo %}$
                 <li class="menu-item">
                     <a href="{{ path('app_citoyen_new') }}" class="menu-link">
                         <div data-i18n="Withoutnavbar">Ajouter un Citoyen</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="menu-item {{ 'eclamation' in cleanPath|lower?'active':'' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-user"></i>
+                <div data-i18n="Layouts">Reclamation</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="{{ path('app_reclamationback') }}" class="menu-link">
+                        <div data-i18n="Account">Reclamations Non Traitées</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{ path('app_reclamationback2') }}" class="menu-link">
+                        <div data-i18n="Withoutnavbar">Toutes les réclamations</div>
                     </a>
                 </li>
             </ul>

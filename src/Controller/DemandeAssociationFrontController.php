@@ -35,7 +35,7 @@ class DemandeAssociationFrontController extends AbstractController
             ";
 
             $mailMessage = $message;
-            $mailer->sendEmail(content: $mailMessage);
+            $mailer->sendEmail('Nouvelle demande d\'association', $mailMessage, $message);
             return $this->redirectToRoute('demande_association_front_index', [], Response::HTTP_SEE_OTHER);
         }
 

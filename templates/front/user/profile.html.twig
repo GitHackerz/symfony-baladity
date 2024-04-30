@@ -5,27 +5,27 @@
 
     <div class="container-fluid wow fadeInUp" data-wow-delay="0.1s">
         <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
-            <h5 class="fw-bold text-primary text-uppercase">User</h5>
-            <h1 class="mb-0">Votre compte</h1>
+            <h5 class="fw-bold text-primary text-uppercase text-2xl">{{ app.user.role }}</h5>
+            <h1 class="text-4xl">Votre compte</h1>
         </div>
-        <div class="container py-5 h-100">
-            <div class="row d-flex justify-content-center align-items-center h-100">
-                <div class="col-12 col-lg-10 mb-4 mb-lg-0"> <!-- Increased width from col-lg-6 to col-lg-8 -->
-                    <div class="card mb-3" style="border-radius: .5rem;">
-                        <div class="row g-0">
+        <div class="container py-5">
+            <div class="row d-flex justify-content-center align-items-center">
+                <div class="col-12 col-lg-10">
+                    <div class="card mb-3 rounded-xl ">
+                        <div class="row">
                             <div class="col-md-5 gradient-custom text-center text-white"
                                  style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem; padding: 2rem;">
                                 <!-- Increased to col-md-5 and added padding -->
                                 {% if app.user.image %}
-                                    <img src="{{ asset('uploads/' ~ app.user.image) }}" alt="Image de l'utilisateur"
-                                         style="width: 100px; height: auto;"/>
+                                    <img class="mx-auto rounded-full mb-3" src="{{ asset('uploads/' ~ app.user.image) }}" alt="Image de l'utilisateur"
+                                         style="width: 300px; height: auto;"/>
                                 {% else %}
                                     Pas d'image disponible
-                                {% endif %} alt="Avatar" class="img-fluid my-5" style="width: 120px;" />
+                                {% endif %}
                                 <!-- Increased image size -->
-                                <h4 style="font-size: 24px;">emir</h4>
+                                <h4 style="font-size: 24px;">{{ app.user.citoyen.nom }} {{ app.user.citoyen.prenom }}</h4>
 
-                                <p style="font-size: 20px;">Web Designer</p> <!-- Increased font size -->
+                                <p class="text-secondary uppercase" style="font-size: 20px;">{{ app.user.role }}</p> <!-- Increased font size -->
                                 <i class="far fa-edit mb-5" style="font-size: 24px;"></i> <!-- Increased icon size -->
                             </div>
                             <div class="col-md-7"> <!-- Increased to col-md-7 -->
@@ -47,13 +47,22 @@
                                     <hr class="mt-0 mb-4">
                                     <div class="row pt-1">
                                         <div class="col-6 mb-3">
-                                            <h6>Recent</h6>
-                                            <p class="text-muted">Lorem ipsum</p>
+                                            <h6>Projects</h6>
+                                            <p class="text-muted">{{ app.user.projets.count }}</p>
                                         </div>
                                         <div class="col-6 mb-3">
-                                            <h6>Most Viewed</h6>
-                                            <p class="text-muted">Dolor sit amet</p>
+                                            <h6>Events</h6>
+                                            <p class="text-muted">{{ app.user.evenements.count }}</p>
                                         </div>
+                                        <div class="col-6 mb-3">
+                                            <h6>Reclamations</h6>
+                                            <p class="text-muted">{{ app.user.reclamations.count }}</p>
+                                        </div>
+                                        <div class="col-6 mb-3">
+                                            <h6>Documents</h6>
+                                            <p class="text-muted">{{ app.user.demandeDocuments.count }}</p>
+                                        </div>
+
                                     </div>
                                     <div class="d-flex justify-content-start">
                                         <a href="#!"><i class="fab fa-facebook-f fa-lg me-3"></i></a>

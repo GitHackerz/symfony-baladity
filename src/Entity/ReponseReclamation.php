@@ -17,6 +17,7 @@ class ReponseReclamation
     private ?string $contenu = null;
 
     #[ORM\ManyToOne(inversedBy: 'reponseReclamations')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?Reclamation $reclamation = null;
 
     public function getId(): ?int

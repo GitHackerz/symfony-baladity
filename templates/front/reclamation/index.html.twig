@@ -4,130 +4,125 @@
 {% endblock %}
 
 {% block body %}
-<div class="container-fluid position-relative p-0">
-    {% include "front/navbar.html.twig" %}
-    <br>
-    <br>
-    <div class="container">
-        <br>
-        <br><br>
-        <br>
-        {% for flash_message in app.flashes('success') %}
-            <div class="alert alert-success" role="alert">
-                {{ flash_message }}
+    {% include "front/Header.html.twig" %}
+    <div class="container-fluid wow fadeInUp" data-wow-delay="0.1s">
+        <div class="container">
+            <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
+                <h5 class="fw-bold text-primary text-uppercase text-2xl">Reclamations</h5>
+                <h1 class="mb-0 text-4xl">Liste des reclamations</h1>
             </div>
-        {% endfor %}
-
-        <br>
-
-        <h1>Mes réclamations</h1>
-        <br>
-
-        <a href="{{ path('add_reclamation') }}" class="btn btn-success mb-3">Réclamer</a>
-        <table
-                class="table">
-            <!-- Table headers -->
-            <thead>
-            <tr>
-                <th>Titre</th>
-                <th>Statut</th>
-                <th>Détail</th>
-                <th></th>
-                <th></th>
-                <th></th>
-
-            </tr>
-            </thead>
-            <tbody>
-            {% for reclamation in reclamations %}
-                <tr>
-                    <!-- Table data -->
-                    <td>{{ reclamation.titre }}</td>
-                    <td>
-                        {% if reclamation.status == 'en cours' %}
-                            ⏳
-                        {% elseif reclamation.status == 'ouverte' %}
-                            🆕
-                        {% elseif reclamation.status == 'résolu' %}
-                            ✅
-                        {% else %}
-                            ❌
-                        {% endif %}
-                    </td>
-
-                    <td>
-                        <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal"
-                                data-target="#modal{{ reclamation.id }}">
-                            Détail
-                    </td>
-                    <td>
-                        <!-- Modify button -->
-                        <a href="{{ path('updaterecla', {'id': reclamation.id}) }}">
-                            <img src="{{ asset('modifr.png') }}" style="width:30px;height:30px;border:0">
-                        </a>
-                    </td>
-                    <td>
-                        <a href="{{ path('Supprimerrecla', {'id': reclamation.id}) }}">
-                            <img src="{{ asset('supr.png') }}" style="width:30px;height:30px;border:0">
-                        </a>
-                    </td>
-                    <td>
-                        <a href="{{ path('reclamationpdf', {'id': reclamation.id}) }}">
-                            <img src="{{ asset('image.png') }}" style="width:30px;height:30px;border:0">
-                        </a>
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="3">Aucune réclamation trouvée.</td>
-                </tr>
+            {% for flash_message in app.flashes('success') %}
+                <div class="alert alert-success" role="alert">
+                    {{ flash_message }}
+                </div>
             {% endfor %}
-            </tbody>
-        </table>
+            <a href="{{ path('add_reclamation') }}" class="btn btn-success mb-3">Réclamer</a>
+            <table class="table">
+                <!-- Table headers -->
+                <thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>Statut</th>
+                    <th>Détail</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
 
-        <!-- Modals for each reclamation -->
-        {% for reclamation in reclamations %}
-            <div class="modal fade" id="modal{{ reclamation.id }}" tabindex="-1" role="dialog"
-                 aria-labelledby="modal{{ reclamation.id }}Label" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modal{{ reclamation.id }}Label">{{ reclamation.titre }}</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div
-                                class="modal-body">
-                            <!-- Reclamation details -->
-                            <img src="{{ asset('images/' ~ reclamation.image) }}" alt="Image de reclamation"
-                                 class="img-fluid">
-                            <p>Priorité :
-                                {{ reclamation.priorite }}</p>
-                            <p>Description :
-                                {{ reclamation.description }}</p>
-                            <p>Date de création :
-                                {{ reclamation.createddate|date('Y-m-d') }}</p>
-                            <p>
-                                {% if reclamation.reponses is not empty %}
-                            <ul>
-                                {% for reponse in reclamation.reponses %}
-                                    Réponse:
-                                    {{ reponse.contenu }}
-                                {% endfor %}
-                            </ul>
+                </tr>
+                </thead>
+                <tbody>
+                {% for reclamation in reclamations %}
+                    <tr>
+                        <!-- Table data -->
+                        <td>{{ reclamation.titre }}</td>
+                        <td>
+                            {% if reclamation.statut == 'en cours' %}
+                                ⏳
+                            {% elseif reclamation.statut == 'ouverte' %}
+                                🆕
+                            {% elseif reclamation.statut == 'résolu' %}
+                                ✅
                             {% else %}
-                                <p>Aucune réponse pour cette réclamation.</p>
+                                ❌
                             {% endif %}
-                            </p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        </td>
+
+                        <td>
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal"
+                                    data-target="#modal{{ reclamation.id }}">
+                                Détail
+                            </button>
+                        </td>
+                        <td>
+                            <!-- Modify button -->
+                            <a href="{{ path('updaterecla', {'id': reclamation.id}) }}">
+                                <img src="{{ asset('images/modifr.png') }}" style="width:30px;height:30px;border:0">
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ path('Supprimerrecla', {'id': reclamation.id}) }}">
+                                <img src="{{ asset('images/supr.png') }}" style="width:30px;height:30px;border:0">
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ path('reclamationpdf', {'id': reclamation.id}) }}">
+                                <img src="{{ asset('image.png') }}" style="width:30px;height:30px;border:0">
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">Aucune réclamation trouvée.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- Modals for each reclamation -->
+            {% for reclamation in reclamations %}
+                <div class="modal fade" id="modal{{ reclamation.id }}" tabindex="-1" role="dialog"
+                     aria-labelledby="modal{{ reclamation.id }}Label" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modal{{ reclamation.id }}Label">{{ reclamation.titre }}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div
+                                    class="modal-body">
+                                <!-- Reclamation details -->
+                                <img src="{{ asset('images/' ~ reclamation.image) }}" alt="Image de reclamation"
+                                     class="img-fluid">
+                                <p>Priorité :
+                                    {{ reclamation.priorite }}</p>
+                                <p>Description :
+                                    {{ reclamation.description }}</p>
+                                <p>Date de création :
+                                    {{ reclamation.date|date('Y-m-d') }}</p>
+                                <p>
+                                    {% if reclamation.reponseReclamations is not empty %}
+                                </p>
+                                <ul>
+                                    {% for reponse in reclamation.reponseReclamations %}
+                                        Réponse:
+                                        {{ reponse.contenu }}
+                                    {% endfor %}
+                                </ul>
+                                {% else %}
+                                    <p>Aucune réponse pour cette réclamation.</p>
+                                {% endif %}
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
+        <br>
     </div>
-    <br>
-    {% endblock %}
+
+{% endblock %}

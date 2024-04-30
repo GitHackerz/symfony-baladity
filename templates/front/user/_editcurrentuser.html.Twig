@@ -1,18 +1,15 @@
 {% extends "front/base.html.twig" %}
- {% block body %} 
- {% include
+ {% block body %}
+     {% include
 
-"front/Header.html.twig" %}
+         "front/Header.html.twig" %}
 
 
-        
 
-        {{ include("front/user/_form.html.twig", { button_label: "Update" }) }}
 
-        {{ include("front/user/_delete_form.html.twig") }}
-      </div>
-    </div>
-  </div>
-</div>
+     {{ include("front/user/_form.html.twig", { button_label: "Update" }) }}
 
-{% endblock %}
+     {{ include("front/user/_delete_form.html.twig") }}
+
+
+ {% endblock %}

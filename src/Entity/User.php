@@ -50,6 +50,7 @@ class User implements PasswordAuthenticatedUserInterface, userInterface
     private ?string $image = null;
 
     #[ORM\ManyToOne(targetEntity: Citoyen::class, inversedBy: 'users')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?Citoyen $citoyen = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: DemandeAssociation::class)]
@@ -58,10 +59,10 @@ class User implements PasswordAuthenticatedUserInterface, userInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: DemandeDocument::class)]
     private Collection $demandeDocuments;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: TacheProjet::class, cascade: ['remove', 'persist'])]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: TacheProjet::class)]
     private Collection $tacheProjets;
 
-    #[ORM\ManyToMany(targetEntity: Projet::class, mappedBy: 'user', cascade: ['remove', 'persist'])]
+    #[ORM\ManyToMany(targetEntity: Projet::class, mappedBy: 'user')]
     private Collection $projets;
 
     #[ORM\ManyToMany(targetEntity: Evenement::class, mappedBy: 'user')]

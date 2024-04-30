@@ -9,11 +9,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class StatsController extends AbstractController
-{    
-    
-    
-    
-    public  function simplePrediction($totalUsers, $totalCitizens)
+{
+    public function simplePrediction($totalUsers, $totalCitizens)
     {
         $growthRate = 0.05; // 5%
         $newUsers = $growthRate * $totalCitizens;
@@ -21,6 +18,7 @@ class StatsController extends AbstractController
 
         return $predictedUsers;
     }
+
     #[Route('/stats', name: 'app_stats')]
     public function index(UserRepository $userRepository, CitoyenRepository $citizenRepository): Response
     {
@@ -38,9 +36,5 @@ class StatsController extends AbstractController
             'totalCitizens' => $totalCitizens,
             'predictedUsers' => $predictedUsers,
         ]);
-
-
-   
-    
-}
+    }
 }

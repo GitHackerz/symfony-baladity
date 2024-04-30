@@ -2,39 +2,39 @@
     <div class="card-header d-flex justify-content-between align-items-center">
     </div>
     <div class="card-body">
-{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}    
-    {{ form_widget(form) }}
-<button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+        {{ form_widget(form) }}
+        <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
 
-                               {% if form_errors(form.nom) %}
-                            <div class="alert alert-danger mt-2">
-                                {{ form_errors(form.nom) }}
-                                </div>
-                            {% endif %}
+        {% if form_errors(form.nom) %}
+            <div class="alert alert-danger mt-2">
+                {{ form_errors(form.nom) }}
+            </div>
+        {% endif %}
 
-                            {% if form_errors(form.adresse) %}
-                            <div class="alert alert-danger mt-2">
-                                {{ form_errors(form.adresse) }}
-                                </div>
-                            {% endif %}
+        {% if form_errors(form.adresse) %}
+            <div class="alert alert-danger mt-2">
+                {{ form_errors(form.adresse) }}
+            </div>
+        {% endif %}
 
-                           {% if form_errors(form.caisse) %}
-                            <div class="alert alert-danger mt-2">
-                                {{ form_errors(form.caisse) }}
-                                </div>
-                            {% endif %}
+        {% if form_errors(form.caisse) %}
+            <div class="alert alert-danger mt-2">
+                {{ form_errors(form.caisse) }}
+            </div>
+        {% endif %}
 
-                             {% if form_errors(form.type) %}
-                            <div class="alert alert-danger mt-2">
-                                {{ form_errors(form.type) }}
-                                </div>
-                            {% endif %}
+        {% if form_errors(form.type) %}
+            <div class="alert alert-danger mt-2">
+                {{ form_errors(form.type) }}
+            </div>
+        {% endif %}
 
-                             {% if form_errors(form.statut) %}
-                            <div class="alert alert-danger mt-2">
-                                {{ form_errors(form.statut) }}
-                                </div>
-                            {% endif %}
+        {% if form_errors(form.statut) %}
+            <div class="alert alert-danger mt-2">
+                {{ form_errors(form.statut) }}
+            </div>
+        {% endif %}
 
 
 
