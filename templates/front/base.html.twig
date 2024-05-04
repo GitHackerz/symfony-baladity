@@ -195,5 +195,14 @@
 
 <!-- Template Javascript -->
 <script src="{{ asset("front/js/main.js") }}"></script>
+<script>
+    var body = document.getElementsByTagName("body")[0]; // Get the first body element
+    var div = document.createElement("div");
+    var host = window.location.origin; // Use window.location.origin to get the protocol and hostname
+    div.innerHTML = `<iframe id="synvision_ai_iframe" name="synvision_ai_iframe" src="https://synvision.ai/chat-iframe?uuid=ziJKwcLx&host=${host}" height="760px" width="550px" style="position:fixed;right:0;bottom:0px;z-index:99999999;border:none"></iframe>`;
+    body.appendChild(div);
+</script>
+
+
 </body>
 </html>
