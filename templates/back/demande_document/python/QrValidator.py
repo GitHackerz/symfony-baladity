@@ -37,7 +37,10 @@ def generate_frames():
     cap = cv2.VideoCapture(0)
     cap.set(3,640)
     cap.set(4,480)
-
+    # Open the file containing the data
+    with open("templates/back/demande_document/python/Code.txt", "r") as file:
+        # Read the data from the file
+        data = file.read().splitlines()
     while True:
         success, img = cap.read()
         if not success:
@@ -48,7 +51,8 @@ def generate_frames():
                 key = "azertyazertyazer"
                 print(myData)
 
-                if myData in ["acceptee", "Acceptee", "ACCEPTEE","EbHUsq5Gk+aAHpSfrcshjw=="]:
+
+                if myData.strip() in data:
                     myOutput = 'Valide'
                     myColor = (0,255,0)
                 else:

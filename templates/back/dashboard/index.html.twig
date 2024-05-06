@@ -535,18 +535,21 @@
         <div class="content-backdrop fade"></div>
     </div>
 
+
+    <!--document PieChart -->
     <script>
         var nb_acc = {{ nb_ddoc_accepted }};
         var nb_rej = {{ nb_ddoc_rejected }};
+        var nb_pend = {{ nb_ddoc_pending }};
 
 
         var options = {
-            series: [nb_acc, nb_rej],
+            series: [nb_acc, nb_rej , nb_pend],
             chart: {
                 width: 380,
                 type: 'pie',
             },
-            labels: ['Documents Acceptés', 'Documents Rejetés'],
+            labels: ['Documents Acceptés', 'Documents Rejetés','Documents en attente'],
             responsive: [{
                 breakpoint: 480,
                 options: {
@@ -563,4 +566,7 @@
         var chart = new ApexCharts(document.querySelector("#chart"), options);
         chart.render();
     </script>
+
+
+
 {% endblock %}
