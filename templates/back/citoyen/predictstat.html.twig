@@ -1,0 +1,104 @@
+<div class="card" style="margin-bottom: 30px">
+    <h2 class="card-header">prediction du nombre des utilisateurs</h2>
+    <div id="chart-user"></div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch("/stats")
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data); // Log the received data
+
+                const options = {
+                    series: [
+                        {
+                            data: [
+                                {
+                                    x: "",
+                                    y: [0, 0],
+                                },
+                                {
+                                    x: "",
+                                    y: [0, 0],
+                                },
+
+                                {
+                                    x: "Citoyen",
+                                    y: [0, data.totalCitizens],
+                                },
+                                {
+                                    x: "Utilisateur",
+                                    y: [0, data.totalUsers],
+                                },
+                                {
+                                    x: "Prediction Utilisateur",
+                                    y: [0, data.predictedUsers],
+                                },
+                                {
+                                    x: "",
+                                    y: [0, 0],
+                                },
+
+                                {
+                                    x: "",
+                                    y: [0, 0],
+                                },
+                            ],
+                        },
+                    ],
+                    chart: {
+                        height: 350,
+                        type: "rangeBar",
+                        zoom: {
+                            enabled: false,
+                        },
+                    },
+                    plotOptions: {
+                        bar: {
+                            isDumbbell: true,
+                            columnWidth: 1,
+                            dumbbellColors: [["#008FFB", "#00E396"]],
+                            center: true,
+                        },
+                    },
+                    legend: {
+                        show: true,
+                        showForSingleSeries: true,
+                        position: "top",
+                        horizontalAlign: "left",
+                        customLegendItems: ["Nbre Reel", "Prediction"],
+                    },
+                    fill: {
+                        type: "gradient",
+                        gradient: {
+                            type: "vertical",
+                            gradientToColors: ["#00E396"],
+                            inverseColors: true,
+                            stops: [0, 100],
+                        },
+                    },
+                    grid: {
+                        xaxis: {
+                            lines: {
+                                show: true,
+                            },
+                        },
+                        yaxis: {
+                            lines: {
+                                show: false,
+                            },
+                        },
+                    },
+                    xaxis: {
+                        tickPlacement: "on",
+                    },
+                };
+
+                var chart = new ApexCharts(document.querySelector("#chart-user"), options);
+                chart.render();
+            })
+            .catch((error) => {
+                console.error("Error fetching data:", error); // Log any errors
+            });
+    });
+</script>

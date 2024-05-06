@@ -19,6 +19,9 @@ class DemandeDocumentFrontController extends AbstractController
     #[Route('', name: 'app_demande_document_index', methods: ['GET'])]
     public function index(DemandeDocumentRepository $demandeDocumentRepository): Response
     {
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
         return $this->render('front/document/demande_document/index.html.twig', [
             'demande_documents' => $demandeDocumentRepository->find_Aceepted_Rejected($this->getUser()->getId()),
         ]);
@@ -28,6 +31,9 @@ class DemandeDocumentFrontController extends AbstractController
     #[Route('/new/{id}', name: 'app_demande_document_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager , DocumentRepository $doc_rep): Response
     {
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
         $id = $request->attributes->get('id');
 
         $demandeDocument = new DemandeDocument();
@@ -59,6 +65,9 @@ class DemandeDocumentFrontController extends AbstractController
     #[Route('/{id}', name: 'app_demande_document_show', methods: ['GET'])]
     public function show(DemandeDocument $demandeDocument): Response
     {
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
         return $this->render('demande_document/show.html.twig', [
             'demande_document' => $demandeDocument,
         ]);
@@ -67,6 +76,9 @@ class DemandeDocumentFrontController extends AbstractController
     #[Route('/{id}/edit', name: 'app_demande_document_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, DemandeDocument $demandeDocument, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
         $form = $this->createForm(DemandeDocumentType::class, $demandeDocument);
         $form->handleRequest($request);
 
@@ -85,6 +97,9 @@ class DemandeDocumentFrontController extends AbstractController
     #[Route('/{id}', name: 'app_demande_document_delete', methods: ['POST'])]
     public function delete(Request $request, DemandeDocument $demandeDocument, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
         if ($this->isCsrfTokenValid('delete'.$demandeDocument->getId(), $request->request->get('_token'))) {
             $entityManager->remove($demandeDocument);
             $entityManager->flush();
@@ -98,14 +113,13 @@ class DemandeDocumentFrontController extends AbstractController
     public function monDocumentEspace(Request $request, EntityManagerInterface $entityManager , DemandeDocumentRepository $ddoc_rep): Response
     {
 
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
         $id = $request->attributes->get('id');
 
         return $this->render('front/document/mon_Document.html.twig', [
             'demande' => $ddoc_rep->find($id),
         ]);
     }
-
-
-
-
 }

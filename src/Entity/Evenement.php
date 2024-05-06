@@ -59,6 +59,7 @@ class Evenement
     private Collection $membres;
 
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'evenements')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private Collection $user;
 
     public function __construct()

@@ -97,6 +97,7 @@
                             <thead>
                             <tr>
                                 <th>Projet</th>
+                                <th>Manager</th>
                                 <th>Date Debut</th>
                                 <th>Date Fin</th>
                                 <th>Statut</th>
@@ -110,6 +111,7 @@
                                     <td>
                                         <strong>{{ project.titre }}</strong>
                                     </td>
+                                    <td>{{ project.manager.citoyen.nom }} {{ project.manager.citoyen.prenom }}</td>
                                     <td>{{ project.dateDebut.format("d M Y") }}</td>
                                     <td>{{ project.dateFin.format("d M Y") }}</td>
                                     <td>
@@ -178,7 +180,7 @@
                     $('table tbody tr').each(function () {
                         let rowText = $(this).text().toLowerCase();
                         console.log(rowText);
-                            if (rowText.indexOf(value) > -1) {
+                        if (rowText.indexOf(value) > -1) {
                             $(this).show();
                         } else {
                             $(this).hide();

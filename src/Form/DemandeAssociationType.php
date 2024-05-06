@@ -48,14 +48,8 @@ class DemandeAssociationType extends AbstractType
                     'Professionnelle' => 'Professionnelle',
                 ],
                 'attr' => ['class' => 'form-select'],
-            ])
-            ->add('user', ChoiceType::class, [
-                'label' => 'Utilisateur',
-                'choice_label' => 'email',
-                'attr' => [
-                    'class' => 'form-control',
-                    'placeholder' => 'Choisissez un utilisateur'
-                ],
+           
+           
             ]);
     }
 

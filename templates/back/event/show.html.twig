@@ -54,6 +54,44 @@
                     </div>
                 </div>
             </div>
+
+            <div class="card" style="margin-top: 80px">
+                <div class="card-header d-flex flex-row justify-content-between align-items-center">
+                    <h5>LISTES DES PARTICIPANTS</h5>
+
+                </div>
+
+                <div class="table-responsive text-nowrap" >
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th> cin</th>
+                            <th> genre</th>
+
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for participant in participants %}
+                            <tr>
+                                <td>{{ participant.citoyen.nom }}</td>
+                                <td>{{ participant.citoyen.prenom }}</td>
+                                <td>{{ participant.citoyen.cin }}</td>
+                                <td>{{ participant.citoyen.genre }}</td>
+
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6" class="text-center">No records found</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
+
     </div>
 {% endblock %}

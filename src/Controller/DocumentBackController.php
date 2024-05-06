@@ -17,6 +17,9 @@ class DocumentBackController extends AbstractController
     #[Route('/', name: 'app_document_index', methods: ['GET'])]
     public function index(DocumentRepository $documentRepository): Response
     {
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
         return $this->render('back/document/index.html.twig', [
             'documents' => $documentRepository->findAll(),
         ]);
@@ -25,6 +28,9 @@ class DocumentBackController extends AbstractController
     #[Route('/new', name: 'app_document_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
         $document = new Document();
         $form = $this->createForm(DocumentType::class, $document);
         $form->handleRequest($request);
@@ -45,6 +51,9 @@ class DocumentBackController extends AbstractController
     #[Route('/{id}', name: 'app_document_show', methods: ['GET'])]
     public function show(Document $document): Response
     {
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
         return $this->render('back/document/show.html.twig', [
             'document' => $document,
         ]);
@@ -53,6 +62,9 @@ class DocumentBackController extends AbstractController
     #[Route('/edit/{id}', name: 'app_document_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Document $document, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
         $form = $this->createForm(DocumentType::class, $document);
         $form->handleRequest($request);
 
@@ -71,6 +83,9 @@ class DocumentBackController extends AbstractController
     #[Route('/{id}', name: 'app_document_delete', methods: ['DELETE'])]
     public function delete(Document $document, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
         $entityManager->remove($document);
         $entityManager->flush();
 

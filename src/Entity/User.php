@@ -24,8 +24,6 @@ class User implements PasswordAuthenticatedUserInterface, userInterface
     #[Assert\Email(message: "L'adresse email '{{ value }}' n'est pas une adresse email valide.")]
     private ?string $email = null;
 
-
-
     #[ORM\Column(length: 255)]
     private ?string $role = null;
 
@@ -52,6 +50,7 @@ class User implements PasswordAuthenticatedUserInterface, userInterface
     private ?string $image = null;
 
     #[ORM\ManyToOne(targetEntity: Citoyen::class, inversedBy: 'users')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?Citoyen $citoyen = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: DemandeAssociation::class)]
@@ -60,10 +59,10 @@ class User implements PasswordAuthenticatedUserInterface, userInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: DemandeDocument::class)]
     private Collection $demandeDocuments;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: TacheProjet::class, cascade: ['remove', 'persist'])]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: TacheProjet::class)]
     private Collection $tacheProjets;
 
-    #[ORM\ManyToMany(targetEntity: Projet::class, mappedBy: 'user', cascade: ['remove', 'persist'])]
+    #[ORM\ManyToMany(targetEntity: Projet::class, mappedBy: 'user')]
     private Collection $projets;
 
     #[ORM\ManyToMany(targetEntity: Evenement::class, mappedBy: 'user')]
@@ -75,6 +74,9 @@ class User implements PasswordAuthenticatedUserInterface, userInterface
     #[ORM\OneToMany(mappedBy: 'manager', targetEntity: Projet::class)]
     private Collection $managedProjects;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Reclamation::class)]
+    private Collection $reclamations;
+
     public function __construct()
     {
         $this->demandeAssociations = new ArrayCollection();
@@ -84,6 +86,7 @@ class User implements PasswordAuthenticatedUserInterface, userInterface
         $this->evenements = new ArrayCollection();
         $this->tacheCommentaires = new ArrayCollection();
         $this->managedProjects = new ArrayCollection();
+        $this->reclamations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -437,6 +440,36 @@ class User implements PasswordAuthenticatedUserInterface, userInterface
             // set the owning side to null (unless already changed)
             if ($managedProject->getManager() === $this) {
                 $managedProject->setManager(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reclamation>
+     */
+    public function getReclamations(): Collection
+    {
+        return $this->reclamations;
+    }
+
+    public function addReclamation(Reclamation $reclamation): static
+    {
+        if (!$this->reclamations->contains($reclamation)) {
+            $this->reclamations->add($reclamation);
+            $reclamation->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReclamation(Reclamation $reclamation): static
+    {
+        if ($this->reclamations->removeElement($reclamation)) {
+            // set the owning side to null (unless already changed)
+            if ($reclamation->getUser() === $this) {
+                $reclamation->setUser(null);
             }
         }
 

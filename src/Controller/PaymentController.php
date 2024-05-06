@@ -20,8 +20,6 @@ class PaymentController extends AbstractController
         ]);
     }
 
-
-
     #[Route('/checkout', name: 'checkout')]
     public function checkout(): Response
     {

@@ -2,11 +2,6 @@
 
 {% block body %}
     <div class="content-wrapper">
-
-
-
-
-
         <div class="container-xxl flex-grow-1 container-p-y">
             <div class="row">
                 <div class="col-lg-8 mb-4 order-0">
@@ -20,7 +15,6 @@
                                         badge in
                                         your profile.
                                     </p>
-
                                     <a href="javascript:;" class="btn btn-sm btn-outline-primary">View Badges</a>
                                 </div>
                             </div>
@@ -211,6 +205,9 @@
                     </div>
                 </div>
             </div>
+
+            {% include 'back/citoyen/predictstat.html.twig' %}
+
             <div class="row">
                 <!-- Order Statistics -->
                 <div class="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
@@ -541,7 +538,6 @@
 
     <!--document PieChart -->
     <script>
-
         var nb_acc = {{ nb_ddoc_accepted }};
         var nb_rej = {{ nb_ddoc_rejected }};
         var nb_pend = {{ nb_ddoc_pending }};

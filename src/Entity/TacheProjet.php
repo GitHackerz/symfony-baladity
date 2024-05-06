@@ -40,10 +40,12 @@ class TacheProjet
     #[Assert\Choice(choices: ['To Do', 'In Progress', 'Done'], message: 'Le statut doit être parmi les valeurs suivantes: To Do, In Progress, Done')]
     private ?string $statut = null;
 
-    #[ORM\ManyToOne(cascade: ['remove', 'persist'], inversedBy: 'tacheProjets')]
+    #[ORM\ManyToOne(inversedBy: 'tacheProjets')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?Projet $projet = null;
 
-    #[ORM\ManyToOne(cascade: ['remove', 'persist'], inversedBy: 'tacheProjets')]
+    #[ORM\ManyToOne(inversedBy: 'tacheProjets')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?User $user = null;
 
     #[ORM\OneToMany(mappedBy: 'tacheProjet', targetEntity: TacheCommentaires::class)]

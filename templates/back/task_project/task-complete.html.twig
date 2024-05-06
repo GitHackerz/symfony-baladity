@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task Completion Notification</title>
+</head>
+<body>
+<h1>Hello Admin,</h1>
+<p>The following task has been completed:</p>
+<ul>
+    <li><strong>Task Title:</strong> {{ task.titre }}</li>
+    <li><strong>User: </strong>{{ task.user.citoyen.nom }} {{ task.user.citoyen.prenom }}</li>
+    <li><strong>Task Description:</strong> {{ task.description }}</li>
+    <li><strong>Completion Date:</strong> {{ task.date|date('Y-m-d') }}</li>
+</ul>

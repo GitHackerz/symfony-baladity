@@ -32,6 +32,16 @@ class EvenementRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findByTitle($searchTerm)
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.titre LIKE :searchTerm')
+            ->setParameter('searchTerm', '%'.$searchTerm.'%')
+            ->getQuery()
+            ->getResult();
+    }
+
+
 
 //    /**
 //     * @return Evenement[] Returns an array of Evenement objects

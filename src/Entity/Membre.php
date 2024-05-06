@@ -37,8 +37,9 @@ class Membre
     #[Assert\GreaterThan(value: 17, message: "L'âge doit être supérieur à 18.")]
     private ?int $age = null;
 
-    #[ORM\ManyToOne(inversedBy: 'membres')]
+    #[ORM\ManyToOne( inversedBy: 'membres')]
     #[Assert\NotNull(message:"l'evenement est obligatoire")]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?Evenement $event = null;
 
     public function getId(): ?int

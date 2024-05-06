@@ -21,14 +21,20 @@ class DemandeDocumentBackController extends AbstractController
     #[Route('/demandes', name: 'app_demande_document_front_index', methods: ['GET'])]
     public function index(DemandeDocumentRepository $demandeDocumentRepository): Response
     {
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
         return $this->render('back/demande_document/index.html.twig', [
             'demande_documents' => $demandeDocumentRepository->findAll(),
         ]);
     }
 
     #[Route('/new/{id}', name: 'app_demande_document_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager , DocumentRepository $doc_rep): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, DocumentRepository $doc_rep): Response
     {
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
         $id = $request->attributes->get('id');
 
         $demandeDocument = new DemandeDocument();
@@ -52,6 +58,9 @@ class DemandeDocumentBackController extends AbstractController
     #[Route('/{id}', name: 'app_demande_document_show', methods: ['GET'])]
     public function show(DemandeDocument $demandeDocument): Response
     {
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
         return $this->render('demande_document/show.html.twig', [
             'demande_document' => $demandeDocument,
         ]);
@@ -60,6 +69,9 @@ class DemandeDocumentBackController extends AbstractController
     #[Route('/{id}/edit', name: 'app_demande_document_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, DemandeDocument $demandeDocument, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
         $form = $this->createForm(DemandeDocumentType::class, $demandeDocument);
         $form->handleRequest($request);
 
@@ -78,7 +90,10 @@ class DemandeDocumentBackController extends AbstractController
     #[Route('/{id}', name: 'app_demande_document_delete', methods: ['POST'])]
     public function delete(Request $request, DemandeDocument $demandeDocument, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$demandeDocument->getId(), $request->request->get('_token'))) {
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
+        if ($this->isCsrfTokenValid('delete' . $demandeDocument->getId(), $request->request->get('_token'))) {
             $entityManager->remove($demandeDocument);
             $entityManager->flush();
         }
@@ -88,8 +103,10 @@ class DemandeDocumentBackController extends AbstractController
 
 
     #[Route('/demandes/Accept/{id}', name: 'app_demande_document_accept', methods: ['GET', 'POST'])]
-    public function Accepter_DemandeDoc(Request $request, DemandeDocument $d_document, DemandeDocumentRepository $demandeDocumentRepository ): Response
+    public function Accepter_DemandeDoc(Request $request, DemandeDocument $d_document, DemandeDocumentRepository $demandeDocumentRepository): Response
     {
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
 
         $id = $request->attributes->get('id');
         $d_documentdocument = $demandeDocumentRepository->find($id);
@@ -104,8 +121,11 @@ class DemandeDocumentBackController extends AbstractController
 
 
     #[Route('/demandes/Reject/{id}', name: 'app_demande_document_reject', methods: ['GET', 'POST'])]
-    public function Rejeter_DemandeDoc(Request $request, DemandeDocument $d_document, DemandeDocumentRepository $demandeDocumentRepository ): Response
+    public function Rejeter_DemandeDoc(Request $request, DemandeDocument $d_document, DemandeDocumentRepository $demandeDocumentRepository): Response
     {
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
         $id = $request->attributes->get('id');
         $d_documentdocument = $demandeDocumentRepository->find($id);
         $d_documentdocument->setStatut("rejetée");
@@ -117,11 +137,11 @@ class DemandeDocumentBackController extends AbstractController
     }
 
 
-
-
     #[Route('/demandes/Refactor/{id}', name: 'app_demande_document_refactor', methods: ['GET', 'POST'])]
-    public function Refactoriser_demandeDoc(Request $request, DemandeDocument $d_document, DemandeDocumentRepository $demandeDocumentRepository ): Response
+    public function Refactoriser_demandeDoc(Request $request, DemandeDocument $d_document, DemandeDocumentRepository $demandeDocumentRepository): Response
     {
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
 
         $id = $request->attributes->get('id');
         $d_documentdocument = $demandeDocumentRepository->find($id);
@@ -132,8 +152,4 @@ class DemandeDocumentBackController extends AbstractController
         return $this->redirectToRoute('app_demande_document_front_index', [], Response::HTTP_SEE_OTHER);
 
     }
-
-
-
-
 }

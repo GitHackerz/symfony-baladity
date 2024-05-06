@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+        }
+
+        .header {
+            text-align: center;
+            background-color: #f2f2f2;
+            padding: 10px;
+        }
+
+        .reclamation-details {
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Réclamation - Détails</h1>
+    </div>
+
+    <div class="reclamation-details">
+        <h2>Informations de réclamation</h2>
+        <table>
+            <tr>
+                <th>Utilisateur</th>
+                <td>{{ reclamation.user.citoyen.nom }} {{ reclamation.user.citoyen.prenom }}</td>
+            </tr>
+            <tr>
+                <th>Titre</th>
+                <td>{{ reclamation.titre }}</td>
+            </tr>
+            <tr>
+                <th>Priorité</th>
+                <td>{{ reclamation.priorite }}</td>
+            </tr>
+            <tr>
+                <th>Date de création</th>
+                <td>{{ reclamation.date|date("d/m/Y H:i:s") }}</td>
+            </tr>
+            <tr>
+                <th>Image</th>
+                <td>
+                    <img src="{{ absolute_url(asset('uploads/' ~ reclamation.image)) }}"
+                         style="height:40px;width:40px;">
+                </td>
+            </tr>
+            <tr>
+                <th>Statut</th>
+                <td>{{ reclamation.statut }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ reclamation.description }}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>

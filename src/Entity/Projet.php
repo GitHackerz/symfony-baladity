@@ -7,6 +7,7 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -43,10 +44,11 @@ class Projet
     #[Assert\Positive(message: 'Le budget doit être un nombre positif')]
     private ?float $budget = null;
 
-    #[ORM\OneToMany(mappedBy: 'projet', targetEntity: TacheProjet::class, cascade: ['remove', 'persist'])]
+    #[ORM\OneToMany(mappedBy: 'projet', targetEntity: TacheProjet::class)]
     private Collection $tacheProjets;
 
-    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'projets', cascade: ['remove', 'persist'])]
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'projets')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private Collection $user;
 
     #[ORM\Column(type: "date")]
@@ -58,7 +60,8 @@ class Projet
     #[Assert\GreaterThanOrEqual(propertyPath: 'dateDebut', message: 'La date de fin doit être supérieure à la date de début')]
     private ?DateTimeInterface $dateFin;
 
-    #[ORM\ManyToOne(inversedBy: 'managedProjects')]
+    #[ORM\ManyToOne( inversedBy: 'managedProjects')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?User $manager = null;
 
     public function __construct()

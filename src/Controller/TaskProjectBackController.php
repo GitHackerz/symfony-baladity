@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
@@ -51,8 +52,16 @@ class TaskProjectBackController extends AbstractController
         ]);
     }
 
+    #[Route('/list', name: 'task_project_back_tasks', methods: ['GET'])]
+    public function getTasks(TacheProjetRepository $tacheProjetRepository): Response
+    {
+        $tasks = $tacheProjetRepository->findAll();
+
+        return new Response(json_encode(array($tasks)), 200, ['Content-Type' => 'application/json']);
+    }
+
     #[Route('/new', name: 'task_project_back_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, MailerService $mailerService): Response
     {
         if (!$this->getUser())
             return $this->redirectToRoute('app_login');
@@ -70,6 +79,13 @@ class TaskProjectBackController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($tacheProjet);
             $entityManager->flush();
+
+            $mailerService->sendTwigEmail(
+                $tacheProjet->getUser()->getEmail(),
+                'New Task',
+                'back/task_project/mail.html.twig',
+                ['task' => $tacheProjet]
+            );
 
             return $this->redirectToRoute('task_project_back_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -142,6 +158,7 @@ class TaskProjectBackController extends AbstractController
         $entityManager->flush();
 
         return new JsonResponse([
+            'id' => $comment->getId(),
             'user' => $comment->getUser()->getCitoyen()->getNom() . ' ' . $comment->getUser()->getCitoyen()->getPrenom(),
             'image' => $comment->getUser()->getImage(),
             'date' => $comment->getDate()->format('Y-m-d H:i:s'),
@@ -193,14 +210,15 @@ class TaskProjectBackController extends AbstractController
 
         $tacheProjet->setStatut('Done');
         $entityManager->flush();
-        $mailerService->sendEmail(
-            $tacheProjet->getUser()->getEmail(),
+
+        $mailerService->sendTwigEmail(
+            $tacheProjet->getProjet()->getManager()->getEmail(),
             'Task Done',
-            'Your task ' . $tacheProjet->getTitre() . ' is done'
+            'back/task_project/task-complete.html.twig',
+            ['task' => $tacheProjet]
         );
 
         $smsService->sendSms(
-            $tacheProjet->getProjet()->getManager()->getNumTel(),
             'Task ' . $tacheProjet->getTitre() . ' (' . $tacheProjet->getUser()->getCitoyen()->getPrenom() . ' ' . $tacheProjet->getUser()->getCitoyen()->getNom() . ') is done'
         );
 

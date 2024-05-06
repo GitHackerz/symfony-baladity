@@ -1,0 +1,51 @@
+{% extends 'back/base-auth.html.twig' %}
+
+{% block title %}Reset your password{% endblock %}
+
+{% block body %}
+    {{ form_start(resetForm) }}
+    {{ form_widget(resetForm._token) }}
+
+    <h4 class="mb-2 text-xl font-semibold">Reset your password? 🔒</h4>
+    <form id="formAuthentication" class="mb-3"  method="POST">
+        <div class="mb-3">
+            <label for="email" class="form-label">Password</label>
+            <input
+                    type="text"
+                    class="form-control"
+                    id="email"
+                    name="{{ field_name(resetForm.plainPassword.first) }}"
+                    value="{{ field_value(resetForm.plainPassword.first) }}"
+                    placeholder="{{ field_label(resetForm.plainPassword.first) }}"
+                    autofocus
+            />
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Repeat Password</label>
+            <input
+                    type="text"
+                    class="form-control"
+                    id="email"
+                    name="{{ field_name(resetForm.plainPassword.second) }}"
+                    value="{{ field_value(resetForm.plainPassword.second) }}"
+                    placeholder="{{ field_label(resetForm.plainPassword.second) }}"
+                    autofocus
+            />
+        </div>
+        <button class="btn btn-primary d-grid w-100">Send Reset Link</button>
+    </form>
+    <div class="text-center mt-3 text-primary">
+        <a href="{{ path('app_login') }}" class="d-flex align-items-center justify-content-center">
+            <i class="bx bx-chevron-left scaleX-n1-rtl bx-sm"></i>
+            Back to login
+        </a>
+    </div>
+    {{ form_end(resetForm) }}
+
+{#    <h1>Reset your password</h1>#}
+
+{#    {{ form_start(resetForm) }}#}
+{#        {{ form_row(resetForm.plainPassword) }}#}
+{#        <button class="btn btn-primary">Reset password</button>#}
+{#    {{ form_end(resetForm) }}#}
+{% endblock %}

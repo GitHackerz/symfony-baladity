@@ -47,9 +47,6 @@ fi{% set path = app.request.getPathInfo %}$
                         <div data-i18n="Without navbar">Liste des Demandes Association</div>
                     </a>
                 </li>
-                <a href="/dashboard/project" class="menu-link">
-                    <div data-i18n="Without menu">Liste des projets</div>
-                </a>
             </ul>
         </li>
         <li class="menu-item {{ 'project' in cleanPath | lower ? 'active' : '' }}">
@@ -62,7 +59,7 @@ fi{% set path = app.request.getPathInfo %}$
             <ul class="menu-sub">
                 <li class="menu-item">
                     <a href="/dashboard/project" class="menu-link">
-                        <div data-i18n="Without navbar">Liste des Projets</div>
+                        <div data-i18n="Without menu">Liste des projets</div>
                     </a>
                 </li>
                 <li class="menu-item">
@@ -111,7 +108,7 @@ fi{% set path = app.request.getPathInfo %}$
                 </li>
             </ul>
         </li>
-        <li class="menu-item{{ 'cument' in cleanPath | lower ? 'active' : '' }}">
+        <li class="menu-item {{ 'cument' in cleanPath | lower ? 'active' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-file"></i>
                 <div data-i18n="Layouts">Document</div>
@@ -135,7 +132,7 @@ fi{% set path = app.request.getPathInfo %}$
             </ul>
         </li>
 
-        <li class="menu-item {{ 'user'in cleanPath|lower?'active':'' }}">
+        <li class="menu-item {{ 'citoyen'in cleanPath|lower?'active':'' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-user"></i>
                 <div data-i18n="Layouts">Utilisateur</div>
@@ -149,6 +146,24 @@ fi{% set path = app.request.getPathInfo %}$
                 <li class="menu-item">
                     <a href="{{ path('app_citoyen_new') }}" class="menu-link">
                         <div data-i18n="Withoutnavbar">Ajouter un Citoyen</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="menu-item {{ 'eclamation' in cleanPath|lower?'active':'' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-user"></i>
+                <div data-i18n="Layouts">Reclamation</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="{{ path('app_reclamationback') }}" class="menu-link">
+                        <div data-i18n="Account">Reclamations Non Traitées</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{ path('app_reclamationback2') }}" class="menu-link">
+                        <div data-i18n="Withoutnavbar">Toutes les réclamations</div>
                     </a>
                 </li>
             </ul>

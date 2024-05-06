@@ -98,7 +98,7 @@
 
                 </div>
             </div>
-            <div class="flex h-screen w-full flex-col">
+            <div class="flex w-full flex-col">
                 <div class="flex-1 overflow-auto p-6">
                     <div class="grid grid-cols-3 gap-6">
                         <div class="rounded-lg border p-4  bg-white">
@@ -205,11 +205,38 @@
                     </div>
                 </div>
             </div>
+
+            <div id='calendar'></div>
+
         </div>
     </div>
 
     {% block script %}
         <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var calendarEl = document.getElementById('calendar');
+                let tasks = [];
+                {% for task in tache_projets %}
+                tasks.push({
+                    title: '{{ task.titre }}',
+                    start: '{{ task.date | date('Y-m-d h:m') }}',
+                    allDay: true
+                });
+                {% endfor %}
+
+
+                console.log(tasks);
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'timeGridWeek',
+                    headerToolbar: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                    },
+                    events: tasks
+                });
+                calendar.render();
+            });
             $('#projectFilter').on('change', function () {
                 const selectedProjectId = $(this).val();
                 console.log(selectedProjectId)

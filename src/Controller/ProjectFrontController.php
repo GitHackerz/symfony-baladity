@@ -29,13 +29,13 @@ class ProjectFrontController extends AbstractController
         ]);
     }
 
-    #[Route('/participer/{id}/{user_id}', name: 'app_projet_participer', methods: ['POST'])]
-    public function participer(Projet $projet, int $user_id, EntityManagerInterface $entityManager, MailerService $mailerService): Response
+    #[Route('/participer/{id}', name: 'app_projet_participer', methods: ['POST'])]
+    public function participer(Projet $projet, EntityManagerInterface $entityManager, MailerService $mailerService): Response
     {
-        $user = $entityManager->getRepository(User::class)->find($user_id);
-        if (!$user) {
-            throw $this->createNotFoundException('User not found');
-        }
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
+        $user = $this->getUser();
 
         $projet->addUser($user);
         $entityManager->persist($projet);
@@ -55,11 +55,13 @@ class ProjectFrontController extends AbstractController
     }
 
 
-    #[Route('/quitter/{id}/{user_id}', name: 'app_projet_quitter', methods: ['POST'])]
-    public function quitter(Projet $projet, int $user_id, EntityManagerInterface $entityManager): Response
+    #[Route('/quitter/{id}', name: 'app_projet_quitter', methods: ['POST'])]
+    public function quitter(Projet $projet, EntityManagerInterface $entityManager): Response
     {
-        $user = $entityManager->getRepository(User::class)->find($user_id);
-        var_dump($user_id);
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
+
+        $user = $this->getUser();
         $projet->removeUser($user);
 
         $entityManager->persist($projet);

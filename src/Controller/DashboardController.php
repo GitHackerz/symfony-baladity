@@ -12,6 +12,8 @@ class DashboardController extends AbstractController
     #[Route('/dashboard', name: 'app_dashboard')]
     public function index(DemandeDocumentRepository $ddoc_repo): Response
     {
+        if (!$this->getUser())
+            return $this->redirectToRoute('app_login');
 
         return $this->render('back/dashboard/index.html.twig', [
             'controller_name' => 'DashboardController',
@@ -19,13 +21,6 @@ class DashboardController extends AbstractController
             'nb_ddoc_rejected' => $ddoc_repo->countRejectedDDocuments(),
             'nb_ddoc_pending' => $ddoc_repo->countPendingDDocuments(),
 
-        ]);
-    }
-    #[Route('/front', name: 'front')]
-    public function index2(): Response
-    {
-        return $this->render('front/user/frontpagelogin.html.twig', [
-            'controller_name' => 'DashboardController',
         ]);
     }
 }

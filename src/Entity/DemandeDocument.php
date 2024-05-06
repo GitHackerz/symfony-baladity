@@ -32,10 +32,12 @@ class DemandeDocument
     #[ORM\Column(length: 255)]
     private ?string $dateTraitement = null;
 
-    #[ORM\ManyToOne(inversedBy: 'demandeDocuments')]
+    #[ORM\ManyToOne( inversedBy: 'demandeDocuments')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?User $user = null;
 
-    #[ORM\ManyToOne(inversedBy: 'demandeDocuments')]
+    #[ORM\ManyToOne( inversedBy: 'demandeDocuments')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?Document $document = null;
 
     public function getId(): ?int

@@ -24,11 +24,25 @@ Baladity is an innovative project dedicated to revolutionizing municipal governa
 
 - **Partnerships**: Baladity is always open to collaboration with government agencies, non-profit organizations, and technology partners. If you're interested in partnering with us to support smart municipality initiatives, please contact our team to explore potential opportunities.
 
+## Requirements
+
+- PHP 8.1 or higher
+- [Composer](https://getcomposer.org/)
+- [Symfony CLI](https://symfony.com/download)
+- [Node.js](https://nodejs.org/)
+
 ## Installation
 
 ```bash
 composer install
 ```
+```bash
+npm install
+```
+```bash
+npm run build
+```
+
 
 ## Usage
 
